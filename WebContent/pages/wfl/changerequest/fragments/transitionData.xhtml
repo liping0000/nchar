@@ -1,0 +1,152 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:a4j="http://richfaces.org/a4j"><!--
+
+we have the following parameters here:
+
+   transition: name of the transition
+   titleLabel:      text string for the title of this facet
+   selectLabel:     text string for the label of the selection UI element
+   dueDateLabel:    text string for the label of a date select element
+   remindDateLabel: text string for the label of a date select element
+   remarkLabel:       text string for he label of the richtext entry
+   
+   transitionData: the backend for all the data of this facet, its a value from the transitionChoice's hashmap
+   
+   
+   keep this element clean and free of any dependency from a specific workflow if possible
+   
+   the handle class is used by richfaces and collides with one of our transitions
+   so we have to add a "Pane" the same is needed in the open/close calls for the tab pane...
+
+--><s:div styleClass="#{transition}Pane tFacet" rendered="#{not empty transitionData}">
+    <!-- the headline for this facet -->
+    <h3><h:outputText value="#{titleLabel}" /></h3>
+
+    <!-- the receiver select part of this facet, it's about review/forward/query/assign, 
+         if there is no label, then we don't have a select e.g. reviewed/deny/done/finish -->
+    <s:div styleClass="editproperty" 
+           rendered="#{transitionData.config.user or transitionData.config.group}">
+           
+      <a4j:jsFunction name="rerenderUserDlgForm" reRender="userDlgTbl" />
+      <a4j:jsFunction name="rerenderGroupDlgForm" reRender="roleDlgTbl" />
+      
+      <script>
+      
+function openUserSelectDialog() {
+	roleDlg.hide();
+	userDlg.callback=setUserActor;
+	userDlg.facet='#{transitionData.transitionName}'; // this is the render time value
+	userDlg.show();
+	// copy over the value from the tab panel
+	var transitionName = jQuery('.tabpanel').children('input.selectedPane').val();
+	jQuery('form#userDlgForm').children('input#userDlgForm\\:transitionName').val(transitionName);
+    // trigger onchange event
+    jQuery('form#userDlgForm').children('input#userDlgForm\\:transitionName').change();
+	rerenderUserDlgForm();
+};
+
+function openGroupSelectDialog() {
+	userDlg.hide();
+	roleDlg.callback=setGroupActor;
+	roleDlg.facet='#{transitionData.transitionName}'; // this is the render time value
+	roleDlg.show();	
+    // copy over the value from the tab panel
+    var transitionName = jQuery('.tabpanel').children('input.selectedPane').val();
+    jQuery('form#roleDlgForm').children('input#roleDlgForm\\:transitionName').val(transitionName);
+    // trigger onchange event
+    jQuery('form#roleDlgForm').children('input#roleDlgForm\\:transitionName').change();
+    rerenderGroupDlgForm();
+};
+         
+      </script>
+      <s:label styleClass="name">
+        <h:outputText value="#{selectLabel}" />:
+      </s:label>
+        <span class="value">
+           <h:inputText value="#{transitionData.receiverLabel}"
+                        styleClass="inputtext readonly receiverLabel"     />
+                     
+           <h:inputText value="#{transitionData.receiverGroup}"
+                        styleClass="receiverGroupId"
+                        style="display: none;">
+               <f:converter converterId="charmsGroupConverter" />
+           </h:inputText>
+
+           <h:inputText value="#{transitionData.receiverUser}"
+                        styleClass="receiverUserId"
+                        style="display: none;">
+               <f:converter converterId="charmsUserConverter" />
+           </h:inputText>
+                        
+        </span>
+            <h:outputLink 
+                  value="JavaScript:void(0);"
+                  onclick="openUserSelectDialog();"
+                  rendered="#{transitionData.config.user}"
+                  reRender="form1"><h:graphicImage 
+                      url="/#{theme['iconset']}/user.png"
+                      border="0"/></h:outputLink>
+            <h:outputLink 
+                  value="JavaScript:void(0);"
+                  onclick="openGroupSelectDialog();"
+                  rendered="#{transitionData.config.group}"
+                  reRender="form1"><h:graphicImage 
+                      url="/#{theme['iconset']}/group.png"
+                      border="0"/></h:outputLink>
+            <h:outputLink 
+                  value="JavaScript:void(0);"
+                  onclick="userDlg.hide();roleDlg.hide();clearActorId();"><h:graphicImage 
+                      url="/#{theme['iconset']}/textfield.png"
+                      border="0"/></h:outputLink>
+        
+    </s:div>
+
+    <s:div styleClass="editproperty" rendered="#{transitionData.config.timer}">
+           <s:label styleClass="name">
+             <h:outputText value="#{dueDateLabel}" />:
+           </s:label>
+           <span class="value">
+             <rich:calendar value="#{transitionData.dueDate}" datePattern="dd.MM.yyyy" />
+           </span>
+    </s:div>
+
+    <!-- we don't have transition config for termSignals, so the label triggers the  -->
+    <s:div styleClass="editproperty" rendered="#{transitionData.config.remark or (! empty remarkLabel)}">
+           <s:label styleClass="name">
+             <h:outputText value="#{remarkLabel}" />:
+           </s:label>
+           <span class="value" style="display: table;">
+                <rich:editor value="#{transitionData.message}"
+                             configuration="mcePropertyConfig"
+                             customPlugins="mcePlugins">
+                   <f:param name="htmlcharcount_maxchars" value="2024" />
+                   <f:param name="readonly" value="#{readonly?'true':'false'}" />
+                   <!-- autoresize to show the full content on the page, htmlcharcount doesn't work with readonly  -->
+                   <f:param name="plugins" value="#{readonly?'autoresize':'htmlcharcount, paste'}" />
+                </rich:editor>
+           </span>
+    </s:div>
+
+         <div class="actionButtons">
+           <h:commandButton id="#{transition}_save"
+                            styleClass="button"
+                            value="#{messages['action.save']}"
+                            onclick="jQuery.throbberUI();return true;"
+                            action="#{transitionAction.save()}" />
+           <h:commandButton id="#{transition}_do"
+                            styleClass="button"
+                            value="#{messages['action.submit']}"
+                            onclick="jQuery.throbberUI();return true;"
+                            action="#{transitionAction.signal(transition)}" />
+           <s:button styleClass="button"
+                     value="#{messages['action.cancel']}"
+                     action="return false;"
+                     onclick="jQuery('.tabpanel').closeFormPanels(); return false;" />
+         </div>
+</s:div>
+</ui:composition>

@@ -1,0 +1,154 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:ft="http://primefaces.prime.com.tr/facestrace">
+
+
+<!--
+<h:outputText value="comet start" />
+<ui:include src="comet.xhtml" />
+<h:outputText value="comet end" />
+-->
+
+<!--  no fadeline in charms layout -->
+  <div class="fadeline-footer"><h:graphicImage value="/img/pixel.gif"
+    alt="" /></div>
+
+
+   <div id="footer"><a4j:region >
+     <a4j:form ajaxSubmit="false" ajaxSingle="false" id="f1"><!--
+
+          locale select:
+          see: http://www.jboss.com/index.html?module=bb&op=viewtopic&p=4066544 for a discussion
+               https://jira.jboss.org/jira/browse/JBSEAM-1711?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+    --><span><h:outputText value="&#160;" escape="false" /></span>
+       <ui:repeat var="l" value="#{localeSelector.supportedLocaleIds}">
+         <a4j:commandLink action="#{localeSelector.selectLocaleId(l)}">
+           <h:graphicImage url="/img/locales/locale_#{l}.gif" />
+         </a4j:commandLink>
+         <span> </span>
+       </ui:repeat><!--
+
+          theme select:
+    --><span><h:outputText value="&#160;" escape="false" /></span>
+       <ui:repeat var="t" value="#{themeSelector.supportedThemeIds}">
+         <a4j:commandLink action="#{themeSelector.selectThemeId(t)}">
+           <h:graphicImage url="/img/themes/theme_#{t}.gif" />
+         </a4j:commandLink>
+         <span> </span>
+       </ui:repeat><!--
+
+          ajax loader indicator:
+    --><span><h:outputText value="&#160;" escape="false" /></span>
+       <a4j:status>
+         <f:facet name="start">
+           <h:graphicImage  value="/img/statusStart.gif"/>
+         </f:facet>
+         <f:facet name="stop">
+           <h:graphicImage  value="/img/statusStop.gif"/>
+         </f:facet>
+       </a4j:status>
+       <span><h:outputText value="&#160;" escape="false" /></span><!--
+
+
+  --></a4j:form><!--
+
+         current server time:
+         we redender 90% before the session timeout to stay alive
+         FIXME: #{(facesContext.externalContext.request.session.maxInactiveInterval * 1000 * 10) / 9}
+--><a4j:form id="f2">
+       <h:outputText value="#{timeBean.date}" id="txt">
+         <s:convertDateTime pattern="EEEE, dd MMMM yyyy, HH:mm:ss, zzzz" />
+       </h:outputText>
+       <a4j:poll id="poll"
+                 reRender="txt, poll"
+                 interval="290000"
+                 timeout="900"
+                 bypassUpdates="true"
+                 ajaxSingle="true"
+                 limitToList="true"  />
+       </a4j:form>
+
+<!--
+
+this works and does updates:
+
+<a4j:form >
+       <h:outputText value="#{timeBean.date}" id="txt">
+         <s:convertDateTime pattern="EEEE, dd MMMM yyyy, HH:mm:ss, zzzz" />
+       </h:outputText>
+       <a4j:poll id="poll"
+                 reRender="txt, poll"
+                 interval="5000"
+                 timeout="3000"
+                 bypassUpdates="true"
+                 ajaxSingle="true"
+                 limitToList="true"  />
+       </a4j:form>
+
+
+<a4j:form >
+       <h:outputText value="#{timeBean.date}" id="txt">
+         <s:convertDateTime pattern="EEEE, dd MMMM yyyy, HH:mm:ss, zzzz" />
+       </h:outputText>
+       <a4j:poll id="poll"
+                 reRender="txt, poll"
+                 interval="5000"
+                 timeout="3000"
+                 bypassUpdates="false"
+                 ajaxSingle="true"
+                 limitToList="true"  />
+       </a4j:form>
+
+
+<a4j:form>
+       <h:outputText value="#{timeBean.date}" id="txt">
+         <s:convertDateTime pattern="EEEE, dd MMMM yyyy, HH:mm:ss, zzzz" />
+       </h:outputText>
+       <a4j:poll id="poll"
+                 reRender="txt, poll"
+                 interval="5000"
+                 timeout="3000"
+                 bypassUpdates="false"
+                 ajaxSingle="true"
+                 limitToList="true" />
+       </a4j:form>
+
+
+<a4j:form>
+       <h:outputText value="#{timeBean.date}" id="txt">
+         <s:convertDateTime pattern="EEEE, dd MMMM yyyy, HH:mm:ss, zzzz" />
+       </h:outputText>
+       <a4j:poll id="poll"
+                 reRender="txt"
+                 interval="5000"
+                 timeout="3000"
+                 bypassUpdates="false"
+                 ajaxSingle="false"
+                 limitToList="false" />
+       </a4j:form>
+
+
+-->
+
+
+       <ui:include src="componentSizes.xhtml" />
+       <br />
+       <ui:include src="contextContents.xhtml" />
+       <br />
+
+
+
+   </a4j:region></div>
+</ui:composition>
+
+
+<!--
+
+
+see: http://docs.jboss.org/seam/latest/reference/en-US/html/conversations.html#d0e6372
+-->

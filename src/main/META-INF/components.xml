@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<components xmlns="http://jboss.com/products/seam/components"
+            xmlns:core="http://jboss.com/products/seam/core"
+            xmlns:theme="http://jboss.com/products/seam/theme"
+            xmlns:persistence="http://jboss.com/products/seam/persistence"
+            xmlns:transaction="http://jboss.com/products/seam/transaction"
+            xmlns:drools="http://jboss.com/products/seam/drools"
+            xmlns:bpm="http://jboss.com/products/seam/bpm"
+            xmlns:security="http://jboss.com/products/seam/security"
+            xmlns:mail="http://jboss.com/products/seam/mail"
+            xmlns:web="http://jboss.com/products/seam/web"
+            xmlns:navigation="http://jboss.com/products/seam/navigation"
+            xmlns:i18n="http://jboss.com/products/seam/international"
+            xmlns:async="http://jboss.com/products/seam/async"
+            xmlns:spring="http://jboss.com/products/seam/spring"
+            xmlns:cache="http://jboss.com/products/seam/cache"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation=
+                "http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd
+                 http://jboss.com/products/seam/core  http://jboss.com/products/seam/core-2.2.xsd 
+                 http://jboss.com/products/seam/theme  http://jboss.com/products/seam/theme-2.2.xsd 
+                 http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.2.xsd 
+                 http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.2.xsd
+                 http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.2.xsd
+                 http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.2.xsd
+                 http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
+                 http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.2.xsd
+                 http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.2.xsd
+                 http://jboss.com/products/seam/navigation http://jboss.com/products/seam/navigation-2.2.xsd
+                 http://jboss.com/products/seam/international http://jboss.com/products/seam/international-2.2.xsd
+                 http://jboss.com/products/seam/async  http://jboss.com/products/seam/async-2.2.xsd
+                 http://jboss.com/products/seam/spring http://jboss.com/products/seam/spring-2.2.xsd
+                 http://jboss.com/products/seam/cache http://jboss.com/products/seam/cache-2.2.xsd
+                 http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd"
+                 
+                 >
+                 
+<!-- schemas are at:
+     /opt/eclipse-jee-ganymede-SR1-linux-gtk/plugins/org.jboss.tools.seam.xml_3.0.0.GA-R200903141626-H5/schemas
+     or in:
+     /opt/xsd
+     for some of the schema the lookup has to be configured in eclipse at
+     Window -> Preferences -> XML Catalogue
+  -->                 
+
+
+  <!-- enable client side caching of images
+       see: http://www.seamframework.org/Documentation/HTTPClientserverOptimizationStrategies 
+            http://seamframework.org/Community/SeamUnableToLookupUserTransactin    
+  <web:cache-control-filter name="imageCacheControlFilter"
+                            regex-url-pattern=".*(\.gif|\.png|\.jpg|\.jpeg)"
+                            value="max-age=86400"/> --><!-- 1 day -->
+                            
+  <!-- enable client side caching for js and css files 
+  <web:cache-control-filter name="textCacheControlFilter"
+                            regex-url-pattern=".*(\.css|\.js)" 
+                            value="max-age=86400"/>  --><!-- 1 day -->
+                            
+  <!-- the schema for web is not yet updated, so we have to add the filters manually,
+       see: http://fisheye.jboss.org/browse/Seam/branches/community/Seam_2_2/src/main/org/jboss/seam/web/CacheControlFilter.java?r=11419  
+      -->                       
+  <component class="org.jboss.seam.web.CacheControlFilter" name="textCacheControlFilter">
+    <property name="regexUrlPattern">.*(\.css|\.js)</property>
+    <property name="disabled">false</property>  
+    <property name="value">max-age=86400</property>
+  </component>
+
+  <component class="org.jboss.seam.web.CacheControlFilter" name="imageCacheControlFilter">
+    <property name="regexUrlPattern">.*(\.gif|\.png|\.jpg|\.jpeg)</property>
+    <property name="disabled">false</property>  
+    <property name="value">max-age=86400</property>
+  </component>
+
+
+  <!--  ########################################
+     
+         debug setup
+   
+  -->
+
+  <!-- turn debug off for production! 
+     setting to true has serious performance issues 
+     debug=true registers a servlet for /debug.seam 
+     we don't need: jndi-pattern="@jndiPattern@"  
+     added for testing:
+        transaction-management-enabled="false" 
+        security-enabled="true"
+     -->
+  <core:init debug="true"  
+             transaction-management-enabled="true" 
+             security-enabled="true" />
+
+  
+  
+  <!--  ########################################
+     
+         spring bootstrapping
+       -->  
+
+  <spring:context-loader config-locations="WEB-INF/config/spring-beans.xml" />
+
+  
+  <!--  ########################################
+     
+         session and transaction manager from spring
+ 
+         see: http://www.javaworld.com/javaworld/jw-05-2008/jw-05-spring-seam3.html?page=3  
+   -->
+
+  <!--  using spring transaction manager    
+  <spring:spring-transaction 
+             conversation-context-required="true"
+             platform-transaction-manager="#{localTransactionManager}" 
+             join-transaction="true" />
+ -->
+  <spring:spring-transaction  
+             platform-transaction-manager="#{localTransactionManager}"
+             join-transaction="false" />  <!-- false, see: "Hibernate in Action", chapter 15 -->
+             
+  <persistence:managed-hibernate-session
+             session-factory="#{hibernateSessionFactory}"
+             auto-create="false"
+             name="hibernateSession" /> <!-- in production: auto-create="true" 
+             
+             class="net.wohlfart.framework.CustomSession"
+             
+             -->
+  
+  
+  <!-- 
+       page fragment caching, we use ehcache since it is used by hibernate already
+       see: http://seamframework.org/Community/SeamCacheProviderWithEhcacheNull
+       can be injected with cacheProvider
+       see: http://www.docjar.com/html/api/org/jboss/seam/cache/EhCacheProvider.java.html
+ -->
+  <cache:eh-cache-provider configuration="ehcache-2.xml" auto-create="true" startup="true"/>
+    
+                
+<!-- 
+  join-transaction="true"
+  <transaction:entity-transaction />  
+  <transaction:ejb-transaction />  
+-->
+
+  
+  <!-- see: http://www.seamframework.org/Community/HotdeployOfPagesxmlBrokenIn211
+  <component name="org.jboss.seam.debug.hotDeployFilter">
+     <property name="urlPattern">*.xhtml</property>
+  </component>  
+    -->
+          
+  <!-- for MANUAL flush mode for all conversations: add  default-flush-mode="MANUAL" 
+   see seam in action 
+   
+   conversation-timeout: one minute for background conversations
+   see: http://solutionsfit.com/blog/2007/12/13/explaining-the-conversation-timeout-setting-through-example/
+   
+   conversation-timeout: 4 minutes
+   means conversation in the background that are older than 1 minute are purged automatically
+   the foreground conversation times out whenever the session times out
+   
+   concurrent-request-timeout: 10 sec
+   makes concurrent ajax requests timeout after 10 sec
+   
+   
+   -->
+  <core:manager concurrent-request-timeout="10000" 
+                conversation-timeout="240000" 
+                conversation-id-parameter="cid"
+                parent-conversation-id-parameter="pid" 
+                default-flush-mode="MANUAL" 
+                uri-encoding="utf-8" /> <!-- see: https://jira.jboss.org/jira/browse/JBSEAM-4330 -->
+                
+  <!-- encode all html pages in UTF-8, not sure if this is needed  -->
+  <web:character-encoding-filter encoding="utf-8"
+                                 override-client="true"
+                                 regex-url-pattern=".*(\.xhtml|\.html|\.htm|\.js)" /> 
+                                 
+         <!-- there is url-pattern
+           where you can use Java Regex Syntax like:
+           regex-url-pattern=".*(\.xhtml|\.html|\.htm|\.js)"
+           mostly used here is: 
+           url-pattern="*.html"  
+           
+           -->
+                                 
+
+
+  <!-- This filter allows custom servlets to interact with the Seam contexts:                              
+  <web:context-filter  /> 
+  -->
+   
+  <!-- see: https://jira.jboss.org/jira/browse/JBSEAM-715 
+            http://www.seamframework.org/Community/LotsOfLIEExceptionsAfterPortTomcatToJBoss 
+            make sure this file exists otherwise we have strange login/logout effects... -->
+  <navigation:pages>
+    <navigation:resources>
+        <value>/WEB-INF/config/pages.xml</value>
+    </navigation:resources>
+  </navigation:pages> 
+   
+   
+   
+ 
+  <!--  ########################################
+     
+         localization/internationalzation
+   
+  -->
+  <!-- the default config just in case we need to change it, 
+       there are more bundles in the database table
+       TODO: optimize the resource bundle stuff, its magic  
+       
+       this properties are probably set up using reflection :-/
+       -->
+  <!--  core:resource-loader name="org.jboss.seam.core.resourceLoader"
+                             class="net.wohlfart.framework.i18n.CustomResourceLoader"  -->
+  <core:resource-loader 
+       class="net.wohlfart.framework.i18n.CustomResourceLoader">
+    <core:bundle-names>  
+      <value>chreq.error</value>
+      <value>chreq.unit</value>
+      <value>chreq.product</value>
+      <value>testbundle</value>
+      <value>messages</value>
+      <!-- seam resoucre bundles, 
+           used in SeamResourceBundle, 
+           needed here since we override SeamResourceBundle-->
+      <value>ValidatorMessages</value>
+      <value>org/hibernate/validator/resources/DefaultValidatorMessages</value>
+      <value>javax.faces.Messages</value>
+    </core:bundle-names>
+  </core:resource-loader> 
+
+  
+      
+  <!-- so far we have: de,en,es,fr   en_US en_AU es fr it nl  -->
+  <i18n:locale-config         
+       default-locale="en" 
+       supported-locales="en de nl" />
+ 
+
+  <i18n:locale-selector 
+       class="net.wohlfart.framework.i18n.CustomLocaleSelector"
+       cookie-enabled="true" />
+
+   
+  <!--  ########################################
+     
+         themes/skinning
+   
+  -->
+  <theme:theme-selector 
+       cookie-enabled="true" 
+       theme="sfc">
+    <theme:available-themes>   
+      <value>sfc</value>   
+      <value>persman</value>   
+      <value>persis</value>   
+      <value>charms</value>   
+      <value>rich</value>
+    </theme:available-themes>
+  </theme:theme-selector>
+   
+  
+
+  <!--  ########################################
+     
+         timezone
+   
+  -->
+   <i18n:time-zone-selector 
+       cookie-enabled="true" 
+       time-zone-id="CET" />
+       
+   <!-- this is an application wide setting -->
+   <component name="supportedTimezones" 
+              class="net.wohlfart.framework.timezone.SupportedTimezones"
+              scope="application"
+              auto-create="true" >
+      <property name="timezones">
+         <value>CET</value>
+         <value>MET</value> 
+         <value>EET</value>
+         <value>GMT</value>
+         <value>WET</value>
+         <value>Zulu</value>
+         <value>CTT</value>
+         <value>AET</value>
+      </property>
+   </component>
+
+
+  <!--  ########################################
+     
+         security
+   
+  -->
+  <!-- remember me doesn't work it seems:  http://myfreecode.blogspot.com/2008/06/jboss-seam-and-logout-eng.html 
+  <security:identity remember-me="false" />  -->
+  
+  <security:identity-manager class="net.wohlfart.authentication.CharmsIdentityManager" 
+                             identity-store="#{charmsUserIdentityStore}" 
+		                     role-identity-store="#{charmsRoleIdentityStore}"  />
+		                                                 
+  <security:identity authenticate-method="#{userSessionInitializer.authenticate}" />
+  
+  
+  
+  <security:permission-manager
+             permission-store="#{charmsPermissionStore}" />
+   
+  <security:persistent-permission-resolver 
+             permission-store="#{charmsPermissionStore}" />
+       
+  <security:jpa-permission-store     
+       class="net.wohlfart.authorization.CharmsPermissionStore" /> <!--  
+       user-permission-class="net.wohlfart.authorization.entities.CharmsPermission" /> -->
+       
+       
+       <!--  
+  <component name="org.jboss.seam.security.jpaPermissionStore"
+             installed="true"
+             class="net.wohlfart.authorization.CharmsPermissionStore" />
+       -->
+    
+  <!-- seems we need the entityManager here, 
+       see: http://seamframework.org/Community/Seam21Security 
+  <security:jpa-identity-store 
+       class="net.wohlfart.authentication.CharmsIdentityStore"
+       user-class="net.wohlfart.authentication.entities.CharmsUser"
+       role-class="net.wohlfart.authentication.entities.CharmsRole" 
+       
+       entity-manager="#{entityManager}" />
+
+       
+  <security:permission-manager
+       permission-store="#{org.jboss.seam.security.jpaPermissionStore}" />
+
+  -->
+
+  <!-- permission for roles and user are in the same table,
+       we use a discriminator to distinguish them... 
+       role-permission-class must be null if we use a discriminator  ! 
+       
+       http://seamframework.org/Community/JpaPermissionStoreNPEWhenUsingRolepermissionclass
+       https://jira.jboss.org/jira/browse/JBSEAM-3619     
+ 
+  <security:jpa-permission-store     
+       class="net.wohlfart.authorization.CharmsPermissionStore"
+       user-permission-class="net.wohlfart.authorization.entities.CharmsPermission" />
+       -->   
+   
+  <!--  ########################################
+     
+         logon redirect 
+  -->   
+  <!-- capture the view on this security event -->
+  <event type="org.jboss.seam.security.notLoggedIn">
+    <action execute="#{redirect.captureCurrentView()}"/>
+  </event>
+   
+  <!-- redirect to the captured view after login  -->
+  <event type="org.jboss.seam.security.postAuthenticate" >
+    <!--  
+    the captured view is checked for login.xhtml and changed to home.xhtml
+    when the user is authenticated, this way we don't end on login.xhtml when the user
+    is already authenticated  -->
+    <action execute="#{redirect.returnToCapturedView()}" />
+  </event>
+  
+  <!-- logout on shutdown (not tested yet) 
+  <event type="org.jboss.seam.preDestroyContext.SESSION">
+    <action execute="#{intranet.authenticator.logout}" />
+  </event>
+  -->
+
+
+  <!--  ########################################
+     
+         fileuploads
+  -->   
+  <component class="org.jboss.seam.web.MultipartFilter">
+    <property name="createTempFiles">true</property>  
+    <property name="maxRequestSize">100000000</property>  
+  </component>
+  
+
+  <!--  ########################################
+     
+         performance filter  
+  -->   
+  <component class="net.wohlfart.framework.filter.TimingFilter">
+    <property name="regexUrlPattern">(^/.*.html)|(^/[0-9a-zA-ZåäöÅÄÖ\-/]+$)</property>
+    <property name="disabled">true</property> <!--  
+    <property name="output">SCREEN</property>  -->
+  </component>
+
+
+  <!--  ########################################
+     
+         aliases
+  -->
+  <factory name="themeSelector" value="#{org.jboss.seam.theme.themeSelector}" scope="session" auto-create="true"/>
+  <factory name="localeSelector" value="#{org.jboss.seam.international.localeSelector}" scope="session" auto-create="true"/>
+  <factory name="timezoneSelector" value="#{org.jboss.seam.international.timeZoneSelector}" scope="session" auto-create="true"/>
+  <!-- current CharmsUser in session context -->
+  <factory name="authenticatedUser" value="#{org.jboss.seam.security.management.authenticatedUser}" scope="session" auto-create="true"/>  
+  
+
+
+</components>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+
+       no-conversation-view-id="/pages/user/home.xhtml"
+       login-view-id="/pages/login.xhtml">
+       
+    
+       <!-- 
+       see: http://shrubbery.mynetgear.net/wiki/Seam_pages.xml for some info about this file
+            for a quick ref about the syntax
+        -->
+
+    <!--  go home action returning "home" from any action gets us to the home page 
+    <page view-id="*" login-required="false">
+        <navigation>
+            <rule if-outcome="home">
+                <redirect view-id="/pages/user/home.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+    -->
+
+
+  <!-- 
+  see: http://www.seamframework.org/Community/PreventTheLoginPageAfterLoggedIn
+       https://jira.jboss.org/jira/browse/JBSEAM-3507
+       we need a dummy action to trigger the redirect rule 
+       action used to be: action="#{''.toString()}" 
+       tried: #{identity.loggedIn and (empty redirect.viewId)}
+       
+       there is a org.jboss.seam.security.postAuthenticate listener that
+       kicks us to the captured page that was hit before the login
+       
+       action="#{identity.isLoggedIn()}"
+       
+       <action execute="#{identity.isLoggedIn()}" />   
+          
+   -->
+    <page view-id="/pages/login.xhtml" 
+          conversation-required="false" 
+          login-required="false" >
+      <!--  this checks for the first hit of the page if the user is logged in,
+            if so we skip to the home page... -->
+      <action execute="#{identity.isLoggedIn()}" on-postback="false" />    
+      <description>login page</description> 
+      <!-- redirect to home if we are already logged in -->
+      <navigation from-action="#{identity.isLoggedIn()}"  >
+        <rule if-outcome="true" >
+          <!-- only go to home if we don't have a redirect view
+               there is an event listener tracking unauthorized page hits, capturing them 
+               and redirecting to the captured view after successful login, see the components.xml file  -->
+          <redirect view-id="/pages/user/home.xhtml" />
+        </rule>
+        <rule if-outcome="false" >
+          <!--   view-id="/pages/login.xhtml"  -->
+          <render />
+        </rule>
+      </navigation>
+    </page>
+   
+   
+   
+    <!-- this is a virtual page like described in  
+         http://www.seamframework.org/Community/PagesxmlVirtualPagesUsage 
+         it basically fixes the following issue:
+         
+         if we stay on the logout page the ajax callback will fail since
+         the identity is bound to the session/context of the last page
+         and the session is destoyed on logout so this creates a NPE since 
+         we try to call a fragment within the the session which is terminated 
+         in logout
+         
+         the solution is to logout, terminate the session and then redirect
+         -->
+    <page view-id="/pages/doLogout.xhtml">      
+      <description>logout page, invalidate session</description>
+      <action execute="#{identity.logout}" if="#{identity.loggedIn}" />
+      <navigation>
+        <redirect view-id="/pages/logout.xhtml" />
+      </navigation>
+    </page>
+    
+    <page view-id="/pages/logout.xhtml">      
+      <description>logout page</description>
+    </page>
+   
+   
+<!--      
+    <page view-id="/pages/user/home.xhtml" login-required="true">
+        <description>home page</description>
+    </page>
+-->    
+    
+    
+    
+    <!-- so server a document form a workflow attachment 
+         http://localhost:8080/charms/workflow/changerequest/attachments/images.jpg?uuid=
+         
+         we need pages to hit the seam filter
+         
+         <action execute="#{attachmentDocumentServlet.serveDocument}" />
+         
+    -->
+
+    
+    
+    
+    
+    
+    
+    <!-- experimental stuff below -->
+      
+    <page view-id="/pages/preferences.xhtml" login-required="true">
+        <description>preferences page</description>
+    </page>
+      
+      
+      
+    <page view-id="/pages/test.xhtml" login-required="false">     
+      <description>layout and css test page</description> 
+    </page>      
+      
+      
+      
+  
+      
+      
+      
+      <!--   
+      ##########################################################################
+      
+           the exceptions will not be used if the 
+           facelets.DEVELOPMENT parameter in web.xml is set to true 
+           or the Seam debug mode in components.xml is set to true
+       -->
+    
+    <!-- this happens on server restarts, we just redirect to the login page,
+         we might get another redirect to the homepage if the server still
+         has auth info, which might not happen after a restart... 
+         see last section at: http://docs.jboss.org/seam/2.1.2/reference/en-US/html/events.html -->   
+    <exception class="javax.faces.application.ViewExpiredException" >       
+        <end-conversation/>
+        <redirect view-id="/pages/login.xhtml" >
+           <message severity="WARN" ><![CDATA[
+               Sorry, we had to redirect you to this page, there
+               was a problem with the view you accessed, most likely 
+               a server restart.
+           ]]>
+           </message>
+        </redirect>
+    </exception>
+    
+
+    <!-- auth exception like documented in Seam In Action book -->
+    <exception class="org.jboss.seam.security.AuthorizationException">
+        <end-conversation/>
+        <redirect view-id="/pages/errors/error.xhtml">
+           <message severity="WARN"><![CDATA[
+               Sorry, you do not have access to the requested resource.
+           ]]>
+           </message>
+        </redirect>
+    </exception>
+    
+    <!-- we use this to catch a database failure when no connections can be obtained from
+         the connection pool  -->   
+    <exception class="org.hibernate.exception.GenericJDBCException" >       
+        <end-conversation/>
+        <redirect view-id="/pages/errors/error.xhtml" >
+           <message severity="WARN" ><![CDATA[
+               Database connection failure, please check your Database.
+           ]]>
+           </message>
+        </redirect>
+    </exception>
+ 
+ 
+    <!--  
+    <exception class="org.jbpm.persistence.JbpmPersistenceException">
+        <end-conversation/>
+        <redirect view-id="/pages/errors/error.xhtml">
+           <message severity="FATAL"><![CDATA[
+               Sorry, there is a Problem proceeding with the workflow.
+               This message may explain why:<br/><br/>
+               #{org.jboss.seam.handledException.message}<br/>
+               or<br/>
+               #{org.jboss.seam.caughtException.message}<br/>
+           ]]>
+           </message>
+        </redirect>
+    </exception>
+    -->
+    
+       <!-- 
+       <exception class="org.jboss.seam.ConcurrentRequestTimeoutException" logLevel="trace">
+        -->
+    <exception class="org.jboss.seam.ConcurrentRequestTimeoutException">
+        <end-conversation/>
+        <redirect view-id="/pages/errors/error.xhtml">
+           <message>The server is too busy to process your request, please try again later</message>
+        </redirect>
+    </exception>
+    
+    
+    
+<!--  
+    <exception class="org.jboss.seam.framework.EntityNotFoundException">
+        <redirect view-id="/pages/errors/error.xhtml">
+            <message severity="warn">Record not found</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.EntityNotFoundException">
+        <redirect view-id="/pages/errors/error.xhtml">
+            <message severity="warn">Record not found</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.EntityExistsException">
+        <redirect view-id="/pages/errors/error.xhtml">
+            <message severity="warn">Duplicate record</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.OptimisticLockException">
+        <end-conversation/>
+        <redirect view-id="/pages/errors/error.xhtml">
+            <message severity="warn">Another user changed the same data, please try again</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.security.AuthorizationException">
+        <redirect view-id="/pages/errors/error.xhtml">
+            <message severity="error">You don't have permission to access this resource</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.security.NotLoggedInException">
+        <redirect view-id="/pages/login.xhtml">
+            <message severity="warn">#{messages['org.jboss.seam.NotLoggedIn']}</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.faces.application.ViewExpiredException">
+        <redirect view-id="/pages/errors/error.xhtml">
+            <message severity="warn">Your session has timed out, please try again</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.ConcurrentRequestTimeoutException" logLevel="trace">
+      <http-error error-code="503" />
+    </exception>
+-->
+    <!--  unique constraint violations:  
+    <exception class="java.sql.BatchUpdateException" logLevel="trace">
+        <redirect view-id="/pages/errors/error.xhtml">
+            <message severity="error">Database error</message>
+        </redirect>
+    </exception>
+    -->
+    
+    <!--  Caused by org.hibernate.PersistentObjectException with message: "detached entity passed to persist: net.wohlfart.charms.entity.CharmsRole" 
+    <exception class="org.hibernate.PersistentObjectException" logLevel="trace">
+        <redirect view-id="/pages/errors/error.xhtml">
+            <message severity="error">Database error</message>
+        </redirect>
+    </exception>
+    -->
+    
+    <!--  EL error to prevent loop on errors 
+    <exception class="javax.el.ELException" logLevel="trace">
+        <redirect view-id="/pages/errors/elError.xhtml">
+            <message severity="error">EL error</message>
+        </redirect>
+    </exception>
+    -->
+     
+    <!--  
+    logout after server restart:
+    
+    Exception during request processing:
+    Caused by java.lang.IllegalStateException with message: 
+    "Unable to read view /pages/user/home.xhtml to execute action "#{identity.logout}"" 
+     -->
+     
+     <!-- 
+    <exception>
+        <redirect view-id="/pages/errors/error.xhtml">
+            <message severity="error">Unexpected error, please try again</message>
+        </redirect>
+    </exception>
+    -->
+</pages>

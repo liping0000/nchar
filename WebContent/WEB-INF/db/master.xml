@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+
+  <!--
+  to run the liquibase auto db migration script:
+
+  * make sure hibernate.hbm2ddl.auto in hibernate3.cfg.xml is set to "none"
+  * enable the liquibase bean in spring-beans.xml
+  * springHelper for jbpm bootup must depend on the liquibase bean
+    so liquibase can prepare the database before anyone accessing it...
+
+   -->
+
+
+
+  <!-- 
+  <include file="r0.1/releasechanges.xml" relativeToChangelogFile="true" />  -->
+  <include file="r0.2/releasechanges.xml" relativeToChangelogFile="true" />
+  <!--
+  <include file="r1.0/releasechanges.xml"/>
+  <include file="r2.0/releasechanges.xml"/>      -->
+</databaseChangeLog>

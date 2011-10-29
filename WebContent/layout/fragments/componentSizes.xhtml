@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:a4j="http://richfaces.org/a4j"><!--
+
+
+ div to show the components within a session and their sizes
+
+  --><div>
+
+   <table>
+
+     <ui:repeat var="comp" value="#{httpSessionStatistics.componentSizes}">
+       <tr>
+         <td><h:outputText value="#{comp.name}" /><span> </span></td>
+         <td><h:outputText value="#{comp.size}" /><span> </span></td>
+       </tr>
+     </ui:repeat>
+
+       <tr>
+         <td>total size of the current session:</td>
+         <td><h:outputText value="#{httpSessionStatistics.sessionSize}" /></td>
+       </tr>
+
+   </table>
+
+    </div>
+
+</ui:composition>

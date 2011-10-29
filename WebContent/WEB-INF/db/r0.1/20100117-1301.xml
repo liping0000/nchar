@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+   <!--
+   
+     creating and preparing the CODES table structure
+
+    -->
+
+    <!--
+         first we create the new table  -->
+    <changeSet author="michael" id="r0.1-50">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_CODE" schemaName="CAMS"/></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_CODE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHREQ_CODE"/>
+            </column>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="michael" id="r0.1-51">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_CHREQD_TO_CODE"/></not>
+        </preConditions>
+        <addForeignKeyConstraint constraintName="FK_CHREQD_TO_CODE"
+                                 baseColumnNames="CODE_ID_" baseTableName="CHREQ_DATA"
+                                 baseTableSchemaName="CAMS"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_CODE"/>
+    </changeSet>
+
+    <!--
+
+         we create a link table -->
+    <changeSet author="michael" id="r0.1-52">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_PROD_CODES" schemaName="CAMS"/></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_PROD_CODES">
+            <column name="PRODUCT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSITION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="michael" id="r0.1-53">
+        <preConditions onFail="MARK_RAN">
+            <not><primaryKeyExists primaryKeyName="PK_PRDCDS" schemaName="CAMS" tableName="CHREQ_PROD_CODES" /></not>
+        </preConditions>
+        <addPrimaryKey columnNames="PRODUCT_ID_, POSITION_" constraintName="PK_PRDCDS"
+                       schemaName="CAMS" tableName="CHREQ_PROD_CODES"/>
+    </changeSet>
+
+    <changeSet author="michael" id="r0.1-54">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_PRDCDS_TO_CODE"
+                     foreignKeyTableName="CHREQ_PROD_CODES" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="CODE_ID_" baseTableName="CHREQ_PROD_CODES"
+                                 baseTableSchemaName="CAMS" constraintName="FK_PRDCDS_CODE"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT"
+                                 referencedColumnNames="ID_" referencedTableName="CHREQ_CODE"/>
+    </changeSet>
+
+    <changeSet author="michael" id="r0.1-55">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_PRDCDS_TO_PROD"
+                     foreignKeyTableName="CHREQ_PROD_CODES" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID_" baseTableName="CHREQ_PROD_CODES"
+                                 baseTableSchemaName="CAMS" constraintName="FK_PRDCDS_PROD"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT"
+                                 referencedColumnNames="ID_" referencedTableName="CHREQ_PROD"/>
+    </changeSet>
+
+    <changeSet author="michael" id="r0.1-56">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="IDX_CHRQPCD_P_C" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="IDX_CHRQPCD_P_C" schemaName="CAMS" tableName="CHREQ_PROD_CODES" unique="false">
+            <column name="PRODUCT_ID_"/>
+            <column name="CODE_ID_"/>
+        </createIndex>
+    </changeSet>
+
+
+    <changeSet author="michael" id="r0.1-57">
+        <createIndex indexName="IDX_CHRQCD_DNAME" schemaName="CAMS" tableName="CHREQ_CODE" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="michael" id="r0.1-58">
+        <createIndex indexName="IDX_CHRQCD_SINDX" schemaName="CAMS" tableName="CHREQ_CODE" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+
+
+
+</databaseChangeLog>

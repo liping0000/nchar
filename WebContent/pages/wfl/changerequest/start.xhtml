@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.workflow.changerequest.start.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.workflow.changerequest.start.title']}" />
+
+<ui:define name="body">
+<h:form id="changeRequest"
+        enctype="multipart/form-data" >
+        
+        <s:token enableCookieNotice="true" 
+                 requireSession="false" 
+                 allowMultiplePosts="true" />
+        
+<!-- 
+<h:form id="changeRequest"
+        enctype="multipart/form-data" >
+ -->
+
+<ui:decorate template="fragments/tabpanel.xhtml" >
+  <ui:param name="showCostsheet" value="false" />
+
+  <ui:decorate template="fragments/simpleLayout.xhtml">
+    <ui:include src="fragments/project.xhtml" />
+    <ui:include src="fragments/componentIds.xhtml" />
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/references.xhtml" />
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/problem.xhtml" />
+    <ui:include src="fragments/proposal.xhtml" />
+  </ui:decorate>
+
+</ui:decorate>
+
+  <br/>
+  <div class="actionButtons">
+    <!-- this is the save action, unfortunately we can't use immediate="true"
+         for bypassing validation since the value of the document comment
+         and the tinymce content is not applied to the backing bean, maybe
+         we can use  -->
+    <h:commandButton id="save" 
+              styleClass="button"
+              value="#{messages['action.save']}"
+              onclick="jQuery.throbberUI();return true;"
+              action="#{changeRequestAction.initializeProcess('ChangeRequest','toComplete')}"
+              rendered="#{s:hasPermission('changerequest.start', 'do')}" />
+    <p:tooltip for="save" showDelay="1000" value="#{messages['page.workflow.changerequest.start.save.tooltip']}" />
+    <h:commandButton id="submit"
+              styleClass="button"
+              value="#{messages['action.propose']}"
+              onclick="if (!confirm('#{messages['messages.areYouSure']}')) { return false; } else { jQuery.throbberUI(); return true; }"
+              action="#{changeRequestAction.initializeProcess('ChangeRequest','toCreateBusinessKey')}"
+              rendered="#{s:hasPermission('changerequest.start', 'do')}" />
+    <p:tooltip for="submit" showDelay="1000" value="#{messages['page.workflow.changerequest.start.submit.tooltip']}" />
+    <h:commandButton id="cancel"
+              styleClass="button"
+              value="#{messages['action.cancel']}"
+              onclick="if (!confirm('#{messages['messages.areYouSureDelete']}')) { return false; } else { jQuery.throbberUI(); return true; }"
+              action="#{changeRequestAction.cancel()}"
+              immediate="true" />
+    <p:tooltip for="cancel" showDelay="1000" value="#{messages['page.workflow.changerequest.start.cancel.tooltip']}" />
+    <rich:spacer width="100" height="10" /> 
+    <h:commandButton id="realize2"
+              styleClass="button"
+              value="#{messages['action.realize2']}"
+              onclick="if (!confirm('#{messages['messages.areYouSure']}')) { return false; } else { jQuery.throbberUI(); return true; }"
+              action="#{changeRequestAction.initializeProcess('ChangeRequest','toCreateBusinessKey2')}"
+              rendered="#{s:hasPermission('changerequest.start', 'toCreateBusinessKey2')}" />
+    <p:tooltip for="realize2" showDelay="1000" value="#{messages['page.workflow.changerequest.start.realize2.tooltip']}" />
+  </div>
+
+</h:form>
+
+<ui:decorate template="fragments/transitionSelectDialogs.xhtml" >
+   <ui:param name="transitionAction" value="#{changeRequestAction}" />
+</ui:decorate>
+<ui:include src="fragments/taskEditDialog.xhtml" />
+
+</ui:define>
+</ui:composition>

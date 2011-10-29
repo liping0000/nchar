@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.devel.draw.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.devel.draw.title']}" />
+
+<ui:define name="body">
+<div>
+<!-- common, all times required, imports for draw2d  -->
+<a4j:loadScript src="/js/draw2d/wz_jsgraphics.js" />
+<a4j:loadScript src="/js/draw2d/mootools.js" />
+<a4j:loadScript src="/js/draw2d/moocanvas.js" />
+<a4j:loadScript src="/js/draw2d/draw2d.js" />
+
+<a4j:loadScript src="/js/draw2d/draw2d.js" />
+<a4j:loadScript src="/js/draw2d/workflow/base.js" />
+
+
+<!-- position:absolute;left:200px;top:200px;width:800px;height:400px; -->
+<div id="scrollarea" style="overflow:hidden;overflow-x:auto;overflow-y:auto;position:relative;width:800px;height:400px;" >
+  <div id="paintarea" style="position:absolute;left:0px;top:0px;width:3000px;height:3000px;background:#ffffff;" >
+
+  </div>  <!--  end paintarea -->
+</div>  <!-- end scrollarea -->
+
+<script>
+var workflow  = new draw2d.MyWorkflow("paintarea");
+
+// switch on the snap to grid
+//
+workflow.setGridWidth(10,10);
+workflow.setSnapToGrid(true);
+
+
+// Add a hint annotation to the workflow area
+//
+var annotation = new draw2d.Annotation("NOTE: Use right click in the canvas to display the context menu.");
+annotation.setDimension(250,70);
+workflow.addFigure(annotation,200,200);
+
+// Add a Oval with a fill color to the paint area
+//
+var node1= new draw2d.Oval();
+node1.setDimension(100,40);
+node1.setBackgroundColor(new draw2d.Color(255,0,0));
+workflow.addFigure(node1,130,180);
+
+
+// add a simple line
+//
+var line= new draw2d.Line();
+line.setStartPoint(100,180);
+line.setEndPoint(130,300);
+workflow.addFigure(line);
+
+// Add a Oval to the paint area
+//
+var node4 = new draw2d.Oval();
+node4.setDimension(100,40);
+workflow.addFigure(node4,300,350);
+
+// add line with line width 5
+//
+var line= new draw2d.Line();
+line.setLineWidth(5);
+line.setColor(new draw2d.Color(255,0,120));
+line.setStartPoint(430,450);
+line.setEndPoint(230,550);
+workflow.addFigure(line);
+
+
+// Add a simple text label to the screen
+//
+workflow.addFigure(new draw2d.Label("See more on http://www.openjacob.org"),350,253);
+
+
+// Add a Label with a border
+//
+var label = new draw2d.Label("Label with a Border");
+var border = new draw2d.LineBorder();
+border.setColor(new draw2d.Color(100,255,100));
+border.setLineWidth(4);
+label.setBorder(border);
+workflow.addFigure(label,80,400);
+
+
+// Add a Rectangle to the paint area
+//
+var rect = new draw2d.Rectangle();
+rect.setDimension(190,20);
+workflow.addFigure(rect,250,300);
+
+// Add a Rectangle with lineWidth and fillColor/backgroundColor
+//
+var rect = new draw2d.Rectangle();
+rect.setLineWidth(5);
+rect.setBackgroundColor(new draw2d.Color(255,120,0));
+rect.setDimension(190,20);
+workflow.addFigure(rect,350,320);
+
+</script>
+
+
+</div>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+   <!--
+     updating the CHREQ_FACET_DATA table with columns for the roles
+
+    -->
+    <changeSet author="michael" id="r0.1-40">
+        <preConditions onFail="MARK_RAN">
+            <not><columnExists columnName="FORWARD_ROLE_ID_"  schemaName="CAMS" tableName="CHREQ_FACET_DATA" /></not>
+        </preConditions>
+        <addColumn schemaName="CAMS" tableName="CHREQ_FACET_DATA">
+            <column name="FORWARD_ROLE_ID_" type="NUMBER(19,0)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael" id="r0.1-41">
+        <preConditions onFail="MARK_RAN">
+            <not><columnExists columnName="HANDLE_ROLE_ID_"  schemaName="CAMS" tableName="CHREQ_FACET_DATA" /></not>
+        </preConditions>
+        <addColumn schemaName="CAMS" tableName="CHREQ_FACET_DATA">
+            <column name="HANDLE_ROLE_ID_" type="NUMBER(19,0)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael" id="r0.1-42">
+        <preConditions onFail="MARK_RAN">
+            <not><columnExists columnName="IMPLEMENT_ROLE_ID_"  schemaName="CAMS" tableName="CHREQ_FACET_DATA" /></not>
+        </preConditions>
+        <addColumn schemaName="CAMS" tableName="CHREQ_FACET_DATA">
+            <column name="IMPLEMENT_ROLE_ID_" type="NUMBER(19,0)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael" id="r0.1-43">
+        <preConditions onFail="MARK_RAN">
+            <not><columnExists columnName="PROCESS_ROLE_ID_"  schemaName="CAMS" tableName="CHREQ_FACET_DATA" /></not>
+        </preConditions>
+        <addColumn schemaName="CAMS" tableName="CHREQ_FACET_DATA">
+            <column name="PROCESS_ROLE_ID_" type="NUMBER(19,0)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael" id="r0.1-44">
+        <preConditions onFail="MARK_RAN">
+            <not><columnExists columnName="REVIEW_ROLE_ID_"  schemaName="CAMS" tableName="CHREQ_FACET_DATA" /></not>
+        </preConditions>
+        <addColumn schemaName="CAMS" tableName="CHREQ_FACET_DATA">
+            <column name="REVIEW_ROLE_ID_" type="NUMBER(19,0)"/>
+        </addColumn>
+    </changeSet>
+
+
+   <!--
+     updating the CHREQ_DATA table with columns for the roles
+
+    -->
+    <changeSet author="michael" id="r0.1-45">
+        <preConditions onFail="MARK_RAN">
+            <not><columnExists columnName="CODE_ID_"  schemaName="CAMS" tableName="CHREQ_DATA" /></not>
+        </preConditions>
+        <addColumn schemaName="CAMS" tableName="CHREQ_DATA">
+            <column name="CODE_ID_" type="NUMBER(19,0)"/>
+        </addColumn>
+    </changeSet>
+
+
+
+</databaseChangeLog>

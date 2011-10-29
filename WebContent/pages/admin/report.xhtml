@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.report.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.report.title']}" />
+
+<ui:define name="body">
+<a4j:form id="report">
+
+  <s:decorate id="defaultNameField"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsReport.defaultName']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{charmsReport.defaultName}"
+                  styleClass="inputtext">
+     </h:inputText>
+  </s:decorate>
+
+
+  <ui:repeat var="key" value="#{charmsReportActionBean.translations.keySet().toArray()}" >
+    <s:decorate template="/layout/fragments/imageproperty.xhtml">
+       <ui:define name="label"><h:graphicImage url="/img/locales/locale_#{key}.gif" /></ui:define>
+       <h:inputText value="#{charmsReportActionBean.translations[key]}"
+                    styleClass="inputtext" />
+    </s:decorate>
+  </ui:repeat>
+
+  <br />
+
+  <s:decorate id="enabledField"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsReport.enabled']}" /></ui:define>
+     <h:selectBooleanCheckbox value="#{charmsReport.enabled}" styleClass="checkbox" />
+  </s:decorate>
+
+  <br />
+
+  <s:decorate id="descriptionField"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['charmsReport.description']}" /></ui:define>
+    <div style="display: table;">
+    <rich:editor value="#{charmsReport.description}"
+                 configuration="mcePropertyConfig"
+                       customPlugins="mcePlugins">
+              <f:param name="htmlcharcount_maxchars" value="2024" />
+              <f:param name="readonly" value="#{readonly?'true':'false'}" />
+              <!-- autoresize to show the full content on the page, htmlcharcount doesn't work with readonly  -->
+              <f:param name="plugins" value="#{readonly?'autoresize':'htmlcharcount, paste'}" />
+    </rich:editor>
+    </div>
+  </s:decorate>
+
+  <br />
+
+  <s:decorate id="fileField"
+              template="/layout/fragments/showproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsReport.file']}" />*</ui:define>
+     <h:graphicImage value="/#{theme['iconset']}/mimetypes/empty.png" rendered="#{empty charmsReport.size}" />
+     <h:graphicImage value="/#{theme['iconset']}/mimetypes/spreadsheet.png" rendered="#{not empty charmsReport.size}" />
+     <h:outputText value="#{charmsReport.sizeString}" />
+  </s:decorate>
+
+  <!-- FIXME: check http://valums.com/ajax-upload/ for a better upload -->
+  <rich:fileUpload id="u"
+                   allowFlash="false"
+                   listHeight="55px"
+                   listWidth="250px"
+                   ajaxSingle="true"
+                   immediate="true"
+                   immediateUpload="true"
+                   addControlLabel="#{messages[(charmsReport.size > 0)?'page.admin.report.replace':'page.admin.report.add']}"
+                   fileUploadListener="#{charmsReportActionBean.uploadListener}"
+                   onupload="#{'jQuery.blockUI({message: \''.concat(messages['messages.blockUI.pleaseWait']).concat('\' });')}"
+                   onerror="jQuery.unblockUI();"
+                   onsizerejected="jQuery.unblockUI();">  <!-- FIXME: rerender the message section to show a decent error, also in the other uploads... -->
+
+    <a4j:support event="onuploadcomplete"
+                 oncomplete="jQuery.unblockUI();"
+                 limitToList="true"
+                 bypassUpdates="true"
+                 action="#{charmsReportActionBean.uploadComplete()}"
+                 reRender="u, fileField, msgs" />
+  </rich:fileUpload>
+
+
+  <h:outputText value="#{messages['form.mandatory']}"
+                escape="false" />
+
+  <br/>
+
+
+        <div class="actionButtons">
+
+            <!-- persist for unmanaged bean -->
+            <h:commandButton styleClass="button"
+                             id="persist"
+                             value="#{messages['action.persist']}"
+                             action="#{charmsReportActionBean.persist()}"
+                             rendered="#{not charmsReportActionBean.managed}">
+               <f:param name="errorId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- update for managed bean -->
+            <h:commandButton styleClass="button"
+                             id="update"
+                             value="#{messages['action.update']}"
+                             action="#{charmsReportActionBean.update}"
+                             rendered="#{charmsReportActionBean.managed}">
+               <f:param name="errorId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- remove the managed bean -->
+            <h:commandButton styleClass="button"
+                             id="remove"
+                             value="#{messages['action.remove']}"
+                             action="#{charmsReportActionBean.remove}"
+                             immediate="true"
+                             rendered="#{charmsReportActionBean.managed}">
+              <f:param name="errorId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="cancel"
+                             value="#{messages['action.cancel']}"
+                             action="#{charmsReportActionBean.cancel()}"
+                             immediate="true">
+              <f:param name="errorId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+        </div>
+
+
+
+
+</a4j:form>
+
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

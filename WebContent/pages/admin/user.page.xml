@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+      
+  <begin-conversation join="true" flush-mode="manual" if="#{!conversation.nested}" />
+        
+  <description>page for editing user properties</description>
+ 
+  <action execute="#{charmsUserActionBean.setEntityId(param.charmsUserId)}" 
+          on-postback="false" />
+ 
+  <navigation from-action="#{charmsUserActionBean.setEntityId(param.charmsUserId)}">
+    <rule if-outcome="invalid">
+      <redirect view-id="/pages/admin/userList.xhtml" />
+    </rule>
+    <rule if-outcome="valid">
+      <render view-id="/pages/admin/user.xhtml" />
+    </rule>
+  </navigation>
+ 
+ 
+  <navigation>
+ 
+    <rule if-outcome="persisted">
+      <redirect view-id="/pages/admin/userList.xhtml"/>
+    </rule>
+  
+    <rule if-outcome="updated">
+      <redirect view-id="/pages/admin/userList.xhtml"/>
+    </rule>
+  
+    <rule if-outcome="removed">
+      <redirect view-id="/pages/admin/userList.xhtml"/>
+    </rule>
+  
+    <rule if-outcome="canceled">
+      <!--  keep the conversation alive and let the next page deal with it: <end-conversation /> -->
+      <redirect view-id="/pages/admin/userList.xhtml"/>
+    </rule>
+  
+    <rule if-outcome="invalid">
+      <!-- stay on page, contine conversation, this happens for example when password don't match -->
+      <render view-id="/pages/admin/user.xhtml"/>
+    </rule>
+  
+  </navigation>
+ 
+</page>

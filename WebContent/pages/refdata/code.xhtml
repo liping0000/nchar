@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.refdata.codes.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.refdata.codes.title']}" />
+
+<ui:define name="body">
+
+
+<h:form>
+
+  <s:decorate id="defaultNameField"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['changeRequestCode.defaultName']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{changeRequestCode.defaultName}"
+                  styleClass="inputtext" >
+     </h:inputText>
+  </s:decorate>
+
+
+  <ui:repeat value="#{changeRequestCodeHome.translations.keySet().toArray()}" var="key">
+    <s:decorate template="/layout/fragments/imageproperty.xhtml">
+       <ui:define name="label"><h:graphicImage url="/img/locales/locale_#{key}.gif" /></ui:define>
+       <h:inputText value="#{changeRequestCodeHome.translations[key]}"
+                    styleClass="inputtext" >
+       </h:inputText>
+    </s:decorate>
+  </ui:repeat>
+  <br />
+
+
+  <s:decorate id="enabledField"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['changeRequestCode.enabled']}" /></ui:define>
+     <h:selectBooleanCheckbox value="#{changeRequestCode.enabled}" styleClass="checkbox" />
+  </s:decorate>
+  <br />
+
+  <h:outputText value="#{messages['form.mandatory']}"
+                escape="false" />
+
+  <br/>
+  <br/>
+  <br/>
+
+        <div class="actionButtons">
+
+            <!-- persist for unmanaged bean -->
+            <h:commandButton styleClass="button"
+                             id="persist"
+                             value="#{messages['action.persist']}"
+                             action="#{changeRequestCodeHome.persist()}"
+                             rendered="#{not changeRequestCodeHome.managed}">
+               <f:param name="errorId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- update for managed bean -->
+            <h:commandButton styleClass="button"
+                             id="update"
+                             value="#{messages['action.update']}"
+                             action="#{changeRequestCodeHome.update()}"
+                             rendered="#{changeRequestCodeHome.managed}">
+               <f:param name="errorId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- remove the managed bean -->
+            <h:commandButton styleClass="button"
+                             id="remove"
+                             value="#{messages['action.remove']}"
+                             action="#{changeRequestCodeHome.remove()}"
+                             immediate="true"
+                             rendered="#{changeRequestCodeHome.managed}">
+              <f:param name="errorId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="cancel"
+                             value="#{messages['action.cancel']}"
+                             action="#{changeRequestCodeHome.cancel()}"
+                             immediate="true">
+              <f:param name="errorId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+        </div>
+
+
+
+
+    </h:form>
+
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

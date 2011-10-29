@@ -1,0 +1,219 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.emailTemplate.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.emailTemplate.title']}" />
+
+<ui:define name="body">
+<a4j:form id="frm">
+
+    <script type="text/javascript">
+    <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+       jQuery(document).ready(function() {
+           jQuery('input.receiver').hint();
+           jQuery('input.sender').hint();
+           jQuery('input.subject').hint();
+       });
+    <h:outputText value="/* ]]> */" escape="false"/>
+    </script>
+
+
+  <s:decorate id="nameProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsemailtemplate.name']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{charmsEmailTemplate.name}"
+                  title="#{messages['charmsemailtemplate.name']}"
+                  styleClass="sender inputtext"
+                  style="width: 350px;">
+     </h:inputText>
+  </s:decorate>
+
+
+  <s:decorate id="senderProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsemailtemplate.sender']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{charmsEmailTemplate.sender}"
+                  title="#{messages['charmsemailtemplate.sender']}"
+                  styleClass="sender inputtext"
+                  style="width: 350px;">
+     </h:inputText>
+  </s:decorate>
+
+
+  <s:decorate id="receiverProperty"
+              template="/layout/fragments/editproperty.xhtml">
+  <ui:define name="label"><h:outputText value="#{messages['charmsemailtemplate.receiver']}" /></ui:define>
+  <table><tr><td>
+  <s:div id="rcvr">
+   <a4j:region>
+    <a4j:repeat var="receiver"
+                value="#{charmsEmailTemplateAction.receiverList}"
+                rowKeyVar="key">
+      <h:inputText value="#{receiver.addressExpression}"
+                   style="width: 350px;"
+                   styleClass="receiver inputtext"
+                   title="#{messages['charmsemailtemplate.receiver']}" />
+      <!--  <h:inputText value="#{key}" />  -->
+      <br />
+    </a4j:repeat>
+
+
+    <a4j:commandLink title="add"
+                     action="#{charmsEmailTemplateAction.addReceiver()}"
+                     immediate="false"
+                     ajaxSingle="false"
+                     reRender="rcvr">
+      <h:graphicImage url="/#{theme['iconset']}/seam_add.png"
+                      border="0"/></a4j:commandLink>
+
+    <a4j:commandLink title="del"
+                     action="#{charmsEmailTemplateAction.delReceiver()}"
+                     immediate="false"
+                     ajaxSingle="false"
+                     reRender="rcvr"
+                     rendered="#{charmsEmailTemplateAction.multiReceiver}">
+      <h:graphicImage url="/#{theme['iconset']}/cross.png"
+                      border="0"/></a4j:commandLink>
+    </a4j:region>
+  </s:div>
+  </td></tr></table>
+  </s:decorate>
+
+  <h2><h:outputText value="#{messages['charmsemailtemplate.content']}" /></h2>
+
+
+  <table>
+  <tr>
+    <td style="padding: 0px; border-right: 0px;">
+
+    <script type="text/javascript">
+    <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+       // show the default tab
+       jQuery(document).ready(function() {
+         jQuery().showTab('#ctnt-xx');
+       });
+    <h:outputText value="/* ]]> */" escape="false"/>
+    </script>
+
+
+  <a href="#{'#ctnt-xx'}"
+     onclick="#{'jQuery().showTab(\'#ctnt-xx\'); return false;'}"><h:graphicImage
+         url="/img/locales/locale_xx.gif"
+         style="border: 3px; border-color: transparent;" /></a><br />
+  <ui:repeat value="#{charmsEmailTemplateAction.translations.keySet().toArray()}" var="l">
+     <a href="#{'#ctnt-'.concat(l)}"
+        onclick="#{'jQuery().showTab(\'#ctnt-'.concat(l).concat('\'); return false;')}"><h:graphicImage
+            url="/img/locales/locale_#{l}.gif"
+            style="border: 3px; border-color: transparent;" /></a><br />
+  </ui:repeat>
+
+    </td>
+    <td style="padding: 0px; border-left: 0px;">
+
+  <!-- the default values -->
+  <div class="tab-container" id="ctnt-xx">
+    <h:inputText value="#{charmsEmailTemplate.subject}"
+                 styleClass="inputtext"
+                 required="true"
+                 style="width: 500px; font-weight: bold;"
+                 title="#{messages['charmsemailtemplate.subject']}"/><br />
+    <h:inputTextarea value="#{charmsEmailTemplate.body}"
+                     styleClass="text"
+                     cols="80"
+                     rows="25"
+                     style="width: 500px;" />
+  </div>
+
+  <!-- all the translations, the content is not required, otherwise we get problems with default content -->
+  <ui:repeat value="#{charmsEmailTemplateAction.translations.keySet().toArray()}" var="key">
+    <div class="tab-container" id="#{'ctnt-'.concat(key)}">
+      <h:inputText value="#{charmsEmailTemplateAction.translations[key].subject}"
+                   styleClass="text"
+                   required="false"
+                   style="width: 500px; font-weight: bold;" /><br />
+      <h:inputTextarea value="#{charmsEmailTemplateAction.translations[key].body}"
+                       styleClass="text"
+                       cols="80"
+                       rows="25"
+                       required="false"
+                       style="width: 500px;" />
+    </div>
+  </ui:repeat>
+
+   </td>
+ </tr>
+ </table>
+
+<!--
+  <h:outputText value="#{messages['form.mandatory']}"
+                escape="false" />
+-->
+
+
+
+<div class="actionButtons">
+  <h:commandButton styleClass="button"
+                   id="persist"
+                   value="#{messages['action.persist']}"
+                   action="#{charmsEmailTemplateAction.persist()}"
+                   rendered="#{not charmsEmailTemplateAction.managed}">
+               <f:param name="charmsEmailTemplateId" />
+  </h:commandButton>
+
+  <h:commandButton styleClass="button"
+                   id="update"
+                   value="#{messages['action.update']}"
+                   action="#{charmsEmailTemplateAction.update()}"
+                   rendered="#{charmsEmailTemplateAction.managed}">
+               <f:param name="charmsEmailTemplateId" />
+  </h:commandButton>
+
+  <h:commandButton styleClass="button"
+                   id="disable"
+                   value="#{messages['action.disable']}"
+                   action="#{charmsEmailTemplateAction.disable()}"
+                   rendered="#{charmsEmailTemplateAction.managed and charmsEmailTemplate.enabled}">
+               <f:param name="charmsEmailTemplateId" />
+  </h:commandButton>
+
+  <h:commandButton styleClass="button"
+                   id="enable"
+                   value="#{messages['action.enable']}"
+                   action="#{charmsEmailTemplateAction.enable()}"
+                   rendered="#{charmsEmailTemplateAction.managed and not charmsEmailTemplate.enabled}">
+               <f:param name="charmsEmailTemplateId" />
+  </h:commandButton>
+
+  <h:commandButton styleClass="button"
+                   id="remove"
+                   value="#{messages['action.remove']}"
+                   onclick="if (!confirm('Sind Sie sicher? Das Template wird gelöscht.')) { return false; } else { jQuery.blockUI(); return true; }"
+                   action="#{charmsEmailTemplateAction.remove()}"
+                   rendered="#{charmsEmailTemplateAction.managed}">
+               <f:param name="charmsEmailTemplateId" />
+  </h:commandButton>
+
+  <h:commandButton styleClass="button"
+                   id="cancel"
+                   value="#{messages['action.cancel']}"
+                   action="#{charmsEmailTemplateAction.cancel()}"
+                   immediate="true">
+    <f:param name="charmsEmailTemplateId" />
+  </h:commandButton>
+</div>
+
+
+</a4j:form>
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

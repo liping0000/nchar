@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<databaseChangeLog>
+    <changeSet author="michael (generated)" id="1273502632425-1">
+        <addUniqueConstraint columnNames="DOC_BLOB_ID_" constraintName="SYS_C0049116" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_DOCUMENT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-2">
+        <addUniqueConstraint columnNames="NAME_, LOCALE_ID_" constraintName="SYS_C0049156" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_MSGBUNDLE" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-3">
+        <addUniqueConstraint columnNames="RECIPIENT_, DISCRIMINATOR_, TARGET_" constraintName="SYS_C0049163" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PERMISSION" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-4">
+        <addUniqueConstraint columnNames="TARGET_STRING_" constraintName="SYS_C0049167" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PERM_TARGET" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-5">
+        <addUniqueConstraint columnNames="NAME_, PROP_TYPE_" constraintName="SYS_C0049172" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PROP_SET" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-6">
+        <addUniqueConstraint columnNames="NAME_, SET_ID_" constraintName="SYS_C0049177" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PROP_VAL" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-7">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C0049183" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-8">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C0049184" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-9">
+        <addUniqueConstraint columnNames="REPORT_BLOB_ID_" constraintName="SYS_C0049185" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-10">
+        <addUniqueConstraint columnNames="GRP_ACTOR_ID_" constraintName="SYS_C0049190" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_ROLE" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-11">
+        <addUniqueConstraint columnNames="NAME_" constraintName="SYS_C0049191" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_ROLE" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-12">
+        <addUniqueConstraint columnNames="NAME_, TARGET_ID_" constraintName="SYS_C0049198" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_TRGT_ACT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-13">
+        <addUniqueConstraint columnNames="SEQUENCE_TYPE_, VALUE_" constraintName="SYS_C0049204" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_UID" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-14">
+        <addUniqueConstraint columnNames="ACTOR_ID_" constraintName="SYS_C0049209" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_USER" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-15">
+        <addUniqueConstraint columnNames="NAME_" constraintName="SYS_C0049210" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_USER" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-16">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C0049217" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_CODE" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-17">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C0049218" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_CODE" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-18">
+        <addUniqueConstraint columnNames="TID_" constraintName="SYS_C0049228" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_FACET_DATA" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-19">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C0049239" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-20">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C0049240" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-21">
+        <addUniqueConstraint columnNames="PRODUCT_ID_, CODE_ID_" constraintName="SYS_C0049245" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD_CODES" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-22">
+        <addUniqueConstraint columnNames="PRODUCT_ID_, UNIT_ID_" constraintName="SYS_C0049250" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD_UNITS" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-23">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C0049255" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_UNIT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-24">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C0049256" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_UNIT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-25">
+        <addUniqueConstraint columnNames="ID_" constraintName="SYS_C0049265" deferrable="false" disabled="false" initiallyDeferred="false" tableName="JBPM4_EXECUTION" tablespace="CHARMS"/>
+    </changeSet>
+
+    <changeSet author="michael (generated)" id="1273502632425-26">
+        <dropUniqueConstraint constraintName="SYS_C0042749" tableName="CHARMS_DOCUMENT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-27">
+        <dropUniqueConstraint constraintName="SYS_C0042786" tableName="CHARMS_MSGBUNDLE"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-28">
+        <dropUniqueConstraint constraintName="SYS_C0042793" tableName="CHARMS_PERMISSION"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-29">
+        <dropUniqueConstraint constraintName="SYS_C0042797" tableName="CHARMS_PERM_TARGET"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-30">
+        <dropUniqueConstraint constraintName="SYS_C0042802" tableName="CHARMS_PROP_SET"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-31">
+        <dropUniqueConstraint constraintName="SYS_C0042812" tableName="CHARMS_REPORT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-32">
+        <dropUniqueConstraint constraintName="SYS_C0042813" tableName="CHARMS_REPORT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-33">
+        <dropUniqueConstraint constraintName="SYS_C0042814" tableName="CHARMS_REPORT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-34">
+        <dropUniqueConstraint constraintName="SYS_C0042819" tableName="CHARMS_ROLE"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-35">
+        <dropUniqueConstraint constraintName="SYS_C0042820" tableName="CHARMS_ROLE"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-36">
+        <dropUniqueConstraint constraintName="SYS_C0042827" tableName="CHARMS_TRGT_ACT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-37">
+        <dropUniqueConstraint constraintName="SYS_C0042833" tableName="CHARMS_UID"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-38">
+        <dropUniqueConstraint constraintName="SYS_C0042838" tableName="CHARMS_USER"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-39">
+        <dropUniqueConstraint constraintName="SYS_C0042839" tableName="CHARMS_USER"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-40">
+        <dropUniqueConstraint constraintName="SYS_C0042855" tableName="CHREQ_FACET_DATA"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-41">
+        <dropUniqueConstraint constraintName="SYS_C0042866" tableName="CHREQ_PROD"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-42">
+        <dropUniqueConstraint constraintName="SYS_C0042867" tableName="CHREQ_PROD"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-43">
+        <dropUniqueConstraint constraintName="SYS_C0042880" tableName="CHREQ_UNIT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-44">
+        <dropUniqueConstraint constraintName="SYS_C0042881" tableName="CHREQ_UNIT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273502632425-45">
+        <dropUniqueConstraint constraintName="SYS_C0042903" tableName="JBPM4_EXECUTION"/>
+    </changeSet>
+</databaseChangeLog>

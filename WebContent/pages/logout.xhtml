@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.logout.title']}" />
+
+<ui:define name="body">
+
+    <div style="padding-left: 200px; padding-top: 100px; padding-bottom: 150px;">
+
+
+    <h:panelGrid columns="1">
+
+        <rich:panel>
+          <f:facet name="header"><h:outputText value="#{messages['page.logout.title']}" /></f:facet>
+          <h:outputText value="#{messages['page.logout.logoutHere']}" escape="false" rendered="#{identity.loggedIn}" />
+          <h:outputText value="#{messages['page.logout.thanksAndGoodBye']}" escape="false" rendered="#{not identity.loggedIn}" />
+        </rich:panel>
+
+      </h:panelGrid>
+    </div>
+
+ </ui:define>
+</ui:composition>

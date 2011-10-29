@@ -1,0 +1,247 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.permissions.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.permissions.title']}" />
+
+<ui:define name="body">
+
+
+    <ui:include src="/layout/fragments/userSelectDialog.xhtml" />
+    <ui:include src="/layout/fragments/roleSelectDialog.xhtml" />
+    <!--  ui:include src="/layout/fragments/actorSelectDialog.xhtml" / -->
+
+<a4j:form id="frm">
+
+
+  <!--
+
+    the following two fields define who is given permisson to do something
+    this might be either a user or a role
+
+   -->
+
+
+  <s:decorate id="recipientField2"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['charmspermission.recipient']}" /></ui:define>
+    <h:inputText required="true"
+                 value="#{charmsPermissionActionBean.recipientLabel}"
+                 styleClass="inputtext readonly"
+                 readonly="true"
+                 id="recipientLabel"
+                 onclick="userDlg.hide();roleDlg.callback = setActor;roleDlg.show();" 
+                 rendered="#{!charmsPermissionActionBean.managed}" />
+
+    <h:inputText required="true"
+                 value="#{charmsPermissionActionBean.recipientLabel}"
+                 styleClass="inputtext readonly"
+                 readonly="true"
+                 rendered="#{charmsPermissionActionBean.managed}" />
+
+
+    <h:inputText id="recipientActorId"
+                 value="#{charmsPermissionActionBean.recipientActorId}"
+                 style="display: none;"/>
+
+    <h:outputLink value="JavaScript:void(0);"
+                  onclick="roleDlg.hide();userDlg.callback = setActor;userDlg.show();"
+                  rendered="#{!charmsPermissionActionBean.managed}"><h:graphicImage url="/#{theme['iconset']}/user.png"
+                                                       border="0"/></h:outputLink>
+    <h:outputLink value="JavaScript:void(0);"
+                  onclick="userDlg.hide();roleDlg.callback = setActor;roleDlg.show();"
+                  rendered="#{!charmsPermissionActionBean.managed}"><h:graphicImage url="/#{theme['iconset']}/group.png"
+                                                       border="0"/></h:outputLink>
+    <!-- h:outputLink value="JavaScript:void(0);"
+                  onclick="userDlg.hide();roleDlg.hide();actorDlg.callback = setActor;actorDlg.show();"
+                  rendered="#{!charmsPermissionActionBean.managed}"><h:graphicImage url="/#{theme['iconset']}/group.png"
+                                                       border="0"/></h:outputLink -->
+    <h:outputLink value="JavaScript:void(0);"
+                  onclick="userDlg.hide();roleDlg.hide();actorDlg.hide();clearActor();"
+                  rendered="#{!charmsPermissionActionBean.managed}"><h:graphicImage url="/#{theme['iconset']}/textfield.png"
+                                                       border="0"/></h:outputLink>
+  </s:decorate>
+
+  <script>
+
+  function setActor(id, label, actorId) {
+    jQuery("#" + "#{rich:clientId('recipientActorId')}".replace(/:/g,"\\:")).val(actorId);
+    jQuery("#" + "#{rich:clientId('recipientLabel')}".replace(/:/g,"\\:")).val(label);
+  }
+
+  function clearActor() {
+	jQuery("#" + "#{rich:clientId('recipientActorId')}".replace(/:/g,"\\:")).val("");
+	jQuery("#" + "#{rich:clientId('recipientLabel')}".replace(/:/g,"\\:")).val("");
+  }
+
+  </script>
+
+  <!--
+    the following fields defines with what object the action may be performed
+    on
+   -->
+
+  <s:decorate id="targetField"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['charmspermission.target']}" /></ui:define>
+     <h:selectOneMenu required="true"
+                      value="#{charmsPermissionActionBean.targetString}"
+                      disabled="#{charmsPermissionActionBean.managed}">
+       <a4j:support event="onchange"
+                    ajaxSingle="true" 
+                    reRender="actionFields, targetIdField" /> <!-- fixme: clear target id field when changes happen -->
+        <s:selectItems var="item"
+                       value="#{charmsPermissionActionBean.selectableTargets}"
+                       noSelectionLabel="#{messages['permissionTarget.noSelection']}"
+                       label="#{messages['permissionTarget.'.concat(item)]}" />
+     </h:selectOneMenu>
+
+
+  </s:decorate>
+  
+  
+  <s:decorate id="targetIdField"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['charmspermission.targetId']}" /></ui:define>
+    
+      <h:inputText id="targetId"
+                   value="#{charmsPermissionActionBean.targetId}"
+                   style="display: none;" />
+                   
+      <h:inputText id="targetLabel"
+                   value="#{charmsPermissionActionBean.targetLabel}"
+                   styleClass="inputtext readonly"
+                   />
+    
+    <!-- 
+
+      <h:inputText required="true"
+                 value="#{charmsPermissionActionBean.targetLabel}"
+                 styleClass="inputtext readonly"
+                 readonly="true"
+                 id="recipientLabel"
+                 onclick="userDlg.hide();roleDlg.hide();actorDlg.callback = setActor;actorDlg.show();" 
+                 rendered="#{!charmsPermissionActionBean.managed}" />
+                 
+                 -->
+    
+      <s:span rendered="#{'changerequest.product.instance'.equals(charmsPermissionActionBean.targetString)}">
+        <h:outputText value="product" />
+      </s:span>
+
+      <s:span rendered="#{'seam.user.instance'.equals(charmsPermissionActionBean.targetString)}">
+        <h:outputLink value="JavaScript:void(0);"
+                      onclick="userDlg.hide();userDlg.callback = setTarget;userDlg.show();"
+                      rendered="#{!charmsPermissionActionBean.managed}"><h:graphicImage url="/#{theme['iconset']}/user.png"
+                                                       border="0"/></h:outputLink>
+      </s:span>
+
+      <s:span rendered="#{'seam.role.instance'.equals(charmsPermissionActionBean.targetString)}">
+        <h:outputLink value="JavaScript:void(0);"
+                      onclick="userDlg.hide();roleDlg.callback = setTarget;roleDlg.show();"
+                      rendered="#{!charmsPermissionActionBean.managed}"><h:graphicImage url="/#{theme['iconset']}/group.png"
+                                                       border="0"/></h:outputLink>
+      </s:span>
+
+  </s:decorate>
+
+  <script>
+
+  function setTarget(id, label, actorId) {
+	  // this is the primary key for the target entity, the target class is set 
+	  // with the target string...
+    jQuery("#" + "#{rich:clientId('targetId')}".replace(/:/g,"\\:")).val(id);
+    jQuery("#" + "#{rich:clientId('targetLabel')}".replace(/:/g,"\\:")).val(label);
+  }
+
+  </script>
+
+  <!--
+
+    the following print out the description for the selected target
+
+  <h2><h:outputText value="#{messages['page.admin.permission.description']}" /></h2>
+  <a4j:region >
+    <h:outputText value="#{charmsPermissionActionBean.description}" escape="false" id="desc" />
+  </a4j:region>
+  -->  <!--
+
+    the following field defines what exactly the given permission allows to do,
+    with the object, this may include multiple actions
+  -->
+  <h2><h:outputText value="#{messages['page.admin.permission.actiondata']}" /></h2>
+  <h:outputText value="#{messages['page.admin.permission.actiondata.details']}" />
+
+  <s:decorate id="actionFields"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['charmspermission.action']}" /></ui:define>
+    <table><tr><td>
+      <ui:repeat var="key"
+                 value="#{charmsPermissionActionBean.selectableActions.keySet().toArray()}">
+         <h:selectBooleanCheckbox value="#{charmsPermissionActionBean.selectableActions[key]}" />
+         <h:outputText value="#{key}" /> <br />
+      </ui:repeat>
+    </td></tr></table>
+    <br />
+  </s:decorate>
+
+
+        <div class="actionButtons">
+
+            <!-- persist for unmanaged bean -->
+            <h:commandButton styleClass="button"
+                             id="persist"
+                             value="Persist"
+                             action="#{charmsPermissionActionBean.persist()}"
+                             rendered="#{not charmsPermissionActionBean.managed}">
+               <f:param name="charmsPermissionId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- update for managed bean -->
+            <h:commandButton styleClass="button"
+                             id="update"
+                             value="Update"
+                             action="#{charmsPermissionActionBean.update()}"
+                             rendered="#{charmsPermissionActionBean.managed}">
+               <f:param name="charmsPermissionId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- remove the managed bean -->
+            <h:commandButton styleClass="button"
+                             id="remove"
+                             value="Remove"
+                             action="#{charmsPermissionActionBean.remove()}"
+                             immediate="true"
+                             rendered="#{charmsPermissionActionBean.managed}">
+              <f:param name="charmsPermissionId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="cancel"
+                             value="Cancel"
+                             action="#{charmsPermissionActionBean.cancel()}"
+                             immediate="true">
+              <f:param name="charmsPermissionId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+        </div>
+
+
+</a4j:form>
+
+
+
+<!-- keeping the popups out of the form -->
+
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

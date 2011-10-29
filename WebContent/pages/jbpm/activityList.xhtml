@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.jbpm.activities.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.jbpm.activities.title']}" />
+
+<ui:define name="body">
+
+<!--
+
+   the activity table
+
+ -->
+  <h2><h:outputText value="#{messages['page.jbpm.activities.installed']}" /></h2>
+
+  <a4j:outputPanel id="pdp"> <!-- a4j panel for rerendering on uploads -->
+    <h:outputText value="#{messages['page.jbpm.activities.nonInstalled']}"
+                  rendered="#{empty jbpmActivityTable.resultList}" />
+
+    <rich:dataTable var="row"
+                    value="#{jbpmActivityTable.resultList}"
+                    rendered="#{not empty jbpmActivityTable.resultList}"
+                    width="100%"
+                    rowKeyVar="rowKey"
+                    columnsWidth="1%,1%,80%,10%,10%,*%">
+
+      <!-- index column counting -->
+      <rich:column styleClass="indexcolumn">
+        <f:facet name="header"><h:outputText value="#{messages['table.index']}"/></f:facet>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{rowKey + 1}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+      <!-- column 1 the name, 90% of the width -->
+      <rich:column>
+        <f:facet name="header" >
+            <h:outputText value="#{messages['activity.dbid']}"/>
+        </f:facet>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.dbid}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+      <!-- column 1 the name, 90% of the width
+      <rich:column>
+        <f:facet name="header" >
+            <h:outputText value="#{messages['activity.id']}"/>
+        </f:facet>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.id}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column> -->
+
+      <!-- column 1 the name, 90% of the width -->
+      <rich:column>
+        <f:facet name="header" >
+            <h:outputText value="#{messages['activity.name']}"/>
+        </f:facet>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.name}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+      <!-- column 2 the timestamp -->
+      <rich:column>
+        <f:facet name="header" >
+            <h:outputText value="#{messages['activity.version']}"/>
+        </f:facet>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.timestamp}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+      <!-- column 2 the timestamp -->
+      <rich:column>
+        <f:facet name="header" >
+            <h:outputText value="#{messages['activity.state']}"/>
+        </f:facet>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.state}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+      <!-- the action buttons -->
+      <rich:column styleClass="actions">
+        <f:facet name="header"><h:outputText value="#{messages['table.actions']}"/></f:facet>
+        <!-- set the id in the home object for the selected bean and switch to a new page -->
+        <s:link title="Graph"
+                action="graph">
+          <f:param name="jbpmActivityId" value="#{row.dbid}"/>
+          <h:graphicImage url="/#{theme['iconset']}/sitemap.png" border="0"/>
+        </s:link>
+        <s:link title="Code"
+                action="code">
+          <f:param name="jbpmActivityId" value="#{row.dbid}"/>
+          <h:graphicImage url="/#{theme['iconset']}/script_code.png" border="0"/>
+        </s:link>
+        <s:link title="Update"
+                action="update">
+          <f:param name="jbpmActivityId" value="#{row.dbid}"/>
+          <h:graphicImage url="/#{theme['iconset']}/pencil.png" border="0" /></s:link>
+        <span> </span>
+        <s:link title="Disable"
+                action="#{jbpmDeploymentProperties.disable()}"
+                view="/pages/jbpm/deploymentList.xhtml"
+                immediate="true">
+          <f:param name="jbpmDeploymentId" value="#{row.dbid}"/>
+          <h:graphicImage url="/#{theme['iconset']}/cross.png" border="0" /></s:link>
+      </rich:column>
+
+    </rich:dataTable>
+
+  </a4j:outputPanel>  <!-- end of panel pdp for rerendering -->
+
+
+
+
+
+<br />
+<br />
+</ui:define>
+</ui:composition>

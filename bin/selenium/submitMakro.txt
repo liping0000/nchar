@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>selenium01</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">selenium01</td></tr>
+</thead><tbody>
+<tr>
+	<td>label</td>
+	<td>start</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/charms/pages/user/home.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//img[@alt='charms']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Neuer Antrag</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>changeRequest:projectIdNumberProperty:i</td>
+	<td>12345678</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>changeRequest:managerNameProperty:j_input</td>
+	<td>manager1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>changeRequest:moduleIdNumber:i</td>
+	<td>baugruppe3</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>changeRequest:itemIdNumberProperty:i</td>
+	<td>artikel2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>changeRequest:customerNameProperty:j_input</td>
+	<td>kunde3</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>changeRequest:productRef:productRefSelect</td>
+	<td>label=Verpackungs-System</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>dom=document.getElementById('changeRequest:problemDescriptionProperty:iTextArea_ifr').contentDocument.body</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>dom=document.getElementById('changeRequest:problemDescriptionProperty:iTextArea_ifr').contentDocument.body</td>
+	<td>testetsetsetsegsdfhsdhs h dfh dfh dfh dfghdfgdrthhs sdf vsdvaeejtmktmpnutiunbgcqw y</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>changeRequest:titleProperty:i</td>
+	<td>testbezeichnung blabla</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>changeRequest:attl</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>changeRequest:u:file</td>
+	<td>/home/michael/Projects/charms/eclipse_workspace/charms/docs/jbpm4.diff</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>changeRequest:submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Sind Sie Sicher?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>start</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

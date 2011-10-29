@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:template xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:f="http:/jsf.exadel.com/template"
+  xmlns:u="http:/jsf.exadel.com/template/util">
+
+<!-- the YUI reset style: Define static styles in the CDATA block below -->
+<f:verbatim><![CDATA[
+
+/* resetting styles as needed for all browsers */
+
+body,div,dl,dt,dd,ul,ol,li,
+h1,h2,h3,h4,h5,h6,
+pre,form,fieldset,input,textarea,p,blockquote,
+th,td,img {
+  /* brute force reset */
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+div {
+ /*  overflow: hidden;  this kills the modal panel */
+}
+div, td {
+  /* align div and td content */
+  vertical-align: top;
+  text-align: left;
+}
+table {
+  /* reset table look, no border for any by default */
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+th {
+  /* table headers, bold and centered by default */
+  font-weight: bold;
+  text-align: center;
+}
+img {
+  /* needed since the logo is used as link and gets baseline
+     aligned with the surrounding a-tag by default */
+  vertical-align: text-bottom;
+}
+ol, ul {
+  /* bring back list style, dots are outside the container if we don't
+     specify this */
+  list-style-position: inside;
+}
+textarea {
+  /* no default scrollbar */
+  overflow: auto;
+}
+h1, h2, h3, h4 {
+  /* reset headers, font-size and font-face is added later */
+  font-size-adjust: 0.48; /* georgia x-size ratio */
+  font-stretch: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: normal;
+  margin: 1em 0;
+}
+a.h2 {
+  font-size-adjust: 0.48; /* georgia x-size ratio */
+  margin: 1em 0 0 0;
+  decoration: none;
+  font-size: 123.1%;
+}
+form {
+  display: inline;
+}
+
+
+/*  custom layout setting for classes below */
+
+/* padding for the tab content, was: dr-tbpnl-cntnt */
+td.rich-tabpanel-content {
+  padding: 10px;
+}
+
+/* blur for the text hints */
+input.blur {
+  color: #999999;
+}
+
+/* checkboxes */
+input.checkbox {
+  border: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+/* the value inside a form field  */
+div.editproperty span.value input.inputtext {
+  width: 180px;
+  border: 1px solid #666666;
+  padding: 1px 2px 1px 2px;  /* inset for the containing text */
+  float: none;               /* override left float from the login panle */
+}
+input.text,
+textarea.text {
+  border: 1px solid #666666;
+  padding: 1px 2px 1px 2px;  /* inset for the containing text */
+}
+/* the error/missing value inside a form field  */
+div.editproperty span.error input,
+div.editproperty span.error select,
+div.editproperty span.error textarea,
+div.editproperty span.error div.rich-editor {
+  border: 1px solid #ff4444;
+  background: #ffdddd none repeat scroll 0 0;
+}
+/* the readonly value inside a form field  */
+div.editproperty span.value input.readonly,
+div.editproperty span.value textarea.readonly,
+div.editproperty span.value select.readonly {
+  background: #E7E4E5 none repeat scroll 0 0;
+  color: #000000;
+}
+
+/* the value inside a textarea in the form  */
+div.editproperty span.value textarea {
+  width: 180px;
+  border: 1px solid #666666;
+  padding: 1px 2px 1px 2px;
+}
+
+th.rich-table-headercell input.filter,
+td.rich-table-footercell input.filter {
+  width: 80px;
+  border: 1px solid #666666;
+}
+/* doesn't fly on IE
+td.rich-table-footercell input.checkbox {
+  width: 10px;
+} */
+.rich-table tbody {
+  width: 100%;
+}
+
+div.editproperty {
+  overflow: hidden;
+}
+
+div.editproperty span.value select,
+th.rich-table-headercell select
+td.rich-table-footercell select,
+select.inputselect {
+  /* width: 180px; no default length */
+  border: 1px solid #666666;
+}
+
+div.editproperty span.value select.readonly {
+  background: #E7E4E5 none repeat scroll 0 0;
+}
+div.editproperty span.value table.readonly {
+  background: #E7E4E5 none repeat scroll 0 0;
+  border: 1px solid #666666;
+  width: 500px;
+  height: 30px;
+  min-height: 30px !important;
+}
+/*
+div.readonly {
+  background: #E7E4E5 none repeat scroll 0 0;
+  border: 1px solid #666666;
+}
+*/
+
+
+table.rich-tabpanel {
+  /* this is important for IE6: the tab panel floats under the menu otherwise... */
+  width: 99%;
+}
+
+div.actionButtons {
+  padding-top: 20px;
+  with: 99%;
+}
+
+textarea.attachmentComment {
+  width: 100%;
+  height: 100%;
+}
+
+div.simpleMessage {
+  font-weight: bold;
+  background-color: #e0e0f0;
+  color: #202050;
+  padding: 2px;
+}
+div.redMessage {
+  font-weight: bold;
+  background-color: #a0a0e0;
+  color: #202050;
+  padding: 2px;
+}
+
+
+]]></f:verbatim>
+
+
+<u:selector name="div.editproperty label.name">
+  <u:style name="float" value="left" />
+  <u:style name="width" skin="labelWidth" />
+</u:selector>
+
+
+<u:selector name="body,div,th,td,input,button,textarea,select,optgroup,option,table">
+  <!-- globaly set the font attributes for all kind of elements since IE
+       fucks up the font inheritence for lots of elements -->
+  <u:style name="font-size" skin="generalSizeFont" />
+  <u:style name="line-height" skin="generalLineHeight" />
+  <u:style name="font-family" skin="generalFamilyFont" />
+  <u:style name="color" skin="generalTextColor" />
+</u:selector>
+
+
+<u:selector name="input.button">
+
+  <!-- IE puts a border inside the border with background color
+     we try to imitate the background image with a similar color -->
+  <u:style name="border" value="1px solid #214c83" />
+  <u:style name="border-color" value="#7777ba #214c83 #214c83 #7777ba" />
+  <!-- see: -->
+  <u:style name="hideFocus" value="true" />
+
+  <u:style name="margin" value="0 0 0 0" />
+  <u:style name="padding" value="0 1em 0 1em" />
+  <!-- needed for IE to honor the padding -->
+  <u:style name="overflow" value="visible" />
+  <u:style name="width" value="auto" />
+
+  <u:style name="background-color" skin="tabBackgroundColor" />
+  <u:style name="background-image">
+    <f:resource f:key="org.richfaces.renderkit.html.gradientimages.TabGradientImage"/>
+  </u:style>
+  <u:style name="background-repeat" value="repeat-x" />
+  <u:style name="background-position" value="center bottom" />
+
+  <u:style name="cursor" value="pointer" />
+
+</u:selector>
+
+<u:selector name="input.buttonDisabled">
+
+  <!-- IE puts a border inside the border with background color
+     we try to imitate the background image with a similar color -->
+  <u:style name="border" value="1px solid #214c83" />
+  <u:style name="border-color" value="#7777ba #214c83 #214c83 #7777ba" />
+
+  <u:style name="margin" value="0 0 0 0" />
+  <u:style name="padding" value="0 1em 0 1em" />
+  <!-- needed for IE to honor the padding -->
+  <u:style name="overflow" value="visible" />
+  <u:style name="width" value="auto" />
+
+  <u:style name="background-color" skin="tabBackgroundColor" />
+  <u:style name="background-image">
+    <f:resource f:key="org.richfaces.renderkit.html.gradientimages.TabInverseGradientImage"/>
+  </u:style>
+  <u:style name="background-repeat" value="repeat-x" />
+  <u:style name="background-position" value="center top" />
+
+  <u:style name="cursor" value="default" />
+  <u:style name="color" value="#555555" />
+
+</u:selector>
+
+
+<u:selector name="h1">
+    <u:style name="font-family" skin="headerFamilyFont"/>
+    <u:style name="font-size" value="138.5%"/>
+</u:selector>
+
+<u:selector name="h2">
+    <u:style name="font-family" skin="headerFamilyFont"/>
+    <u:style name="font-size" value="123.1%"/>
+</u:selector>
+
+<u:selector name="h3">
+    <u:style name="font-family" skin="headerFamilyFont"/>
+    <u:style name="font-size" value="108%"/>
+</u:selector>
+
+<u:selector name="h4">
+    <u:style name="font-family" skin="headerFamilyFont"/>
+    <u:style name="font-size" value="100%"/>
+</u:selector>
+
+
+
+</f:template>

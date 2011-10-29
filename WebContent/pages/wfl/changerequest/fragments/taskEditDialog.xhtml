@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+
+   <h:form id="taskDlgForm">
+   
+   
+   <!--  we need the taskid here:   -->
+       <h:inputText value="#{jbpmTaskEdit.dbid}"
+                    id="taskDbid" 
+                    style="display: none;" >
+          <a4j:support event="onchange"
+                       reRender="taskDlgContent"
+                       ajaxSingle="true" />
+       </h:inputText>
+
+  <p:dialog header="edit Task"
+            widgetVar="taskDlg"
+            id="taskDlg"
+            width="250"
+            style="margin: 0px;"
+            fixedCenter="true">
+     <s:div id="taskDlgContent">
+
+   <br />
+   <h:outputText value="#{messages[jbpmTaskEdit.taskName]}  -  #{jbpmTaskEdit.taskId}" />:
+
+   <br />
+   <h:outputText value="#{messages['taskInstances.dueDate']}" />:
+   <rich:calendar value="#{jbpmTaskEdit.dueDate}" datePattern="dd.MM.yyyy" />
+
+   <br />
+   <h:outputText value="#{messages['taskInstances.actor']}" />   
+   <h:outputText value="#{jbpmTaskEdit.actorId}" />
+   
+   
+   <br />
+       <h:commandButton id="changeTask"
+              styleClass="button"
+              value="#{messages['action.save']}"
+              onclick="jQuery.blockUI(); return true;"
+              action="#{jbpmTaskEdit.save()}" />
+              
+     </s:div>
+  </p:dialog>
+   </h:form>
+
+</ui:composition>

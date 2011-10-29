@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.console.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.console.title']}" />
+
+<ui:define name="body">
+
+
+<!--  -->
+<div class="entry" id="dude">
+
+   <p:outputPanel id="output" />
+
+   <h:form id="g2" prependId="false" >
+     <p:panel header="channel: #{cometController.channel}" toggleable="true">
+         <h:panelGrid columns="3">
+             <h:outputText value="Message:" />
+             <h:inputText value="#{cometController.message}"
+                          size="50"/>
+             <p:commandButton value="Send"
+                              actionListener="#{cometController.send}"  />
+         </h:panelGrid>
+     </p:panel>
+   </h:form>
+
+    <p:push onpublish="handlePublish"
+            widgetVar="widget"
+            channel="#{cometController.channel}" />
+
+<script type="text/javascript">
+    function handlePublish(event) {
+        // alert("publish: " + data);
+        jQuery('#output').append('event: ' + event + '<br />');
+        jQuery('#output').append('event.data: ' + event.data + '<br />');
+    }
+</script>
+</div>
+
+</ui:define>
+
+</ui:composition>

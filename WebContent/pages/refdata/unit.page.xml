@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+      
+  <begin-conversation join="true" flush-mode="manual" />
+
+  <description>page for editing changerequest units</description>
+         
+  <action execute="#{changeRequestUnitHome.setEntityId(param.unitId)}" 
+          on-postback="false" /> 
+  
+  <navigation from-action="#{changeRequestUnitHome.setEntityId(param.unitId)}">
+    <rule if-outcome="invalid">
+      <end-conversation/>
+      <redirect view-id="/pages/refdata/unitList.xhtml" />
+    </rule>
+    <rule if-outcome="valid">
+      <render view-id="/pages/refdata/unit.xhtml" />
+    </rule>
+  </navigation>
+ 
+ 
+  <navigation>
+ 
+  <rule if-outcome="persisted">
+     <redirect view-id="/pages/refdata/unitList.xhtml"/>
+  </rule>
+  
+  <rule if-outcome="updated">
+     <redirect view-id="/pages/refdata/unitList.xhtml"/>
+  </rule>
+  
+  <rule if-outcome="removed">
+     <redirect view-id="/pages/refdata/unitList.xhtml"/>
+  </rule>
+  
+  <rule if-outcome="canceled">
+     <redirect view-id="/pages/refdata/unitList.xhtml"/>
+  </rule>
+  
+  <rule if-outcome="invalid">
+     <!-- something wrong, stay on the page, don't redirect/trigger page actions -->
+     <render view-id="/pages/refdata/unit.xhtml"/>
+  </rule>
+  
+  </navigation>
+ 
+</page>

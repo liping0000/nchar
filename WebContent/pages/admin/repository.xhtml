@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.repository.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.repository.title']}" />
+
+<ui:define name="body">
+
+
+<!-- ((HibernateSessionProxy)em.getDelegate()).getSessionFactory().getStatistics(); -->
+
+
+    <rich:panel>
+
+        <h:form>
+
+
+            <rich:tree switchType="ajax"
+                       var="treeNode" >
+
+              <rich:recursiveTreeNodesAdaptor roots="#{changeRequestFolderList.resultList}"
+                                              var="folder" >
+                <rich:treeNode >
+                  <h:outputText value="#{folder.name}" />
+                  <h:outputText value="(#{folder.fileCount})" />
+
+                </rich:treeNode>
+
+
+                <rich:recursiveTreeNodesAdaptor roots="#{folder.documents}"
+                                                var="document">
+                  <rich:treeNode>
+                    <s:download src="/pages/user/documentResource.xhtml">
+                      <f:param name="documentId" value="#{document.id}"/>
+                      <f:param name="name" value="#{document.name}"/>
+                      <s:conversationId/>
+                      <h:outputText value="#{document.name} " />
+                      <h:outputText value="(#{document.size}) " />
+                      <h:outputText value="#{document.lastModified} " />
+                    </s:download>
+                  </rich:treeNode>
+
+                </rich:recursiveTreeNodesAdaptor>
+
+
+              </rich:recursiveTreeNodesAdaptor>
+
+            </rich:tree>
+
+        </h:form>
+
+    </rich:panel>
+
+</ui:define>
+
+</ui:composition>
+

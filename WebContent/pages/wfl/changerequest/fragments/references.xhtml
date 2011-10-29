@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:a4j="http://richfaces.org/a4j"><!--
+
+  this gui component describes the location and error of a change request
+  defined according to reference data
+
+
+                       label="#{messages.get(productItem.messageCode, productItem.defaultName)}"
+
+   -->
+
+
+<tr>
+  <td colspan="2">
+    <s:decorate id="productRef"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestReferenceBean.product']}" /></ui:define>
+      <a4j:region rendered="#{readonly?'false':'true'}">
+      <h:selectOneMenu id="productRefSelect"
+                       value="#{changeRequestProductSelect.productId}"
+                       style="width: 250px;"
+                       required="true"
+                       requiredMessage="#{messages['changeRequestReferenceBean.product.requiredMessage']}" >
+        <s:selectItems value="#{changeRequestProductSelect.availableProductItems}"
+                       var="productItem"
+                       label="#{messages.get(productItem.messageCode, productItem.defaultName)}"
+                       itemValue="#{productItem.value}"
+                       noSelectionLabel="-- please select --" />
+        <a4j:support event="onchange"
+                     bypassUpdates="false"
+                     reRender="unitRef, codeRef" /><!--  events: productRef  -->
+      </h:selectOneMenu>
+      </a4j:region>
+      <h:inputText value="#{messages.get(changeRequestData.changeRequestProduct.messageCode, changeRequestData.changeRequestProduct.defaultName)}"
+                   readonly="true"
+                   styleClass="readonly inputtext"
+                   style="width: 250px;"
+                   rendered="#{readonly?'true':'false'}" />
+  </s:decorate>
+  </td>
+</tr>
+
+
+<tr>
+  <td colspan="2">
+    <s:decorate id="unitRef"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestReferenceBean.unit']}" /></ui:define>
+      <a4j:region rendered="#{readonly?'false':'true'}">
+      <h:selectOneMenu id="unitRefSelect" 
+                       value="#{changeRequestUnitSelect.unitId}"
+                       style="width: 250px;">
+        <s:selectItems value="#{changeRequestUnitSelect.availableUnitItems}"
+                       var="unitItem"
+                       label="#{messages.get(unitItem.messageCode, unitItem.defaultName)}"
+                       itemValue="#{unitItem.value}"
+                       noSelectionLabel="-- please select --" />
+      </h:selectOneMenu>
+      </a4j:region>
+      <h:inputText value="#{messages.get(changeRequestData.changeRequestUnit.messageCode, changeRequestData.changeRequestUnit.defaultName)}"
+                   readonly="true"
+                   styleClass="readonly inputtext"
+                   style="width: 250px;"
+                   rendered="#{readonly?'true':'false'}" />
+    </s:decorate>
+  </td>
+</tr>
+
+
+<tr>
+  <td colspan="2">
+    <s:decorate id="codeRef"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestReferenceBean.code']}" /></ui:define>
+      <a4j:region rendered="#{readonly?'false':'true'}">
+      <h:selectOneMenu id="codeRefSelect"
+                       value="#{changeRequestCodeSelect.codeId}"
+                       style="width: 250px;">
+        <s:selectItems value="#{changeRequestCodeSelect.availableCodeItems}"
+                       var="codeItem"
+                       label="#{messages.get(codeItem.messageCode, codeItem.defaultName)}"
+                       itemValue="#{codeItem.value}"
+                       noSelectionLabel="-- please select --" />
+      </h:selectOneMenu>
+      </a4j:region>
+      <h:inputText value="#{messages.get(changeRequestData.changeRequestCode.messageCode, changeRequestData.changeRequestCode.defaultName)}"
+                   readonly="true"
+                   styleClass="readonly inputtext"
+                   style="width: 250px;"
+                   rendered="#{readonly?'true':'false'}" />
+    </s:decorate>
+  </td>
+</tr>
+
+
+</ui:composition>

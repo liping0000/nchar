@@ -1,0 +1,1773 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+<!--
+
+  this is the initial database layout as of 01.01.2010, generated with the
+  liquibase ant task, there are checks for each changeSet so it should be safe
+  to rerun this file
+
+  DO NOT MODIFY THIS FILE
+
+  after it is applied to the database, a checksum for this file is kept in
+  database, any changes might cause trouble
+  
+  for a good oracle quickref see:
+  http://infolab.stanford.edu/~ullman/fcdb/oracle/or-nonstandard.html
+
+ -->
+
+
+    <!--
+
+      create the tables
+
+     -->
+    <changeSet id="initial-1" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_CHILDROLES" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_CHILDROLES">
+            <column name="CHILD_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PARENT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-2" author="michael" >
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_DOC_BLB" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_DOC_BLB">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185918"/>
+            </column>
+            <column name="CONTENT_" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-3" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_DOCUMENT" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_DOCUMENT">
+            <column name="DOCUMENT_TYPE_" type="VARCHAR2(31 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185924"/>
+            </column>
+            <column name="COMMENT_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="EDITOR_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LAST_MODIFIED_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MIME_TYPE_" type="VARCHAR2(250 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(250 CHAR)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DOC_BLOB_ID_" type="NUMBER(19,0)"/>
+            <column name="EDITOR_ID_" type="NUMBER(19,0)"/>
+            <column name="FOLDER_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-4" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_EMSG" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_EMSG">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185931"/>
+            </column>
+            <column name="CONTENT_" type="CLOB"/>
+            <column name="CREATE_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="RECEIVER_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SENDER_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SENT_" type="TIMESTAMP(6)"/>
+            <column name="SUBJECT_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-5" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_ETMPL" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_ETMPL">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185934"/>
+            </column>
+            <column name="BODY_" type="CLOB"/>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="LAST_MODIFIED_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SENDER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SUBJECT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-6" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_ETMPL_RCVR" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_ETMPL_RCVR">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185937"/>
+            </column>
+            <column name="ADDRESS_EXPR_" type="VARCHAR2(500 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="TEMPLATE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-7" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_ETMPL_TRANS" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_ETMPL_TRANS">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185941"/>
+            </column>
+            <column name="BODY_" type="CLOB"/>
+            <column name="LOCALE_ID_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SUBJECT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="TEMPLATE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-8" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_FOLDER" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_FOLDER">
+            <column name="FOLDER_TYPE_" type="VARCHAR2(31 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185944"/>
+            </column>
+            <column name="COMMENT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="PARENT_ID_" type="NUMBER(19,0)"/>
+            <column name="ROOT_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-9" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_LOG" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_LOG">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185950"/>
+            </column>
+            <column name="DATE_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LEVEL_" type="VARCHAR2(10 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOGGER_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MESSSAGE_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-10" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_MEMBERSHIP" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_MEMBERSHIP">
+            <column name="ROLE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-11" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_MESSAGES" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_MESSAGES">
+            <column name="MSG_BUNDLE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(2500 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MSG_CODE_" type="VARCHAR2(250 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-12" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_MSGBUNDLE" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_MSGBUNDLE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185961"/>
+            </column>
+            <column name="LOCALE_ID_" type="VARCHAR2(20 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-13" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_PERM_TARGET" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_PERM_TARGET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185972"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="TARGET_STRING_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-14" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_PERMISSION" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_PERMISSION">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185968"/>
+            </column>
+            <column name="ACTION_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="DISCRIMINATOR_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RECIPIENT_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-15" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_PROP_SET" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_PROP_SET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_PSET"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false" uniqueConstraintName="U_CHARMS_PSET"/>
+            </column>
+            <column name="PROP_TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-16" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_PROP_VAL" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_PROP_VAL">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185981"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NUMBER_" type="NUMBER(19,0)"/>
+            <column name="STRING_" type="VARCHAR2(512 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="SET_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-17" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_REPORT" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_REPORT">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185986"/>
+            </column>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="UPDATE_" type="TIMESTAMP(6)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="REPORT_BLOB_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-18" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_ROLE" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_ROLE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185993"/>
+            </column>
+            <column name="CONDITIONAL_" type="NUMBER(1,0)"/>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="GRP_ACTOR_ID_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-19" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_RPT_BLB" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_RPT_BLB">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00185998"/>
+            </column>
+            <column name="CONTENT_" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-20" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_TRGT_ACT" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_TRGT_ACT">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186001"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="TARGET_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-21" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_UID" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_UID">
+            <column name="SEQUENCE_TYPE_" type="VARCHAR2(31 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186007"/>
+            </column>
+            <column name="LAST_MODIFIED_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(250 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="LOCATION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PREFIX_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="VARCHAR2(255 CHAR)"/>
+            <column name="YEAR_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-22" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_USER" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_USER">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186012"/>
+            </column>
+            <column name="ACCOUNT_EXPIRE_" type="TIMESTAMP(6)"/>
+            <column name="ACTOR_ID_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREDENTIALS_EXPIRE_" type="TIMESTAMP(6)"/>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="EMAIL_" type="VARCHAR2(100 CHAR)"/>
+            <column name="IS_ENABLED_" type="CHAR(1)"/>
+            <column name="EXTERNAL_ID1_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXTERNAL_ID2_" type="VARCHAR2(255 CHAR)"/>
+            <column name="FIRSTNAME_" type="VARCHAR2(60 CHAR)"/>
+            <column name="GENDER_" type="VARCHAR2(10 CHAR)"/>
+            <column name="LASTNAME_" type="VARCHAR2(60 CHAR)"/>
+            <column name="LOCALE_ID_" type="VARCHAR2(100 CHAR)"/>
+            <column name="NAME_" type="VARCHAR2(20 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWD_" type="VARCHAR2(100 CHAR)"/>
+            <column name="THEME_ID_" type="VARCHAR2(100 CHAR)"/>
+            <column name="TIMEZONE_ID_" type="VARCHAR2(100 CHAR)"/>
+            <column name="IS_UNLOCKED_" type="CHAR(1)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-23" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHARMS_WFL_DATA" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHARMS_WFL_DATA">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186016"/>
+            </column>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="FINISH_DATE_" type="TIMESTAMP(6)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="SUBMIT_DATE_" type="TIMESTAMP(6)"/>
+            <column name="TITLE_" type="VARCHAR2(250 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="FINISH_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="SUBMIT_USER_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-24" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHREQ_COSTSHEET" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_COSTSHEET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186020"/>
+            </column>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="COMMENT_" type="VARCHAR2(512 CHAR)"/>
+            <column name="CONTENT_" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(250 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-25" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHREQ_DATA" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_DATA">
+            <column name="ASSIGN_DATE_" type="TIMESTAMP(6)"/>
+            <column name="CONCLUSION_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="COST_A_" type="NUMBER(1,0)"/>
+            <column name="COST_AMOUNT_" type="NUMBER(10,0)"/>
+            <column name="COST_B_" type="NUMBER(1,0)"/>
+            <column name="CUSTOMER_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="FAST_TRACK_" type="NUMBER(1,0)"/>
+            <column name="IS_GOODWILL_" type="CHAR(1)"/>
+            <column name="GOODWILL_TEXT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HISTORY_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="IMPLEMENT_DATE_" type="TIMESTAMP(6)"/>
+            <column name="INITIATE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="ITEM_ID_NUMBER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="MANAGER_NAME_" type="VARCHAR2(100 CHAR)"/>
+            <column name="MODULE_ID_NUMBER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PROBLEM_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="PROCESS_DATE_" type="TIMESTAMP(6)"/>
+            <column name="PROJECT_ID_NUMBER_" type="VARCHAR2(50 CHAR)"/>
+            <column name="PROPOSAL_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="REGULAR_TRACK_" type="NUMBER(1,0)"/>
+            <column name="IS_STANDARD_" type="CHAR(1)"/>
+            <column name="STANDARD_TEXT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186022"/>
+            </column>
+            <column name="ASSIGN_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="ERROR_ID_" type="NUMBER(19,0)"/>
+            <column name="PRODUCT_ID_" type="NUMBER(19,0)"/>
+            <column name="UNIT_ID_" type="NUMBER(19,0)"/>
+            <column name="IMPLEMENT_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="INITIATE_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="PROCESS_USER_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-26" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHREQ_ERROR" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_ERROR">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186026"/>
+            </column>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-27" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHREQ_FACET_DATA" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_FACET_DATA">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186031"/>
+            </column>
+            <column name="CONCLUSION_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="FORWARD_DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="FORWARD_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="FORWARD_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="HANDLE_DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="HANDLE_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="HANDLE_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="HANDLED_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="IMPLEMENT_DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="IMPLEMENT_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="IMPLEMENT_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="IMPLEMENTED_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="PROCESS_DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="PROCESS_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="PROCESS_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="REVIEW_DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="REVIEW_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="REVIEW_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="REVIEWED_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="TID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="VISIBLE_FACET_" type="VARCHAR2(250 CHAR)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-28" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHREQ_IMPACTSHEET" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_IMPACTSHEET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186036"/>
+            </column>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="COMMENT_" type="VARCHAR2(512 CHAR)"/>
+            <column name="CONTENT_" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(250 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-29" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHREQ_MSG_ENTRY" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_MSG_ENTRY">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186038"/>
+            </column>
+            <column name="AUTHOR_FULLNAME_" type="VARCHAR2(121 CHAR)"/>
+            <column name="AUTHOR_ID_" type="NUMBER(19,0)"/>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="CONTENT_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="RECEIVER_FULLNAME_" type="VARCHAR2(121 CHAR)"/>
+            <column name="RECEIVER_ID_" type="NUMBER(19,0)"/>
+            <column name="TIMESTAMP_" type="TIMESTAMP(6)"/>
+            <column name="TITLE_" type="VARCHAR2(250 CHAR)"/>
+            <column name="MSG_TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="PARENT_ID_" type="NUMBER(19,0)"/>
+            <column name="IDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-30" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHREQ_PROD" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_PROD">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186042"/>
+            </column>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-31" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHREQ_PROD_ERRORS" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_PROD_ERRORS">
+            <column name="PRODUCT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ERROR_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSITION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-32" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHREQ_PROD_UNITS" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_PROD_UNITS">
+            <column name="PRODUCT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UNIT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSITION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-33" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="CHREQ_UNIT" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="CHREQ_UNIT">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186056"/>
+            </column>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-34" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="HIBERNATE_SEQUENCES" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="HIBERNATE_SEQUENCES">
+            <column name="SEQUENCE_NAME" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186060"/>
+            </column>
+            <column name="NEXT_VAL" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-35" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_DEPLOYMENT" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_DEPLOYMENT">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186062"/>
+            </column>
+            <column name="NAME_" type="CLOB"/>
+            <column name="TIMESTAMP_" type="NUMBER(19,0)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-36" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_DEPLOYPROP" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_DEPLOYPROP">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186064"/>
+            </column>
+            <column name="DEPLOYMENT_" type="NUMBER(19,0)"/>
+            <column name="OBJNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="STRINGVAL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LONGVAL_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-37" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_EXECUTION" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_EXECUTION">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186068"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACTIVITYNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PROCDEFID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HASVARS_" type="NUMBER(1,0)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SUSPHISTSTATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="HISACTINST_" type="NUMBER(19,0)"/>
+            <column name="PARENT_" type="NUMBER(19,0)"/>
+            <column name="INSTANCE_" type="NUMBER(19,0)"/>
+            <column name="SUPEREXEC_" type="NUMBER(19,0)"/>
+            <column name="SUBPROCINST_" type="NUMBER(19,0)"/>
+            <column name="PARENT_IDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-38" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_HIST_ACTINST" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_HIST_ACTINST">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186073"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HPROCI_" type="NUMBER(19,0)"/>
+            <column name="TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXECUTION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ACTIVITY_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="START_" type="TIMESTAMP(6)"/>
+            <column name="END_" type="TIMESTAMP(6)"/>
+            <column name="DURATION_" type="NUMBER(19,0)"/>
+            <column name="TRANSITION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NEXTIDX_" type="NUMBER(10,0)"/>
+            <column name="HTASK_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-39" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_HIST_DETAIL" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_HIST_DETAIL">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186077"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TIME_" type="TIMESTAMP(6)"/>
+            <column name="HPROCI_" type="NUMBER(19,0)"/>
+            <column name="HPROCIIDX_" type="NUMBER(10,0)"/>
+            <column name="HACTI_" type="NUMBER(19,0)"/>
+            <column name="HACTIIDX_" type="NUMBER(10,0)"/>
+            <column name="HTASK_" type="NUMBER(19,0)"/>
+            <column name="HTASKIDX_" type="NUMBER(10,0)"/>
+            <column name="HVAR_" type="NUMBER(19,0)"/>
+            <column name="HVARIDX_" type="NUMBER(10,0)"/>
+            <column name="MESSAGE_" type="CLOB"/>
+            <column name="OLD_INT_" type="NUMBER(10,0)"/>
+            <column name="NEW_INT_" type="NUMBER(10,0)"/>
+            <column name="OLD_STR_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NEW_STR_" type="VARCHAR2(255 CHAR)"/>
+            <column name="OLD_TIME_" type="TIMESTAMP(6)"/>
+            <column name="NEW_TIME_" type="TIMESTAMP(6)"/>
+            <column name="PARENT_" type="NUMBER(19,0)"/>
+            <column name="PARENT_IDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-40" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_HIST_PROCINST" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_HIST_PROCINST">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186080"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PROCDEFID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="START_" type="TIMESTAMP(6)"/>
+            <column name="END_" type="TIMESTAMP(6)"/>
+            <column name="DURATION_" type="NUMBER(19,0)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ENDACTIVITY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NEXTIDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-41" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_HIST_TASK" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_HIST_TASK">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186083"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXECUTION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="OUTCOME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ASSIGNEE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="CREATE_" type="TIMESTAMP(6)"/>
+            <column name="END_" type="TIMESTAMP(6)"/>
+            <column name="DURATION_" type="NUMBER(19,0)"/>
+            <column name="NEXTIDX_" type="NUMBER(10,0)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="DUEDATE_" type="TIMESTAMP(6)"/>
+            <column name="PROCINST_" type="NUMBER(19,0)"/>
+            <column name="SUPERTASK_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-42" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_HIST_VAR" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_HIST_VAR">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186086"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROCINSTID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXECUTIONID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VARNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VALUE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HPROCI_" type="NUMBER(19,0)"/>
+            <column name="HTASK_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-43" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_JOB" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_JOB">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186090"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DUEDATE_" type="TIMESTAMP(6)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ISEXCLUSIVE_" type="NUMBER(1,0)"/>
+            <column name="LOCKOWNER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LOCKEXPTIME_" type="TIMESTAMP(6)"/>
+            <column name="EXCEPTION_" type="CLOB"/>
+            <column name="RETRIES_" type="NUMBER(10,0)"/>
+            <column name="PROCESSINSTANCE_" type="NUMBER(19,0)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+            <column name="CFG_" type="NUMBER(19,0)"/>
+            <column name="SIGNAL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EVENT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="REPEAT_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-44" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_LOB" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_LOB">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186093"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BLOB_VALUE_" type="BLOB"/>
+            <column name="DEPLOYMENT_" type="NUMBER(19,0)"/>
+            <column name="NAME_" type="CLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-45" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_PARTICIPATION" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_PARTICIPATION">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186096"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GROUPID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="USERID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TASK_" type="NUMBER(19,0)"/>
+            <column name="SWIMLANE_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-46" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_PROPERTY" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_PROPERTY">
+            <column name="KEY_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186099"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-47" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_SWIMLANE" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_SWIMLANE">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186102"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ASSIGNEE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-48" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_TASK" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_TASK">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186106"/>
+            </column>
+            <column name="CLASS_" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="DESCR_" type="CLOB"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SUSPHISTSTATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ASSIGNEE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="FORM_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="CREATE_" type="TIMESTAMP(6)"/>
+            <column name="DUEDATE_" type="TIMESTAMP(6)"/>
+            <column name="PROGRESS_" type="NUMBER(10,0)"/>
+            <column name="SIGNALLING_" type="NUMBER(1,0)"/>
+            <column name="EXECUTION_ID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ACTIVITY_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HASVARS_" type="NUMBER(1,0)"/>
+            <column name="SUPERTASK_" type="NUMBER(19,0)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+            <column name="PROCINST_" type="NUMBER(19,0)"/>
+            <column name="SWIMLANE_" type="NUMBER(19,0)"/>
+            <column name="TASKDEFNAME_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-49" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="JBPM4_VARIABLE" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="JBPM4_VARIABLE">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186110"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="CONVERTER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HIST_" type="NUMBER(1,0)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+            <column name="TASK_" type="NUMBER(19,0)"/>
+            <column name="LOB_" type="NUMBER(19,0)"/>
+            <column name="DATE_VALUE_" type="TIMESTAMP(6)"/>
+            <column name="DOUBLE_VALUE_" type="FLOAT(126)"/>
+            <column name="CLASSNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LONG_VALUE_" type="NUMBER(19,0)"/>
+            <column name="STRING_VALUE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TEXT_VALUE_" type="CLOB"/>
+            <column name="EXESYS_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-50" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists schemaName="CAMS" tableName="TODOL_DATA" /></not>
+        </preConditions>
+        <createTable schemaName="CAMS" tableName="TODOL_DATA">
+            <column name="TASK_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00186112"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <!--
+
+      create some composite primary keys
+
+     -->
+    <changeSet id="initial-51" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><primaryKeyExists primaryKeyName="SYS_C00185915" schemaName="CAMS" tableName="CHARMS_CHILDROLES"/></not>
+        </preConditions>
+        <addPrimaryKey columnNames="CHILD_ID_, PARENT_ID_" constraintName="SYS_C00185915" schemaName="CAMS" tableName="CHARMS_CHILDROLES"/>
+    </changeSet>
+
+    <changeSet id="initial-52" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><primaryKeyExists primaryKeyName="SYS_C00185953" schemaName="CAMS" tableName="CHARMS_MEMBERSHIP"/></not>
+        </preConditions>
+        <addPrimaryKey columnNames="ROLE_ID_, USER_ID_" constraintName="SYS_C00185953" schemaName="CAMS" tableName="CHARMS_MEMBERSHIP"/>
+    </changeSet>
+
+    <changeSet id="initial-53" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><primaryKeyExists primaryKeyName="SYS_C00185957" schemaName="CAMS" tableName="CHARMS_MESSAGES"/></not>
+        </preConditions>
+        <addPrimaryKey columnNames="MSG_BUNDLE_ID_, MSG_CODE_" constraintName="SYS_C00185957" schemaName="CAMS" tableName="CHARMS_MESSAGES"/>
+    </changeSet>
+
+    <changeSet id="initial-54" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><primaryKeyExists primaryKeyName="SYS_C00186048" schemaName="CAMS" tableName="CHREQ_PROD_ERRORS"/></not>
+        </preConditions>
+        <addPrimaryKey columnNames="PRODUCT_ID_, POSITION_" constraintName="SYS_C00186048" schemaName="CAMS" tableName="CHREQ_PROD_ERRORS"/>
+    </changeSet>
+
+    <changeSet id="initial-55" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><primaryKeyExists primaryKeyName="SYS_C00186052" schemaName="CAMS" tableName="CHREQ_PROD_UNITS"/></not>
+        </preConditions>
+        <addPrimaryKey columnNames="PRODUCT_ID_, POSITION_" constraintName="SYS_C00186052" schemaName="CAMS" tableName="CHREQ_PROD_UNITS"/>
+    </changeSet>
+
+
+
+    <!--
+
+      add foreign keys
+
+     -->
+    <changeSet id="initial-56" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKA2D54FC4BD0A4A2E" foreignKeyTableName="CHARMS_CHILDROLES" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="CHILD_ID_" baseTableName="CHARMS_CHILDROLES" baseTableSchemaName="CAMS" constraintName="FKA2D54FC4BD0A4A2E" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE"/>
+    </changeSet>
+
+    <changeSet id="initial-57" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKA2D54FC4B420E6BC" foreignKeyTableName="CHARMS_CHILDROLES" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="PARENT_ID_" baseTableName="CHARMS_CHILDROLES" baseTableSchemaName="CAMS" constraintName="FKA2D54FC4B420E6BC" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE"/>
+    </changeSet>
+
+    <changeSet id="initial-58" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK74FA867E36732CF6" foreignKeyTableName="CHARMS_DOCUMENT" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="DOC_BLOB_ID_" baseTableName="CHARMS_DOCUMENT" baseTableSchemaName="CAMS" constraintName="FK74FA867E36732CF6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_DOC_BLB"/>
+    </changeSet>
+
+    <changeSet id="initial-59" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK74FA867E65F35154" foreignKeyTableName="CHARMS_DOCUMENT" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="EDITOR_ID_" baseTableName="CHARMS_DOCUMENT" baseTableSchemaName="CAMS" constraintName="FK74FA867E65F35154" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER"/>
+    </changeSet>
+    <changeSet id="initial-60" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK74FA867EDAD4E6F6" foreignKeyTableName="CHARMS_DOCUMENT" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="FOLDER_ID_" baseTableName="CHARMS_DOCUMENT" baseTableSchemaName="CAMS" constraintName="FK74FA867EDAD4E6F6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_FOLDER"/>
+    </changeSet>
+
+    <changeSet id="initial-61" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK1A3A75254AE5E2" foreignKeyTableName="CHARMS_ETMPL_RCVR" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="TEMPLATE_ID_" baseTableName="CHARMS_ETMPL_RCVR" baseTableSchemaName="CAMS" constraintName="FK1A3A75254AE5E2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ETMPL"/>
+    </changeSet>
+
+    <changeSet id="initial-62" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK34FC5C0254AE5E2" foreignKeyTableName="CHARMS_ETMPL_TRANS" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="TEMPLATE_ID_" baseTableName="CHARMS_ETMPL_TRANS" baseTableSchemaName="CAMS" constraintName="FK34FC5C0254AE5E2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ETMPL"/>
+    </changeSet>
+
+    <changeSet id="initial-63" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK7CFD291FD9A5532" foreignKeyTableName="CHARMS_FOLDER" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="PARENT_ID_" baseTableName="CHARMS_FOLDER" baseTableSchemaName="CAMS" constraintName="FK7CFD291FD9A5532" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_FOLDER"/>
+    </changeSet>
+
+    <changeSet id="initial-64" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK7CFD29123DF16A" foreignKeyTableName="CHARMS_FOLDER" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="ROOT_ID_" baseTableName="CHARMS_FOLDER" baseTableSchemaName="CAMS" constraintName="FK7CFD29123DF16A" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_FOLDER"/>
+    </changeSet>
+    <changeSet id="initial-65" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK1236C79B2D29888" foreignKeyTableName="CHARMS_MEMBERSHIP" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="ROLE_ID_" baseTableName="CHARMS_MEMBERSHIP" baseTableSchemaName="CAMS" constraintName="FK1236C79B2D29888" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE"/>
+    </changeSet>
+
+    <changeSet id="initial-66" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK1236C79B2D5BCB2" foreignKeyTableName="CHARMS_MEMBERSHIP" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="USER_ID_" baseTableName="CHARMS_MEMBERSHIP" baseTableSchemaName="CAMS" constraintName="FK1236C79B2D5BCB2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER"/>
+    </changeSet>
+
+    <changeSet id="initial-67" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK2612B6AF63D6AEF1" foreignKeyTableName="CHARMS_MESSAGES" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="MSG_BUNDLE_ID_" baseTableName="CHARMS_MESSAGES" baseTableSchemaName="CAMS" constraintName="FK2612B6AF63D6AEF1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_MSGBUNDLE"/>
+    </changeSet>
+
+    <changeSet id="initial-68" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK6777188DD2D057F" foreignKeyTableName="CHARMS_PROP_VAL" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="SET_ID_" baseTableName="CHARMS_PROP_VAL" baseTableSchemaName="CAMS" constraintName="FK6777188DD2D057F" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_PROP_SET"/>
+    </changeSet>
+
+    <changeSet id="initial-69" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK1BBF0B5731F8FD1" foreignKeyTableName="CHARMS_REPORT" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="REPORT_BLOB_ID_" baseTableName="CHARMS_REPORT" baseTableSchemaName="CAMS" constraintName="FK1BBF0B5731F8FD1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_RPT_BLB"/>
+    </changeSet>
+
+    <changeSet id="initial-70" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK988D6F81F46918A6" foreignKeyTableName="CHARMS_TRGT_ACT" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="TARGET_ID_" baseTableName="CHARMS_TRGT_ACT" baseTableSchemaName="CAMS" constraintName="FK988D6F81F46918A6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_PERM_TARGET"/>
+    </changeSet>
+
+    <changeSet id="initial-71" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK5E7D28AFEE5AD6DE" foreignKeyTableName="CHARMS_WFL_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="FINISH_USER_ID_" baseTableName="CHARMS_WFL_DATA" baseTableSchemaName="CAMS" constraintName="FK5E7D28AFEE5AD6DE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER"/>
+    </changeSet>
+
+    <changeSet id="initial-72" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK5E7D28AFA80948F9" foreignKeyTableName="CHARMS_WFL_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="SUBMIT_USER_ID_" baseTableName="CHARMS_WFL_DATA" baseTableSchemaName="CAMS" constraintName="FK5E7D28AFA80948F9" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER"/>
+    </changeSet>
+
+    <changeSet id="initial-73" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKBA395630674B0A02" foreignKeyTableName="CHREQ_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="ASSIGN_USER_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA395630674B0A02" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER"/>
+    </changeSet>
+
+    <changeSet id="initial-74" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKBA395630E324318E" foreignKeyTableName="CHREQ_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="ERROR_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA395630E324318E" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_ERROR"/>
+    </changeSet>
+
+    <changeSet id="initial-75" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKBA39563049EAE22" foreignKeyTableName="CHREQ_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA39563049EAE22" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_WFL_DATA"/>
+    </changeSet>
+
+    <changeSet id="initial-76" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKBA395630A7B2B84E" foreignKeyTableName="CHREQ_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="IMPLEMENT_USER_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA395630A7B2B84E" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER"/>
+    </changeSet>
+
+    <changeSet id="initial-77" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKBA39563084BA3798" foreignKeyTableName="CHREQ_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="INITIATE_USER_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA39563084BA3798" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER"/>
+    </changeSet>
+
+    <changeSet id="initial-78" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKBA39563040679C82" foreignKeyTableName="CHREQ_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="PROCESS_USER_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA39563040679C82" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER"/>
+    </changeSet>
+
+    <changeSet id="initial-79" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKBA395630C90BD99C" foreignKeyTableName="CHREQ_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA395630C90BD99C" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_PROD"/>
+    </changeSet>
+
+    <changeSet id="initial-80" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKBA395630E4C7B434" foreignKeyTableName="CHREQ_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="UNIT_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA395630E4C7B434" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_UNIT"/>
+    </changeSet>
+
+    <changeSet id="initial-81" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKDFC3872E6AF4F41F" foreignKeyTableName="CHREQ_MSG_ENTRY" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="PARENT_ID_" baseTableName="CHREQ_MSG_ENTRY" baseTableSchemaName="CAMS" constraintName="FKDFC3872E6AF4F41F" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_MSG_ENTRY"/>
+    </changeSet>
+
+    <changeSet id="initial-82" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKC4B0F40DE324318E" foreignKeyTableName="CHREQ_PROD_ERRORS" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="ERROR_ID_" baseTableName="CHREQ_PROD_ERRORS" baseTableSchemaName="CAMS" constraintName="FKC4B0F40DE324318E" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_ERROR"/>
+    </changeSet>
+
+    <changeSet id="initial-83" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FKC4B0F40DC90BD99C" foreignKeyTableName="CHREQ_PROD_ERRORS" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID_" baseTableName="CHREQ_PROD_ERRORS" baseTableSchemaName="CAMS" constraintName="FKC4B0F40DC90BD99C" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_PROD"/>
+    </changeSet>
+
+    <changeSet id="initial-84" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK38C4326DC90BD99C" foreignKeyTableName="CHREQ_PROD_UNITS" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID_" baseTableName="CHREQ_PROD_UNITS" baseTableSchemaName="CAMS" constraintName="FK38C4326DC90BD99C" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_PROD"/>
+    </changeSet>
+
+    <changeSet id="initial-85" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK38C4326DE4C7B434" foreignKeyTableName="CHREQ_PROD_UNITS" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="UNIT_ID_" baseTableName="CHREQ_PROD_UNITS" baseTableSchemaName="CAMS" constraintName="FK38C4326DE4C7B434" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_UNIT"/>
+    </changeSet>
+
+    <changeSet id="initial-86" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_DEPLPROP_DEPL" foreignKeyTableName="JBPM4_DEPLOYPROP" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="DEPLOYMENT_" baseTableName="JBPM4_DEPLOYPROP" baseTableSchemaName="CAMS" constraintName="FK_DEPLPROP_DEPL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_DEPLOYMENT"/>
+    </changeSet>
+
+    <changeSet id="initial-87" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_EXEC_INSTANCE" foreignKeyTableName="JBPM4_EXECUTION" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="INSTANCE_" baseTableName="JBPM4_EXECUTION" baseTableSchemaName="CAMS" constraintName="FK_EXEC_INSTANCE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION"/>
+    </changeSet>
+
+    <changeSet id="initial-88" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_EXEC_PARENT" foreignKeyTableName="JBPM4_EXECUTION" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="PARENT_" baseTableName="JBPM4_EXECUTION" baseTableSchemaName="CAMS" constraintName="FK_EXEC_PARENT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION"/>
+    </changeSet>
+
+    <changeSet id="initial-89" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_EXEC_SUBPI" foreignKeyTableName="JBPM4_EXECUTION" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="SUBPROCINST_" baseTableName="JBPM4_EXECUTION" baseTableSchemaName="CAMS" constraintName="FK_EXEC_SUBPI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION"/>
+    </changeSet>
+
+    <changeSet id="initial-90" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_EXEC_SUPEREXEC" foreignKeyTableName="JBPM4_EXECUTION" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="SUPEREXEC_" baseTableName="JBPM4_EXECUTION" baseTableSchemaName="CAMS" constraintName="FK_EXEC_SUPEREXEC" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION"/>
+    </changeSet>
+
+    <changeSet id="initial-91" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_HACTI_HPROCI" foreignKeyTableName="JBPM4_HIST_ACTINST" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="HPROCI_" baseTableName="JBPM4_HIST_ACTINST" baseTableSchemaName="CAMS" constraintName="FK_HACTI_HPROCI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_PROCINST"/>
+    </changeSet>
+
+    <changeSet id="initial-92" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_HTI_HTASK" foreignKeyTableName="JBPM4_HIST_ACTINST" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="HTASK_" baseTableName="JBPM4_HIST_ACTINST" baseTableSchemaName="CAMS" constraintName="FK_HTI_HTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK"/>
+    </changeSet>
+
+    <changeSet id="initial-93" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_HDETAIL_HACTI" foreignKeyTableName="JBPM4_HIST_DETAIL" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="HACTI_" baseTableName="JBPM4_HIST_DETAIL" baseTableSchemaName="CAMS" constraintName="FK_HDETAIL_HACTI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_ACTINST"/>
+    </changeSet>
+
+    <changeSet id="initial-94" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_HDETAIL_HPROCI" foreignKeyTableName="JBPM4_HIST_DETAIL" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="HPROCI_" baseTableName="JBPM4_HIST_DETAIL" baseTableSchemaName="CAMS" constraintName="FK_HDETAIL_HPROCI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_PROCINST"/>
+    </changeSet>
+
+    <changeSet id="initial-95" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_HDETAIL_HTASK" foreignKeyTableName="JBPM4_HIST_DETAIL" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="HTASK_" baseTableName="JBPM4_HIST_DETAIL" baseTableSchemaName="CAMS" constraintName="FK_HDETAIL_HTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK"/>
+    </changeSet>
+
+    <changeSet id="initial-96" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_HDETAIL_HVAR" foreignKeyTableName="JBPM4_HIST_DETAIL" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="HVAR_" baseTableName="JBPM4_HIST_DETAIL" baseTableSchemaName="CAMS" constraintName="FK_HDETAIL_HVAR" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_VAR"/>
+    </changeSet>
+
+    <changeSet id="initial-97" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_HSUPERT_SUB" foreignKeyTableName="JBPM4_HIST_TASK" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="SUPERTASK_" baseTableName="JBPM4_HIST_TASK" baseTableSchemaName="CAMS" constraintName="FK_HSUPERT_SUB" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK"/>
+    </changeSet>
+
+    <changeSet id="initial-98" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_HVAR_HPROCI" foreignKeyTableName="JBPM4_HIST_VAR" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="HPROCI_" baseTableName="JBPM4_HIST_VAR" baseTableSchemaName="CAMS" constraintName="FK_HVAR_HPROCI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_PROCINST"/>
+    </changeSet>
+
+    <changeSet id="initial-99" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_HVAR_HTASK" foreignKeyTableName="JBPM4_HIST_VAR" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="HTASK_" baseTableName="JBPM4_HIST_VAR" baseTableSchemaName="CAMS" constraintName="FK_HVAR_HTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK"/>
+    </changeSet>
+
+    <changeSet id="initial-100" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_JOB_CFG" foreignKeyTableName="JBPM4_JOB" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="CFG_" baseTableName="JBPM4_JOB" baseTableSchemaName="CAMS" constraintName="FK_JOB_CFG" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_LOB"/>
+    </changeSet>
+
+    <changeSet id="initial-101" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_LOB_DEPLOYMENT" foreignKeyTableName="JBPM4_LOB" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="DEPLOYMENT_" baseTableName="JBPM4_LOB" baseTableSchemaName="CAMS" constraintName="FK_LOB_DEPLOYMENT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_DEPLOYMENT"/>
+    </changeSet>
+
+    <changeSet id="initial-102" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_PART_SWIMLANE" foreignKeyTableName="JBPM4_PARTICIPATION" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="SWIMLANE_" baseTableName="JBPM4_PARTICIPATION" baseTableSchemaName="CAMS" constraintName="FK_PART_SWIMLANE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_SWIMLANE"/>
+    </changeSet>
+
+    <changeSet id="initial-103" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_PART_TASK" foreignKeyTableName="JBPM4_PARTICIPATION" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="TASK_" baseTableName="JBPM4_PARTICIPATION" baseTableSchemaName="CAMS" constraintName="FK_PART_TASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_TASK"/>
+    </changeSet>
+
+    <changeSet id="initial-104" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_SWIMLANE_EXEC" foreignKeyTableName="JBPM4_SWIMLANE" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="EXECUTION_" baseTableName="JBPM4_SWIMLANE" baseTableSchemaName="CAMS" constraintName="FK_SWIMLANE_EXEC" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION"/>
+    </changeSet>
+
+    <changeSet id="initial-105" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_TASK_SUPERTASK" foreignKeyTableName="JBPM4_TASK" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="SUPERTASK_" baseTableName="JBPM4_TASK" baseTableSchemaName="CAMS" constraintName="FK_TASK_SUPERTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_TASK"/>
+    </changeSet>
+
+    <changeSet id="initial-106" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_TASK_SWIML" foreignKeyTableName="JBPM4_TASK" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="SWIMLANE_" baseTableName="JBPM4_TASK" baseTableSchemaName="CAMS" constraintName="FK_TASK_SWIML" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_SWIMLANE"/>
+    </changeSet>
+
+    <changeSet id="initial-107" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_VAR_EXECUTION" foreignKeyTableName="JBPM4_VARIABLE" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="EXECUTION_" baseTableName="JBPM4_VARIABLE" baseTableSchemaName="CAMS" constraintName="FK_VAR_EXECUTION" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION"/>
+    </changeSet>
+
+    <changeSet id="initial-108" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_VAR_EXESYS" foreignKeyTableName="JBPM4_VARIABLE" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="EXESYS_" baseTableName="JBPM4_VARIABLE" baseTableSchemaName="CAMS" constraintName="FK_VAR_EXESYS" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION"/>
+    </changeSet>
+
+    <changeSet id="initial-109" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_VAR_LOB" foreignKeyTableName="JBPM4_VARIABLE" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="LOB_" baseTableName="JBPM4_VARIABLE" baseTableSchemaName="CAMS" constraintName="FK_VAR_LOB" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_LOB"/>
+    </changeSet>
+
+    <changeSet id="initial-110" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK_VAR_TASK" foreignKeyTableName="JBPM4_VARIABLE" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="TASK_" baseTableName="JBPM4_VARIABLE" baseTableSchemaName="CAMS" constraintName="FK_VAR_TASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_TASK"/>
+    </changeSet>
+
+    <changeSet id="initial-111" author="michael">
+        <preConditions onFail="MARK_RAN">
+            <not><foreignKeyConstraintExists foreignKeyName="FK5B1E838349EAE22" foreignKeyTableName="TODOL_DATA" schemaName="CAMS"/></not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="ID_" baseTableName="TODOL_DATA" baseTableSchemaName="CAMS" constraintName="FK5B1E838349EAE22" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_WFL_DATA"/>
+    </changeSet>
+
+
+    <!--
+
+     some more indexes
+     indexExists seems to be broken in 2.0rc2 so we use failOnError="false"
+     -->
+    <changeSet id="initial-112" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00185962" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00185962" schemaName="CAMS" tableName="CHARMS_MSGBUNDLE" unique="false" >
+            <column name="NAME_"/>
+            <column name="LOCALE_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-113" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00185969" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00185969" schemaName="CAMS" tableName="CHARMS_PERMISSION" unique="false">
+            <column name="RECIPIENT_"/>
+            <column name="DISCRIMINATOR_"/>
+            <column name="TARGET_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-114" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00185973" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00185973" schemaName="CAMS" tableName="CHARMS_PERM_TARGET" unique="false">
+            <column name="TARGET_STRING_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-115" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00185977" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00185977" schemaName="CAMS" tableName="CHARMS_PROP_SET" unique="false">
+            <column name="NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-116" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00185978" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00185978" schemaName="CAMS" tableName="CHARMS_PROP_SET" unique="false">
+            <column name="NAME_"/>
+            <column name="PROP_TYPE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-117" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00185987" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00185987" schemaName="CAMS" tableName="CHARMS_REPORT" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-118" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00185988" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00185988" schemaName="CAMS" tableName="CHARMS_REPORT" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-119" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00185994" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00185994" schemaName="CAMS" tableName="CHARMS_ROLE" unique="false">
+            <column name="GRP_ACTOR_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-120" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00185995" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00185995" schemaName="CAMS" tableName="CHARMS_ROLE" unique="false">
+            <column name="NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-121" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186002" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186002" schemaName="CAMS" tableName="CHARMS_TRGT_ACT" unique="false">
+            <column name="NAME_"/>
+            <column name="TARGET_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-122" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186008" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186008" schemaName="CAMS" tableName="CHARMS_UID" unique="false">
+            <column name="SEQUENCE_TYPE_"/>
+            <column name="VALUE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-123" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186013" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186013" schemaName="CAMS" tableName="CHARMS_USER" unique="false">
+            <column name="ACTOR_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-124" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186014" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186014" schemaName="CAMS" tableName="CHARMS_USER" unique="false">
+            <column name="NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-125" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186027" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186027" schemaName="CAMS" tableName="CHREQ_ERROR" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-126" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186028" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186028" schemaName="CAMS" tableName="CHREQ_ERROR" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-127" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186032" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186032" schemaName="CAMS" tableName="CHREQ_FACET_DATA" unique="false">
+            <column name="TID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-128" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186043" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186043" schemaName="CAMS" tableName="CHREQ_PROD" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-129" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186044" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186044" schemaName="CAMS" tableName="CHREQ_PROD" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-130" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186057" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186057" schemaName="CAMS" tableName="CHREQ_UNIT" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-131" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186058" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186058" schemaName="CAMS" tableName="CHREQ_UNIT" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-132" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="SYS_C00186069" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="SYS_C00186069" schemaName="CAMS" tableName="JBPM4_EXECUTION" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-133" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="IDX_JOBDUEDATE" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="IDX_JOBDUEDATE" schemaName="CAMS" tableName="JBPM4_JOB" unique="false">
+            <column name="DUEDATE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-134" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="IDX_JOBLOCKEXP" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="IDX_JOBLOCKEXP" schemaName="CAMS" tableName="JBPM4_JOB" unique="false">
+            <column name="LOCKEXPTIME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-135" author="michael" failOnError="false" >
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="IDX_JOBRETRIES" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="IDX_JOBRETRIES" schemaName="CAMS" tableName="JBPM4_JOB" unique="false">
+            <column name="RETRIES_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-136" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="IDX_JOB_EXE" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="IDX_JOB_EXE" schemaName="CAMS" tableName="JBPM4_JOB" unique="false">
+            <column name="EXECUTION_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="initial-137" author="michael" failOnError="false">
+        <preConditions onFail="MARK_RAN">
+            <not><indexExists indexName="IDX_JOB_PRINST" schemaName="CAMS" /></not>
+        </preConditions>
+        <createIndex indexName="IDX_JOB_PRINST" schemaName="CAMS" tableName="JBPM4_JOB" unique="false">
+            <column name="PROCESSINSTANCE_"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

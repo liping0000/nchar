@@ -1,0 +1,219 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.home.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.home.title']}" />
+
+<ui:define name="body">
+
+    <h:panelGrid columns="2" style="width: 600px;">
+
+      <s:div style="padding: 15px 0px 20px 0px;">
+
+        <!--  ########### Open Tasks ##############  -->
+
+        <s:link action="viewTaskList">
+          <h:graphicImage url="/img/iconsets/glossy/48/calendar.png" border="0"/>
+        </s:link>
+      </s:div>
+
+      <s:div style="padding: 0px 10px 10px 10px;">
+
+        <h2><h:outputText value="#{messages['page.user.tasks.title']}" /></h2>
+        <s:link action="viewUnblockedTaskList"
+                rendered="#{usersStatistics.unblockedTaskCount == 1}">
+          <h:outputText value="Sie haben eine offene Aufgabe die jetzt von Ihnen weiter bearbeitet werden kann." />
+        </s:link>
+        <s:link action="viewUnblockedTaskList"
+                rendered="#{usersStatistics.unblockedTaskCount > 1}">
+          <h:outputText value="Sie haben #{usersStatistics.unblockedTaskCount} offene Aufgaben die jetzt von Ihnen weiter bearbeitet werden können." />
+        </s:link>
+        <s:span  rendered="#{usersStatistics.unblockedTaskCount > 0}">
+          <br />
+        </s:span>
+
+        <s:link action="viewBlockedTaskList"
+                rendered="#{usersStatistics.blockedTaskCount == 1}">
+          <h:outputText value="Sie haben eine offene Aufgabe für die noch mindestens eine Rückmeldung aussteht." />
+        </s:link>
+        <s:link action="viewBlockedTaskList"
+                rendered="#{usersStatistics.blockedTaskCount > 1}">
+          <h:outputText value="Sie haben #{usersStatistics.blockedTaskCount} offene Aufgaben für die noch Rückmeldungen ausstehen." />
+        </s:link>
+        <s:span rendered="#{usersStatistics.blockedTaskCount > 0}">
+          <br />
+        </s:span>
+
+        <h:outputText value="Sie haben im Moment keine offenen Aufgaben."
+                      rendered="#{usersStatistics.blockedTaskCount + usersStatistics.unblockedTaskCount == 0}"/>
+        <s:span rendered="#{usersStatistics.blockedTaskCount + usersStatistics.unblockedTaskCount > 0}" >
+          <br/>
+        </s:span>
+
+      </s:div>
+
+
+      <s:div style="padding: 15px 0px 10px 0px;" rendered="#{s:hasPermission('changerequest.start', 'do')}">
+
+        <!--  ########### New Request ##############  -->
+
+        <s:link action="startProcess">
+          <f:param name="pdName" value="ChangeRequest"/>
+          <h:graphicImage url="/img/iconsets/glossy/48/editors.png" border="0"/>
+        </s:link>
+      </s:div>
+
+      <s:div style="padding: 0px 10px 10px 10px;" rendered="#{s:hasPermission('changerequest.start', 'do')}">
+        <h2><h:outputText value="#{messages['page.workflow.changerequest.start.title']}" /></h2>
+        <s:link action="viewDrafts"
+                rendered="#{usersStatistics.allDraftTasks > 1}">
+          <h:outputText value="Sie haben #{usersStatistics.allDraftTasks} Entwürfe gespeichert die Sie als Antrag einreichen können." />
+        </s:link>
+        <s:link action="viewDrafts"
+                rendered="#{usersStatistics.allDraftTasks == 1}">
+          <h:outputText value="Sie haben einen Entwurf gespeichert den Sie als Antrag einreichen können." />
+        </s:link>
+        <s:span rendered="#{usersStatistics.allDraftTasks > 0}" >
+          <br/>
+        </s:span>
+
+        <s:link action="startProcess">
+          <f:param name="pdName" value="ChangeRequest"/>
+          <h:outputText value="Sie können einen neuen Änderungsantrag erstellen." />
+        </s:link>
+        <br />
+      </s:div>
+
+
+
+
+      <s:div style="padding: 15px 0px 10px 0px; ">
+
+        <!--  ###########  My Requests ##############  -->
+
+        <s:link action="viewUserProcList">
+          <h:graphicImage url="/img/iconsets/glossy/48/documents.png" border="0"/>
+        </s:link>
+      </s:div>
+
+      <s:div style="padding: 0px 10px 10px 10px; ">
+        <h2><h:outputText value="#{messages['page.workflow.changerequest.userList.title']}" /></h2>
+
+        <s:link action="viewOngoing"
+                rendered="#{usersStatistics.allOngoingRequests > 1}">
+          <h:outputText value="Von Ihren Anträgen sind #{usersStatistics.allOngoingRequests} noch in Bearbeitung." />
+        </s:link>
+        <s:link action="viewOngoing"
+                rendered="#{usersStatistics.allOngoingRequests == 1}">
+          <h:outputText value="Einer Ihrer Anträge ist noch in Bearbeitung." />
+        </s:link>
+        <s:span rendered="#{usersStatistics.allOngoingRequests > 0}" >
+          <br/>
+        </s:span>
+
+        <s:link action="viewComplete"
+                rendered="#{usersStatistics.allCompletedRequests > 1}">
+          <h:outputText value="Von Ihren Anträgen sind #{usersStatistics.allCompletedRequests} bereits abgeschlossen." />
+        </s:link>
+        <s:link action="viewComplete"
+                rendered="#{usersStatistics.allCompletedRequests == 1}">
+          <h:outputText value="Einer Ihrer Anträge ist abgeschlossen." />
+        </s:link>
+        <s:span rendered="#{usersStatistics.allCompletedRequests > 0}" >
+          <br/>
+        </s:span>
+      </s:div>
+
+
+      <s:div style="padding: 15px 0px 10px 0px;" rendered="#{s:hasPermission('charms.chart','view')}">
+
+        <!--  ############  Charts #############  -->
+
+        <s:link view="/pages/user/charts.html">
+          <h:graphicImage url="/img/iconsets/glossy/48/chart.png" border="0"/>
+        </s:link>
+      </s:div>
+
+      <s:div style="padding: 0px 10px 10px 10px;" rendered="#{s:hasPermission('charms.chart','view')}">
+        <h2><h:outputText value="#{messages['page.user.charts.title']}" /></h2>
+      </s:div>
+
+
+      <s:div style="padding: 15px 0px 10px 0px;" rendered="#{identity.hasAnyPermission('charms.search','submitted,participated,all')}">
+
+        <!--  ############# Search ############  -->
+
+        <s:link view="/pages/user/search.html">
+          <h:graphicImage url="/img/iconsets/glossy/48/search.png" border="0"/>
+        </s:link>
+      </s:div>
+
+      <s:div style="padding: 0px 10px 10px 10px;" rendered="#{identity.hasAnyPermission('charms.search','submitted,participated,all')}">
+        <h2><h:outputText value="#{messages['page.user.search.title']}" /></h2>
+
+    <!-- display a note indicating whatever the current user may search -->
+
+    <!-- user has "all" permission -->
+    <s:fragment rendered="#{s:hasPermission('charms.search','all')}">
+      <s:link view="/pages/user/search.html">
+        <h:outputText value="#{messages['page.user.searchpermission.all']}"/>
+      </s:link>
+    </s:fragment>
+
+    <!-- user doesn't have "all" permission but "participated" permission -->
+    <s:fragment rendered="#{not s:hasPermission('charms.search','all') and s:hasPermission('charms.search','participated')}">
+      <s:link view="/pages/user/search.html">
+        <h:outputText value="#{messages['page.user.searchpermission.participated']}"/>
+      </s:link>
+    </s:fragment>
+
+    <!-- user doesn't have "all" or "participated" permission but "submitted" permission -->
+    <s:fragment rendered="#{not s:hasPermission('charms.search','all') and not s:hasPermission('charms.search','participated') and s:hasPermission('charms.search','submitted')}">
+      <s:link view="/pages/user/search.html">
+        <h:outputText value="#{messages['page.user.searchpermission.submitted']}"/>
+      </s:link>
+    </s:fragment>
+
+      </s:div>
+
+
+
+      <s:div style="padding: 15px 0px 10px 0px; ">
+
+        <!--  ############# Settings ############  -->
+
+        <s:link view="/pages/user/preferences.html">
+          <h:graphicImage url="/img/iconsets/glossy/48/settings.png" border="0"/>
+        </s:link>
+      </s:div>
+
+      <s:div style="padding: 0px 10px 10px 10px; ">
+        <h2><h:outputText value="#{messages['page.user.preferences.title']}" /></h2>
+      </s:div>
+
+
+      <s:div style="padding: 15px 0px 10px 0px; ">
+
+        <!--  ############ Logout #############  -->
+
+        <s:link view="/pages/doLogout.html">
+          <h:graphicImage url="/img/iconsets/glossy/48/exit.png" border="0"/>
+        </s:link>
+      </s:div>
+
+      <s:div style="padding: 0px 10px 10px 10px; ">
+        <h2><h:outputText value="#{messages['page.logout.title']}" /></h2>
+      </s:div>
+
+
+
+   </h:panelGrid>
+
+
+</ui:define>
+</ui:composition>

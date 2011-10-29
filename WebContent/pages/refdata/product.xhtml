@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.refdata.products.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.refdata.products.title']}" />
+
+<ui:define name="body">
+
+
+<h:form>
+
+  <s:decorate id="defaultNameField"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['changeRequestProduct.defaultName']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{changeRequestProduct.defaultName}"
+                  styleClass="inputtext" >
+     </h:inputText>
+  </s:decorate>
+
+
+  <ui:repeat value="#{changeRequestProductHome.translations.keySet().toArray()}" var="key">
+    <s:decorate template="/layout/fragments/imageproperty.xhtml">
+       <ui:define name="label"><h:graphicImage url="/img/locales/locale_#{key}.gif" /></ui:define>
+       <h:inputText value="#{changeRequestProductHome.translations[key]}"
+                    styleClass="inputtext" >
+       </h:inputText>
+    </s:decorate>
+  </ui:repeat>
+  <br />
+
+
+  <s:decorate id="enabledField"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="aktiv" /></ui:define>
+     <h:selectBooleanCheckbox value="#{changeRequestProduct.enabled}" styleClass="checkbox" />
+  </s:decorate>
+  <br />
+
+
+  <s:decorate id="unitsProperty"
+              template="/layout/fragments/editshuttle.xhtml" >
+     <ui:define name="label"><h:outputText value="#{messages['changeRequestProduct.units']}"/></ui:define>
+     <rich:listShuttle sourceValue="#{changeRequestProductHome.availableUnitItems}"
+                       targetValue="#{changeRequestProductHome.selectedUnitItems}"
+                       converter="#{changeRequestProductHome.changeRequestUnitItemConverter}"
+                       sourceRequired="false"
+                       targetRequired="false"
+                       sourceCaptionLabel="#{messages['page.refdata.products.availableUnitItems']}"
+                       targetCaptionLabel="#{messages['page.refdata.products.selectedUnitItems']}"
+                       orderControlsVisible="true"
+                       fastOrderControlsVisible="true"
+                       required="false"
+                       var="item"
+                       sourceListWidth="170px"
+                       targetListWidth="170px">
+        <rich:column >
+           <h:outputText value="#{item.label}" />
+        </rich:column>
+     </rich:listShuttle>
+  </s:decorate>
+
+
+  <s:decorate id="codesProperty"
+              template="/layout/fragments/editshuttle.xhtml" >
+     <ui:define name="label"><h:outputText value="#{messages['changeRequestProduct.codes']}"/></ui:define>
+     <rich:listShuttle sourceValue="#{changeRequestProductHome.availableCodeItems}"
+                       targetValue="#{changeRequestProductHome.selectedCodeItems}"
+                       converter="#{changeRequestProductHome.changeRequestCodeItemConverter}"
+                       sourceRequired="false"
+                       targetRequired="false"
+                       sourceCaptionLabel="#{messages['page.refdata.products.availableCodeItems']}"
+                       targetCaptionLabel="#{messages['page.refdata.products.selectedCodeItems']}"
+                       orderControlsVisible="true"
+                       fastOrderControlsVisible="true"
+                       required="false"
+                       var="item"
+                       sourceListWidth="170px"
+                       targetListWidth="170px">
+        <rich:column >
+           <h:outputText value="#{item.label}" />
+        </rich:column>
+     </rich:listShuttle>
+  </s:decorate>
+  <br />
+
+
+  <h:outputText value="#{messages['form.mandatory']}"
+                escape="false" />
+
+  <br/>
+  <br/>
+  <br/>
+
+
+        <div class="actionButtons">
+
+            <!-- persist for unmanaged bean -->
+            <h:commandButton styleClass="button"
+                             id="persist"
+                             value="#{messages['action.persist']}"
+                             action="#{changeRequestProductHome.persist()}"
+                             rendered="#{not changeRequestProductHome.managed}">
+               <f:param name="productId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- update for managed bean -->
+            <h:commandButton styleClass="button"
+                             id="update"
+                             value="#{messages['action.update']}"
+                             action="#{changeRequestProductHome.update()}"
+                             rendered="#{changeRequestProductHome.managed}">
+               <f:param name="productId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- remove the managed bean -->
+            <h:commandButton styleClass="button"
+                             id="remove"
+                             value="#{messages['action.remove']}"
+                             action="#{changeRequestProductHome.remove()}"
+                             immediate="true"
+                             rendered="#{changeRequestProductHome.managed}">
+              <f:param name="productId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="cancel"
+                             value="#{messages['action.cancel']}"
+                             action="#{changeRequestProductHome.cancel()}"
+                             immediate="true">
+              <f:param name="productId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+        </div>
+
+
+    </h:form>
+
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:a4j="http://richfaces.org/a4j">
+
+<tr>
+  <td>
+    <s:decorate id="goodwillCheckbox"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.goodwill']}" /></ui:define>
+      <h:selectBooleanCheckbox value="#{changeRequestData.goodwill}"
+                               readonly="#{readonly?'true':'false'}"
+                               disabled="#{readonly?'true':'false'}"
+                               styleClass="checkbox#{readonly?' readonly':''}"><!-- hack for IE6 -->
+               <a4j:support event="onclick"
+                            reRender="goodwillMemo"
+                            ajaxSingle="true"
+                            limitToList="true" />
+      </h:selectBooleanCheckbox>
+  </s:decorate>
+  </td>
+  <td>
+    <s:decorate id="goodwillMemo"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.goodwillText']}" /></ui:define>
+      <h:inputTextarea value="#{changeRequestData.goodwillText}"
+                       readonly="#{readonly?'true':'false'}"
+                       styleClass="#{readonly?'readonly':''}"
+                       required="#{changeRequestData.goodwill}"
+                       requiredMessage="#{messages['changeRequestDataBean.goodwill.requiredMessage']}">
+        <a4j:support event="onblur"
+                     reRender="goodwillMemo"
+                     ajaxSingle="true"
+                     limitToList="true" />
+      </h:inputTextarea>
+    </s:decorate>
+  </td>
+</tr>
+
+</ui:composition>

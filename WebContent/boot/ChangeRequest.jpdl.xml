@@ -1,0 +1,958 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process name="ChangeRequest" >
+
+<!-- 
+
+
+  the following data are available:
+  
+   - changeRequestData: the domain data object
+   - authenticatedUser: configured in the transaction context in jbpm.conf.xml
+   - execution: execution scope
+   - transitionData: task variable with text data (comment) and receiver of the next task
+
+
+   bootup code, business data is injected, first and second transitions
+   are performed automatically
+ 
+ 
+   when using group assignments:
+   String CANDIDATE = "candidate";  
+   String OWNER = "owner";         <- each group member gets its own task/execution
+ 
+   participationRole="candidate" is the default
+   participationRole="owner" is the multi spawn option
+ 
+ -->
+ 
+   <start g="120,0,48,48"
+          name="changerequest.start"
+          form="changerequest/start.html">
+      <transition g="-24,-11" name="toInitialize" to="changerequest.initialize"/>
+   </start>
+
+
+   <automaticTaskActivity g="72,60,145,36"
+           name="changerequest.initialize">
+
+      <script lang="groovy"><text><![CDATA[
+        changeRequestData.setInitiateUser(authenticatedUser);
+        changeRequestData.setInitiateDate(org.jbpm.pvm.internal.util.Clock.getTime());
+      ]]></text></script>
+
+      <on event="toCreateBusinessKey">
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          // set the submit user
+          changeRequestData.setSubmitUser(authenticatedUser);
+          changeRequestData.setSubmitDate(org.jbpm.pvm.internal.util.Clock.getTime());
+        ]]></text></script>
+      </on>
+
+      <on event="toComplete">
+        <script lang="groovy"><text><![CDATA[
+          // remove this call if you don't want a "initial saved" message
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="toCreateBusinessKey2">
+        <script lang="groovy"><text><![CDATA[
+          // remove this call if you don't want a "initial saved" message
+          entryFactory.createMessageEntry(transitionData, execution);
+          // set the submit user
+          changeRequestData.setSubmitUser(authenticatedUser);
+          changeRequestData.setSubmitDate(org.jbpm.pvm.internal.util.Clock.getTime());
+          // set some user in the domain data
+          changeRequestData.setAssignUser(authenticatedUser);
+          changeRequestData.setAssignDate(org.jbpm.pvm.internal.util.Clock.getTime());
+          changeRequestData.setProcessUser(authenticatedUser);
+          changeRequestData.setProcessDate(org.jbpm.pvm.internal.util.Clock.getTime());
+        ]]></text></script>
+      </on>
+
+      <transition g="-13,-26" name="toComplete" to="changerequest.complete"/>
+      <transition g="-9,16" name="toCreateBusinessKey" to="changerequest.createBusinessKey"/>
+      <transition g="-13,-26" name="toCreateBusinessKey2" to="changerequest.createBusinessKey2"/>
+   </automaticTaskActivity>
+
+
+<!-- 
+
+  complete actions
+
+ -->
+
+   <customTaskActivity g="228,108,97,37"
+           name="changerequest.complete"
+           spawnSignals="review"
+           form="changerequest/complete.html">
+
+      <on event="taskNotify">
+        <customMail templateName="changerequest.complete.start"/>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.complete.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          def entry = entryFactory.createMessageEntry(transitionData, execution);
+          entry.setType(net.wohlfart.changerequest.entities.MessageType.FORWARD_DRAFT);
+        ]]></text></script>
+      </on>
+
+      <on event="toCreateBusinessKey">
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          // set the submit user
+          // def authenticatedUser = net.wohlfart.jbpm4.CustomIdentityService.findAuthenticatedUser();
+          changeRequestData.setSubmitUser(authenticatedUser);
+          changeRequestData.setSubmitDate(org.jbpm.pvm.internal.util.Clock.getTime());
+        ]]></text></script>
+      </on>
+
+      <on event="toDiscard">
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          // set the last user
+          // def authenticatedUser = net.wohlfart.jbpm4.CustomIdentityService.findAuthenticatedUser();
+          changeRequestData.setFinishUser(authenticatedUser);
+          changeRequestData.setFinishDate(org.jbpm.pvm.internal.util.Clock.getTime());
+        ]]></text></script>
+      </on>
+
+
+      <on event="review">
+        <customMail templateName="changerequest.complete.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);      
+        ]]></text></script>
+      </on>
+      
+      
+      <!-- testing timeout 
+      <transition name="timeout" to="changerequest.discard">
+          <timer duedate="10 seconds"/>
+     </transition>
+     -->
+
+      <transition g="360,110;360,85;313,86:-45,0" name="forward" to="changerequest.complete">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="-133,-28" name="toCreateBusinessKey" to="changerequest.createBusinessKey" />
+      <transition g="15,-1" name="toDiscard" to="changerequest.discard" />
+      <transition g="-29,6" name="review" to="changerequest.review1">
+         <transitionConfig>
+           <userSelect action="askForHelp" />
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+   <customTaskActivity g="372,108,97,37"
+           name="changerequest.review1"
+           spawnSignals="review"
+           termSignals="reviewed"
+           form="changerequest/review.html">
+
+      <on event="taskNotify">
+        <customMail templateName="changerequest.review1.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.review1.remind"/>
+      </on>
+
+      <on event="taskEnd">
+        <customMail templateName="changerequest.review1.end"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.review1.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+      
+      <on event="review">
+        <customMail templateName="changerequest.complete.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);   
+        ]]></text></script>
+      </on>
+
+      <transition g="505,110;505,85;460,85:-45,0" name="forward" to="changerequest.review1">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      
+      <transition g="502,141;503,163;465,161:-38,-19" name="review" to="changerequest.review1">
+         <transitionConfig>
+           <userSelect />
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+      
+   </customTaskActivity>
+
+
+   <end-cancel g="312,180,48,48" name="changerequest.discard"/>
+
+
+
+
+   <createBusinessKey g="72,168,145,37"
+           name="changerequest.createBusinessKey"
+           prefix="CM"
+           location="KTown">
+
+      <script lang="groovy"><text><![CDATA[
+        // read the business key
+        def businessKey = execution.getProcessInstance().getKey();
+        // set the key in all comonents
+        changeRequestData.setBusinessKey(businessKey);
+        changeRequestFolder.setBusinessKey(businessKey);
+        changeRequestCostSheet.setBusinessKey(businessKey);
+        changeRequestImpactSheet.setBusinessKey(businessKey);
+        changeRequestMessageTree.setBusinessKey(businessKey);
+      ]]></text></script>
+
+      <transition g="-24,-12" name="toAssign" to="changerequest.assign" />
+   </createBusinessKey>
+
+
+
+   <createBusinessKey g="72,168,145,37"
+           name="changerequest.createBusinessKey2"
+           prefix="CM"
+           location="KTown">
+
+      <script lang="groovy"><text><![CDATA[
+        // read the business key
+        def businessKey = execution.getProcessInstance().getKey();
+        // set the key in all comonents
+        changeRequestData.setBusinessKey(businessKey);
+        changeRequestFolder.setBusinessKey(businessKey);
+        changeRequestCostSheet.setBusinessKey(businessKey);
+        changeRequestImpactSheet.setBusinessKey(businessKey);
+        changeRequestMessageTree.setBusinessKey(businessKey);
+      ]]></text></script>
+
+      <transition g="-24,-12" name="toProcess" to="changerequest.process" />
+   </createBusinessKey>
+
+
+   <customTaskActivity g="72,252,145,37"
+           name="changerequest.assign"
+           spawnSignals="review"
+           form="changerequest/assign.html"
+           groupActorName="admin">
+
+      <on event="assign">
+        <script lang="groovy"><text><![CDATA[
+          // System.out.println(" assign event triggered!!! ");
+        ]]></text></script>
+      </on>
+     
+      <on event="taskNotify">
+        <customMail templateName="changerequest.assign.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.assign.remind"/>
+      </on>
+
+      <on event="taskEnd">
+        <customMail templateName="changerequest.assign.end"/>
+      </on>
+
+      <on event="toCancel1">
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          // set the finish user
+          // def authenticatedUser = net.wohlfart.jbpm4.CustomIdentityService.findAuthenticatedUser();
+          changeRequestData.setFinishUser(authenticatedUser);
+          changeRequestData.setFinishDate(org.jbpm.pvm.internal.util.Clock.getTime());
+        ]]></text></script>
+      </on>
+
+
+      <on event="toProcess">
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          // set some user in the domain data
+          changeRequestData.setAssignUser(authenticatedUser);
+          changeRequestData.setAssignDate(org.jbpm.pvm.internal.util.Clock.getTime());
+          changeRequestData.setProcessUser(transitionData.getReceiverUser());
+          changeRequestData.setProcessDate(org.jbpm.pvm.internal.util.Clock.getTime());
+        ]]></text></script>
+      </on>
+
+
+      <on event="forward">
+        <customMail templateName="changerequest.assign.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          changeRequestData.setAssignUser(transitionData.getReceiverUser());
+        ]]></text></script>
+      </on>
+
+      <on event="review">
+        <customMail templateName="changerequest.assign.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry for each subexecution
+          //entryFactory.createMessageEntries(transitionData, execution); 
+          entryFactory.createMessageEntry(transitionData, execution);    
+        ]]></text></script>
+      </on>
+
+      <transition g="253,255;253,230;204,230:-45,0" name="forward" to="changerequest.assign">
+         <transitionConfig>
+           <userSelect groupNames="TQM" />
+         </transitionConfig>
+      </transition>
+      <transition g="-25,-13" name="toProcess" to="changerequest.process">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="-71,-10" name="toCancel1" to="changerequest.cancel1">
+         <transitionConfig />
+      </transition>
+      <transition g="-11,6" name="review" to="changerequest.review2">
+         <transitionConfig>
+           <userSelect />
+           <groupSelect />
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+   <customTaskActivity g="312,252,97,37"
+           name="changerequest.review2"
+           spawnSignals="review"
+           termSignals="reviewed"
+           form="changerequest/review.html">
+
+      <on event="taskNotify">
+        <customMail templateName="changerequest.review2.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.review2.remind"/>
+      </on>
+
+      <on event="taskEnd">
+        <customMail templateName="changerequest.review2.end"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.review2.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+      
+      <on event="review">
+        <customMail templateName="changerequest.review2.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);   
+        ]]></text></script>
+      </on>
+
+      <transition g="443,252;443,230;403,231:-45,0" name="forward" to="changerequest.review2">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="448,278;449,302;406,303:-39,-18" name="review" to="changerequest.review2">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+
+
+   <end-cancel g="12,312,48,48" name="changerequest.cancel1"/>
+
+
+
+   <customTaskActivity g="72,336,145,37"
+           spawnSignals="review"
+           name="changerequest.process"
+           form="changerequest/process.html">
+
+      <on event="taskNotify">
+        <customMail templateName="changerequest.process.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.process.remind"/>
+      </on>
+
+      <on event="taskEnd">
+        <customMail templateName="changerequest.process.end"/>
+      </on>
+
+      <on event="toRealize">
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          //changeRequestData.setFinishUser(authenticatedUser);
+          //changeRequestData.setFinishDate(org.jbpm.pvm.internal.util.Clock.getTime());
+        ]]></text></script>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.process.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          changeRequestData.setProcessUser(transitionData.getReceiverUser());
+        ]]></text></script>
+      </on>
+
+      <on event="toCancel2">
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          // def authenticatedUser = net.wohlfart.jbpm4.CustomIdentityService.findAuthenticatedUser();
+          changeRequestData.setFinishUser(authenticatedUser);
+          changeRequestData.setFinishDate(org.jbpm.pvm.internal.util.Clock.getTime());
+        ]]></text></script>
+      </on>
+
+      <on event="review">
+        <customMail templateName="changerequest.review2.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+
+      <transition g="-37,-11" name="toRealize" to="changerequest.realize" />
+      <transition g="255,337;255,313;207,314:-45,0" name="forward" to="changerequest.process">
+         <transitionConfig>
+            <userSelect />
+            <groupSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="-72,-9" name="toCancel2" to="changerequest.cancel2">
+         <transitionConfig />
+      </transition>
+      <transition g="-13,7" name="review" to="changerequest.review3">
+         <transitionConfig>
+           <userSelect />
+           <groupSelect participationRole="owner" />            
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+
+
+   <customTaskActivity g="312,336,97,37"
+           name="changerequest.review3"
+           spawnSignals="review"
+           termSignals="reviewed"
+           form="changerequest/review.html">
+
+      <on event="taskNotify">
+        <customMail templateName="changerequest.review3.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.review3.remind"/>
+      </on>
+
+      <on event="taskEnd">
+        <customMail templateName="changerequest.review3.end"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.review3.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+      
+      <on event="review">
+        <customMail templateName="changerequest.review3.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <transition g="445,337;445,313;402,314:-45,0" name="forward" to="changerequest.review3">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="447,364;447,392;406,391:-39,-19" name="review" to="changerequest.review3">
+         <transitionConfig>
+           <userSelect />
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+
+   <end-cancel g="12,396,48,48" name="changerequest.cancel2"/>
+
+
+
+   <customTaskActivity g="72,420,145,37"
+           spawnSignals="review, implement, handle"
+           name="changerequest.realize"
+           form="changerequest/realize.html">
+<!--  
+      <script lang="groovy"><text><![CDATA[
+          // a message entry
+          //entryFactory.createMessageEntry(transitionData, execution);
+      ]]></text></script>
+-->
+      <on event="taskNotify">
+        <customMail templateName="changerequest.realize.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.realize.remind"/>
+      </on>
+
+      <on event="toFinish">
+        <customMail templateName="changerequest.realize.finish"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          changeRequestData.setFinishUser(authenticatedUser);
+          changeRequestData.setFinishDate(org.jbpm.pvm.internal.util.Clock.getTime());
+        ]]></text></script>
+      </on>
+      
+      <on event="implement">
+        <customMail templateName="changerequest.realize.implement"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+      
+      <on event="handle">
+        <customMail templateName="changerequest.realize.handle"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.realize.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          changeRequestData.setProcessUser(transitionData.getReceiverUser());
+        ]]></text></script>
+      </on>
+      
+      <on event="transfer">
+        <customMail templateName="changerequest.realize.transfer"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          changeRequestData.setProcessUser(transitionData.getReceiverUser());
+        ]]></text></script>
+      </on>
+       
+      <on event="review">
+        <customMail templateName="changerequest.realize.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <transition g="255,420;255,400;206,400:-45,0" name="forward" to="changerequest.realize">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="255,420;255,400;206,400:-45,0" name="transfer" to="changerequest.realize">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="278,453:-63,2" name="implement" to="changerequest.implement">
+         <transitionConfig>
+           <userSelect />
+           <groupSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="421,446:-45,1" name="handle" to="changerequest.handle1">
+         <transitionConfig>
+           <userSelect />
+           <groupSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="6,46" name="toFinish" to="changerequest.finish">
+         <transitionConfig />
+      </transition>
+      <transition g="-58,1" name="review" to="changerequest.review4">
+         <transitionConfig>
+           <userSelect />
+           <groupSelect />
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+
+   <customTaskActivity g="24,540,97,37"
+           name="changerequest.review4"
+           spawnSignals="review"
+           termSignals="reviewed"
+           form="changerequest/review.html">
+
+      <on event="taskNotify">
+        <customMail templateName="changerequest.review4.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.review4.remind"/>
+      </on>
+
+      <on event="taskEnd">
+        <customMail templateName="changerequest.review4.end"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.review4.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+      
+      <on event="review">
+        <customMail templateName="changerequest.review4.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <transition g="82,600;107,601:-24,0" name="forward" to="changerequest.review4">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="50,600;28,601:-23,0" name="review" to="changerequest.review4">
+         <transitionConfig>
+           <userSelect />
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+
+   <customTaskActivity g="228,468,97,37"
+           spawnSignals="review, handle"
+           termSignals="implemented"
+           name="changerequest.implement"
+           form="changerequest/implement.html">
+
+      <on event="taskNotify">
+        <customMail templateName="changerequest.implement.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.implement.remind"/>
+      </on>
+
+      <on event="taskEnd">
+        <customMail templateName="changerequest.implement.end"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+      
+      <on event="review">
+        <customMail templateName="changerequest.implement.handle"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+      
+      <on event="handle">
+        <customMail templateName="changerequest.implement.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.implement.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+   
+      <on event="transfer">
+        <customMail templateName="changerequest.implement.transfer"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          changeRequestData.setProcessUser(transitionData.getReceiverUser());
+        ]]></text></script>
+      </on>
+
+      <transition g="189,503;188,474:-20,20" name="forward" to="changerequest.implement">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="506,472;506,445;452,445:-50,3" name="transfer" to="changerequest.implement">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="-26,8" name="handle" to="changerequest.handle1">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="-45,2" name="review" to="changerequest.review5">
+         <transitionConfig>
+           <userSelect />
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+
+   <customTaskActivity g="228,540,97,37"
+           name="changerequest.review5"
+           spawnSignals="review"
+           termSignals="reviewed"
+           form="changerequest/review.html">
+
+      <on event="taskNotify">
+        <customMail templateName="changerequest.review5.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.review5.remind"/>
+      </on>
+
+      <on event="taskEnd">
+        <customMail templateName="changerequest.review5.end"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.review5.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+      
+      <on event="review">
+        <customMail templateName="changerequest.review5.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <transition g="303,602;328,602:-24,3" name="forward" to="changerequest.review5">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="253,601;231,600:-23,3" name="review" to="changerequest.review5">
+         <transitionConfig>
+           <userSelect />
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+
+   <customTaskActivity g="372,468,97,37"
+           spawnSignals="review, handle"
+           termSignals="handled"
+           name="changerequest.handle1"
+           form="changerequest/handle.html">
+
+      <on event="taskNotify">
+        <customMail templateName="changerequest.handle1.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.handle1.remind"/>
+      </on>
+
+      <on event="taskEnd">
+        <customMail templateName="changerequest.handle1.end"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="handle">
+        <customMail templateName="changerequest.handle1.handle"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="review">
+        <customMail templateName="changerequest.handle1.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.handle1.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+   
+      <on event="transfer">
+        <customMail templateName="changerequest.handle1.transfer"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          changeRequestData.setProcessUser(transitionData.getReceiverUser());
+        ]]></text></script>
+      </on>
+
+      <transition g="506,472;506,445;452,445:-50,3" name="forward" to="changerequest.handle1">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="506,472;506,445;452,445:-50,3" name="transfer" to="changerequest.handle1">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="505,502;506,528;459,528:-43,-18" name="handle" to="changerequest.handle1">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="-46,-1" name="review" to="changerequest.review6">
+         <transitionConfig>
+           <userSelect />
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+
+   <customTaskActivity g="372,540,97,37"
+           name="changerequest.review6"
+           spawnSignals="review"
+           termSignals="reviewed"
+           form="changerequest/review.html">
+
+      <on event="taskNotify">
+        <customMail templateName="changerequest.review6.start"/>
+      </on>
+
+      <on event="taskRemind">
+        <customMail templateName="changerequest.review6.remind"/>
+      </on>
+
+      <on event="taskEnd">
+        <customMail templateName="changerequest.review6.end"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <on event="forward">
+        <customMail templateName="changerequest.review6.forward"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+      
+      <on event="review">
+        <customMail templateName="changerequest.review6.review"/>
+        <script lang="groovy"><text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text></script>
+      </on>
+
+      <transition g="454,600;483,600:-16,2" name="forward" to="changerequest.review6">
+         <transitionConfig>
+           <userSelect />
+         </transitionConfig>
+      </transition>
+      <transition g="395,601;372,601:-19,4" name="review" to="changerequest.review6">
+         <transitionConfig>
+           <userSelect />
+           <timerSelect />
+         </transitionConfig>
+      </transition>
+   </customTaskActivity>
+
+
+   <end g="120,600,48,48" name="changerequest.finish"/>
+
+
+
+</process>

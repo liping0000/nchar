@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.helpEditor.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.helpEditor.title']}" />
+
+<ui:define name="body">
+
+
+<div style="display: table;">
+<rich:editor value="ttest"
+             configuration="mceFullpageConfig"
+             customPlugins="mcePlugins"
+             plugins="htmlcharcount,template,paste"
+             readonly="true">
+</rich:editor>
+</div>
+
+
+</ui:define>
+
+</ui:composition>

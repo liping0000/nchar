@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.referenceData.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.referenceData.title']}" />
+
+<ui:define name="body">
+
+  <h2><h:outputText value="#{messages['page.admin.referenceData.summary']}" /></h2>
+
+  <a4j:form id="uf" enctype="multipart/form-data" >
+
+  <h:outputText value="#{messages['page.admin.referenceData.numberOfProducts']}" />:
+  <h:outputText value=" #{charmsDataStoreActionBean.productCount} " />
+  <h:outputLink value="#{request.contextPath}/pages/refdata/productList.html"
+                rendered="#{charmsDataStoreActionBean.productCount > 0}">
+     <h:graphicImage url="/#{theme['iconset']}/pencil.png"
+                     border="0"/></h:outputLink>
+  <br />
+
+  <h:outputText value="#{messages['page.admin.referenceData.numberOfUnits']}" />:
+  <h:outputText value=" #{charmsDataStoreActionBean.unitCount} " />
+  <h:outputLink value="#{request.contextPath}/pages/refdata/unitList.html"
+                rendered="#{charmsDataStoreActionBean.unitCount > 0}">
+     <h:graphicImage url="/#{theme['iconset']}/pencil.png"
+                     border="0"/></h:outputLink>
+  <br />
+
+  <h:outputText value="#{messages['page.admin.referenceData.numberOfCodes']}" />:
+  <h:outputText value=" #{charmsDataStoreActionBean.codeCount} " />
+  <h:outputLink value="#{request.contextPath}/pages/refdata/errorList.html"
+                rendered="#{charmsDataStoreActionBean.codeCount > 0}">
+     <h:graphicImage url="/#{theme['iconset']}/pencil.png"
+                     border="0"/></h:outputLink>
+  <br />
+
+  <h:outputText value="#{messages['page.admin.referenceData.numberOfUsers']}" />:
+  <h:outputText value=" #{charmsDataStoreActionBean.userCount} " />
+  <h:outputLink value="#{request.contextPath}/pages/admin/userList.html"
+                rendered="#{charmsDataStoreActionBean.userCount > 0}">
+     <h:graphicImage url="/#{theme['iconset']}/pencil.png"
+                     border="0"/></h:outputLink>
+  <br />
+
+
+  <br />
+  <br />
+
+    <rich:fileUpload id="u"
+                     allowFlash="false"
+                     listHeight="55px"
+                     listWidth="250px"
+                     immediate="true"
+                     immediateUpload="true"
+                     fileUploadListener="#{charmsDataStoreActionBean.uploadListener}"
+                     ajaxSingle="false"
+                     onupload="#{'jQuery.blockUI({message: \''.concat(messages['messages.blockUI.pleaseWait']).concat('\' });')}"
+                     onerror="jQuery.unblockUI();"
+                     onsizerejected="jQuery.unblockUI();">
+                     <!--
+                       don't use accepted types here since we can't get an error on wrong types in the UI
+                       don't use maxFilesQuantity since we want no limit on the number of files
+                       autoclear="true" clears the uploaded files but doesn't re-activate the upload button
+
+                     -->
+      <a4j:support event="onuploadcomplete"
+                   oncomplete="jQuery.unblockUI();"
+                   action="#{charmsDataStoreActionBean.uploadComplete()}"
+                   reRender="uf, msgs" />
+      <!-- works with {uf,pdp}...  rerender the upload form itself and the table -->
+    </rich:fileUpload>
+  </a4j:form>
+
+
+</ui:define>
+
+</ui:composition>

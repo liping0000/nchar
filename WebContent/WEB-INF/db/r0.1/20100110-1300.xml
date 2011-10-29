@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+   <!--
+
+     this file contains simple changes in the database
+
+    -->
+
+    <!--
+         extending the log column size -->
+    <changeSet author="michael" id="r0.1-1">
+        <modifyDataType columnName="MESSSAGE_" newDataType="VARCHAR2(1024 CHAR)" schemaName="CAMS" tableName="CHARMS_LOG"/>
+    </changeSet>
+
+    <changeSet author="michael" id="r0.1-2" failOnError="false">
+        <addNotNullConstraint tableName="CHARMS_LOG" columnName="MESSSAGE_" schemaName="CAMS" />
+    </changeSet>
+
+    <!--
+        adding not null constraint to the type of a property set -->
+    <changeSet author="michael" id="r0.1-3" failOnError="false">
+        <addNotNullConstraint columnDataType="VARCHAR2(255 CHAR)" columnName="PROP_TYPE_" schemaName="CAMS" tableName="CHARMS_PROP_SET"/>
+    </changeSet>
+
+    <!--
+        this index should have been there from the beginning -->
+    <changeSet author="michael" id="r0.1-4" failOnError="false">
+        <createIndex indexName="SYS_C00186567" schemaName="CAMS" tableName="CHREQ_PROD_ERRORS" unique="false" >
+            <column name="PRODUCT_ID_"/>
+            <column name="ERROR_ID_"/>
+        </createIndex>
+    </changeSet>
+
+    <!--
+        this index should have been there from the beginning -->
+    <changeSet author="michael" id="r0.1-5" failOnError="false">
+        <createIndex indexName="SYS_C00186572" schemaName="CAMS" tableName="CHREQ_PROD_UNITS" unique="false">
+            <column name="PRODUCT_ID_"/>
+            <column name="UNIT_ID_"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process name="ToDoList" >
+
+<!-- 
+
+  the following data are available:
+  
+   - toDoListData: the domain data object
+   - authenticatedUser: configured in the transaction context in jbpm.conf.xml
+   - execution: execution scope
+   - transitionData: task variable with text data (comment) and receiver of the next task
+   - entryFactory: tookit to create/append messages
+
+
+   bootup code, business data is injected, first and second transitions
+   are performed automatically
+ 
+ -->
+
+  <start name="todolist.start" form="todolist/start.html" g="120,0,48,48">
+    <transition name="toInitialize" to="todolist.initialize" />
+  </start>
+
+  <automaticTaskActivity name="todolist.initialize" g="72,60,145,36">
+    <script lang="groovy">
+      <text><![CDATA[
+        toDoListData.setInitiateUser(authenticatedUser);
+        toDoListData.setInitiateDate(org.jbpm.pvm.internal.util.Clock.getTime());
+      ]]></text>
+    </script>
+    <on event="toCreateBusinessKey">
+      <script lang="groovy">
+        <text><![CDATA[
+          // a message entry
+          entryFactory.createMessageEntry(transitionData, execution);
+          // set the submit user
+          toDoListData.setSubmitUser(authenticatedUser);
+          toDoListData.setSubmitDate(org.jbpm.pvm.internal.util.Clock.getTime());
+        ]]></text>
+      </script>
+    </on>
+    <on event="toComplete">
+      <script lang="groovy">
+        <text><![CDATA[
+          entryFactory.createMessageEntry(transitionData, execution);
+        ]]></text>
+      </script>
+    </on>
+    <transition name="toCreateBusinessKey" to="todolist.createBusinessKey" />
+  </automaticTaskActivity>
+
+  <createBusinessKey name="todolist.createBusinessKey" g="72,168,145,37" prefix="TODO" location="Ditzingen">
+    <script lang="groovy">
+      <text><![CDATA[
+        // read the business key
+        def businessKey = execution.getProcessInstance().getKey();
+        // set the key in all comonents
+        toDoListData.setBusinessKey(businessKey);
+      ]]></text>
+    </script>
+    <transition name="toPerform" to="todolist.perform" />
+  </createBusinessKey>
+
+  <customTaskActivity name="todolist.perform" form="todolist/perform.html" g="72,252,145,37">
+    <on event="taskNotify">
+      <customMail templateName="changerequest.assign.start" />
+    </on>
+    <on event="taskRemind">
+      <customMail templateName="changerequest.assign.remind" />
+    </on>
+    <on event="taskEnd">
+      <customMail templateName="changerequest.assign.end" />
+    </on>
+    <transition name="finish" to="todolist.finish">
+         <transitionConfig />
+    </transition>
+  </customTaskActivity>
+
+  <end name="todolist.finish" g="119,350,48,48">
+  </end>
+</process>
+

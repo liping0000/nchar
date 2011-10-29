@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:a4j="http://richfaces.org/a4j">
+
+<tr>
+  <td>
+    <s:decorate id="standardCheckbox"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.standard']}" /></ui:define>
+      <h:selectBooleanCheckbox value="#{changeRequestData.standard}"
+                               readonly="#{readonly?'true':'false'}"
+                               disabled="#{readonly?'true':'false'}"
+                               styleClass="checkbox#{readonly?' readonly':''}"><!-- hack for IE6 -->
+               <a4j:support event="onclick"
+                            reRender="standardCheckbox, standardMemo"
+                            ajaxSingle="true"
+                            limitToList="true" />
+      </h:selectBooleanCheckbox>
+  </s:decorate>
+  </td>
+  <td>
+    <s:decorate id="standardMemo"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.standardText']}" /></ui:define>
+      <h:inputTextarea value="#{changeRequestData.standardText}"
+                       readonly="#{readonly?'true':'false'}"
+                       styleClass="#{readonly?'readonly':''}"
+                       required="#{changeRequestData.standard}"
+                       requiredMessage="#{messages['changeRequestDataBean.standard.requiredMessage']}">
+        <a4j:support event="onblur"
+                     reRender="standardMemo"
+                     ajaxSingle="true"
+                     limitToList="true" />
+      </h:inputTextarea>
+    </s:decorate>
+  </td>
+</tr>
+
+</ui:composition>

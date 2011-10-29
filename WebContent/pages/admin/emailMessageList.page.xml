@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+
+  <begin-conversation join="true" flush-mode="manual" />
+
+  <description>list of sent emails</description>
+  
+  <action execute="#{charmsEmailMessageTable.refresh()}"
+          on-postback="false" />  
+
+  <navigation>
+ 
+    <rule if-outcome="view">
+      <redirect view-id="/pages/admin/emailMessage.xhtml">     
+        <param name="emailMessageId" value="#{param.emailMessageId}" />
+      </redirect>
+    </rule>
+
+    <!-- create button clicked on the page -->
+    <rule if-outcome="create">
+      <redirect view-id="/pages/admin/emailMessage.xhtml" />
+    </rule>
+  
+    <rule if-outcome="#{charmsEmailMessageTable.setFragment('')}">
+      <redirect view-id="/pages/admin/emailMessageList.xhtml" /> 
+    </rule>
+    
+    <rule if-outcome="deleted">
+      <redirect view-id="/pages/admin/emailMessageList.xhtml" /> 
+    </rule>
+    
+  </navigation>
+
+</page>

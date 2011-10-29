@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:a4j="http://richfaces.org/a4j">
+
+<tr>
+  <td>
+  <s:decorate id="priorityProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.priority']}" /></ui:define>
+     <a4j:region rendered="#{readonly?'false':'true'}">
+     <h:selectOneMenu value="#{changeRequestData.priority}"
+                      required="#{required?'true':'false'}"
+                      requiredMessage="#{messages['changeRequestDataBean.priority.requiredMessage']}" >
+              <s:selectItems var="priority"
+                             value="#{prioritySelects}"
+                             noSelectionLabel="#{messages['priority.noSelection']}"
+                             label="#{messages[priority.msgCode]}" />
+              <s:convertEnum/>
+     </h:selectOneMenu>
+     </a4j:region>
+      <h:inputText value="#{messages.get(changeRequestData.priority.msgCode,'')}"
+                   readonly="true"
+                   styleClass="readonly inputtext"
+                   style="width: 150px;"
+                   rendered="#{readonly?'true':'false'}" />
+  </s:decorate>
+  </td>
+  <td>
+  </td>
+</tr>
+
+</ui:composition>

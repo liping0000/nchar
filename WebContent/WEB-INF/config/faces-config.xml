@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+  <application>
+  <!-- 
+       JSF1.2:
+       version="1.2"
+       http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd
+       
+       change for JSF2.0:
+       version="2.0"
+       http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd
+  
+       view handler moved to web.xml,
+       see: http://www.seamframework.org/Community/JavaxfacesapplicationViewExpiredException -->
+  <!--   <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>   -->
+  <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+  
+ </application>
+   
+   <!--  
+ <converter>
+   <converter-id>charmsUserConverter</converter-id>
+   <converter-class>net.wohlfart.authentication.queries.CharmsUserConverter</converter-class>
+ </converter> 
+   -->
+   
+</faces-config>

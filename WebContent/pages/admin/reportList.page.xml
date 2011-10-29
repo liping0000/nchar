@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+
+      
+  
+      
+  <description>list of reports</description>
+  
+  <begin-conversation join="true" flush-mode="manual" />
+
+  
+  <!-- needed for the delete/select action -->
+<!--  <param name="reportId" -->
+<!--         value="#{charmsReportActionBean.reportId}" -->
+<!--         converterId="javax.faces.Long" -->
+<!--         required="false" /> -->
+<!--   -->
+  <!--  refresh on first sight    -->
+  <action execute="#{charmsReportTable.refresh()}"
+          on-postback="false" />
+
+  
+  <navigation>
+ 
+    <rule if-outcome="update">
+      <redirect view-id="/pages/admin/report.xhtml">     
+        <param name="reportId" value="#{param.reportId}"  
+               converterId="javax.faces.Long" required="true" />
+      </redirect>
+    </rule>
+ 
+<!--  
+    <rule if-outcome="removed">
+      <redirect view-id="/pages/admin/reportList.xhtml" />
+    </rule>
+-->
+   
+    <!-- create button clicked on the page -->
+    <rule if-outcome="create">
+      <redirect view-id="/pages/admin/report.xhtml" />
+    </rule>
+  
+  
+    <rule if-outcome="#{charmsReportTable.setFragment('')}">
+      <redirect view-id="/pages/admin/reportList.xhtml" />
+    </rule>
+  
+  </navigation>
+
+</page>

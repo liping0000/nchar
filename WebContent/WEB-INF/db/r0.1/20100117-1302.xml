@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+   <!--
+
+     moving over the content of the ERROR table to the CODES table
+
+
+       <insert tableName="CHREQ_CODE" schemaName="CAMS" >
+
+       </insert>
+    -->
+
+    <!--
+
+       move a whole table over
+           -->
+    <changeSet author="michael" id="r0.1-60">
+      <sql>
+        insert into CHREQ_CODE (select * from CHREQ_ERROR)
+      </sql>
+    </changeSet>
+
+
+    <changeSet author="michael" id="r0.1-61">
+      <sql>
+        insert into CHREQ_PROD_CODES (select * from CHREQ_PROD_ERRORS)
+      </sql>
+    </changeSet>
+
+
+    <changeSet author="michael" id="r0.1-70">
+       <update tableName="CHREQ_DATA">
+          <column name="CODE_ID_" valueComputed="ERROR_ID_" />
+       </update>
+    </changeSet>
+
+
+</databaseChangeLog>

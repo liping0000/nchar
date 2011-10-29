@@ -1,0 +1,94 @@
+/*
+    --------------------------------------------------------
+    this file contains the layout definition
+    for the menu
+    --------------------------------------------------------
+*/
+
+div.rich-page-sidebar {
+  overflow: hidden;
+}
+
+/*    ----==  common to all menu items ==----  */
+ul.menu0,
+ul.menu1,
+ul.menu2 {
+    margin: 0;
+    padding: 0;
+}
+
+ul.menu0 li,
+ul.menu1 li,
+ul.menu2 li {
+    list-style: none;
+    list-style-position: outside;
+}
+
+ul.menu0 li a,
+ul.menu0 li a:visited,
+ul.menu1 li a,
+ul.menu2 li a {
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    white-space: nowrap;  /* no linebreak, long text will be truncated */
+    color: #ffffff;
+    /* remove doted line on focus */
+    outline-color: -moz-use-text-color;
+    outline-style: none;
+    outline-decoration: none;
+}
+
+
+/*    ----==  menu level 0 ==----  */
+/*  menu0 is always open since it contains the 1st level items which are
+    always visible */
+ul.menu0 li a:hover,
+ul.menu0 li a:active,
+ul.menu0 li a:focus,
+ul.menu0 li a {
+    padding-left: 1em;
+    border-bottom: 1px solid #ffffff;
+    color: #ffffff;
+    background-color: #da1f48;
+    line-height: 2em;
+    outline: none;  /* this removes the doted line for clicked links in menu */
+}
+
+ul.menu0 li a:hover.open,
+ul.menu0 li a:active.open,
+ul.menu0 li a:focus.open,
+ul.menu0 li a.open {
+    color: #da1f48;
+    background-color: #ffffff;
+    font-weight: bold;
+}
+
+
+/*    ----==  menu level 1 ==----  */
+ul.menu1 li a:hover,
+ul.menu1 li a:active,
+ul.menu1 li a:focus,
+ul.menu1 li a:visited,
+ul.menu1 li a {
+    padding-left: 2em;
+    color: #54666F;
+    background-color: #ffffff;
+    line-height: 1.5em;
+    outline: none;
+}
+
+
+/*    ----==  menu level 2 ==----  */
+ul.menu2 li a:hover,
+ul.menu2 li a:active,
+ul.menu2 li a:focus,
+ul.menu2 li a:visited,
+ul.menu2 li a {
+    padding-left: 3em;
+    color: #54666F;
+    background-color: #ffffff;
+    line-height: 1.5em;  /* reduced line height */
+    outline: none;
+}
+

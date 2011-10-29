@@ -1,0 +1,242 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.report.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.report.title']}" />
+
+<ui:define name="body">
+
+
+  <a4j:form id="frm">
+
+    <!-- no rows are available -->
+    <h:outputText value="#{messages['page.admin.report.nothingFound']}"
+                  rendered="#{empty charmsReportTable.resultList}"/>
+
+    <!-- searchstring might be too specific -->
+    <h:outputText value="#{messages['page.admin.report.checkFilterString']}"
+                  rendered="#{(not empty charmsReportTable.fragment) &amp;&amp; (empty charmsReportTable.resultList)}" />
+
+
+    <rich:dataTable id="tbl"
+                    var="row"
+                    value="#{charmsReportTable.resultList}"
+                    width="100%"
+                    rowKeyVar="rowKey"
+                    columnsWidth="1%,2,2%,55%,40%,0*">
+
+      <rich:column styleClass="indexcolumn">
+        <f:facet name="header"><h:outputText value="#{messages['table.index']}"/></f:facet>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{charmsReportTable.firstResult + rowKey + 1}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+
+      <rich:column headerClass="#{charmsReportTable.getOrderForColumn('r.sortIndex')}">
+        <f:facet name="header">
+          <a4j:commandLink reRender="frm"
+                           ajaxSingle="true"
+                           action="#{charmsReportTable.toggleOrder('r.sortIndex')}">
+            <h:outputText value="#{messages['table.sortIndex']}"/>
+          </a4j:commandLink>
+        </f:facet>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.index}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+
+      <rich:column styleClass="actions">
+        <f:facet name="header" ><h:outputText value="&#160;" escape="false" /></f:facet>
+        <span style="white-space: nowrap;">
+        <s:link title="Up"
+                action="#{charmsReportActionBean.sortUp()}"
+                view="/pages/admin/reportList.xhtml"
+                immediate="true"
+                rendered="#{row.index > 1}">
+          <f:param name="reportId" value="#{row.id}"/>
+          <h:graphicImage url="/#{theme['iconset']}/arrow_up.png" border="0"/></s:link>
+        <h:graphicImage url="/#{theme['iconset']}/arrow_dummy.png" border="0" rendered="#{row.index == 1}"/>
+        <s:link title="Down"
+                action="#{charmsReportActionBean.sortDown()}"
+                view="/pages/admin/reportList.xhtml"
+                immediate="true"
+                rendered="#{charmsReportTable.resultCount > row.index}">
+          <f:param name="reportId" value="#{row.id}"/>
+          <h:graphicImage url="/#{theme['iconset']}/arrow_down.png" border="0"/></s:link>
+        </span>
+      </rich:column>
+
+      <!-- column 1 the name -->
+      <rich:column headerClass="#{charmsReportTable.getOrderForColumn('r.defaultName')}">
+        <f:facet name="header" >
+          <a4j:commandLink reRender="frm"
+                           ajaxSingle="true"
+                           action="#{charmsReportTable.toggleOrder('r.defaultName')}">
+            <h:outputText value="#{messages['charmsReport.defaultName']}"/>
+          </a4j:commandLink>
+        </f:facet>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.defaultName}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+
+      <!-- column 1 the modfied date -->
+      <rich:column headerClass="#{charmsReportTable.getOrderForColumn('r.lastModified')}">
+        <f:facet name="header" >
+          <a4j:commandLink reRender="frm"
+                           ajaxSingle="true"
+                           action="#{charmsReportTable.toggleOrder('r.lastModified')}">
+            <h:outputText value="#{messages['charmsReport.lastModified']}"/>
+          </a4j:commandLink>
+        </f:facet>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.lastModified}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+
+      <!-- the action buttons -->
+      <rich:column styleClass="actions">
+        <f:facet name="header"><h:outputText value="#{messages['table.actions']}"/></f:facet>
+        <!-- set the id in the home object for the selected bean and switch to a new page -->
+        <s:link title="Update"
+                action="update">
+          <f:param name="reportId" value="#{row.id}"/>
+          <h:graphicImage url="/#{theme['iconset']}/pencil.png"
+                          border="0"/></s:link>
+        <span> </span>
+        <s:link title="Remove"
+                action="#{charmsReportActionBean.remove}"
+                onclick="if (!confirm('#{messages['page.admin.report.confirmDelete']}')) return false;"
+                view="/pages/admin/reportList.xhtml"
+                immediate="true">
+          <f:param name="reportId" value="#{row.id}"/>
+          <h:graphicImage url="/#{theme['iconset']}/cross.png" border="0"/></s:link>
+      </rich:column>
+
+
+   <!--
+
+     footer row starts here
+
+    -->
+
+    <f:facet name="footer">
+      <rich:columnGroup>
+        <rich:column  colspan="6">
+
+    <h:selectOneMenu value="#{charmsReportTable.maxResults}">
+      <a4j:support event="onchange"
+                   reRender="frm"
+                   ajaxSingle="true" />
+      <f:selectItems value="#{charmsReportTable.selectItems}"/>
+    </h:selectOneMenu>
+
+    <a4j:commandLink reRender="frm"
+                     ajaxSingle="true"
+                     rendered="#{charmsReportTable.previousExists}"
+                     action="#{charmsReportTable.first()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_first.png" title="First Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="frm"
+                     ajaxSingle="true"
+                     rendered="#{charmsReportTable.previousExists}"
+                     action="#{charmsReportTable.previous()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_previous.png" title="Previous Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+
+    <script type="text/javascript">
+    <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+       jQuery(document).ready(function() {
+         jQuery('#frm\\:tbl\\:fr').hint();
+         jQuery('#frm\\:tbl').zebra("Update");
+       });
+    <h:outputText value="/* ]]> */" escape="false"/>
+    </script>
+
+    <h:inputText size="10"
+                 value="#{charmsReportTable.fragment}"
+                 id="fr"
+                 styleClass="filter"
+                 title="#{messages['table.filter']}" >
+       <a4j:support event="onkeyup"
+                    reRender="frm"
+                    ajaxSingle="true"
+                    requestDelay="700"
+                    oncomplete="jQuery('#frm\\:tbl\\:fr').caret(jQuery('#frm\\:tbl\\:fr').val().length);" />
+    </h:inputText>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="frm"
+                     ajaxSingle="true"
+                     rendered="#{charmsReportTable.nextExists}"
+                     action="#{charmsReportTable.next()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_next.png" title="Next Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="frm"
+                     ajaxSingle="true"
+                     rendered="#{charmsReportTable.nextExists}"
+                     action="#{charmsReportTable.last()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_last.png" title="Last Page" />
+    </a4j:commandLink>
+
+      </rich:column>
+      </rich:columnGroup>
+    </f:facet>
+
+    <span> </span>
+
+    </rich:dataTable>
+
+  <br/>
+
+  <!-- switch to a new page to create a new entity  -->
+  <div class="actionButtons">
+    <s:button styleClass="button"
+              value="#{messages['action.create']}"
+              action="create">
+              <!-- propagation="none"> important: terminate the conversion to get rid of any conversion stored entities -->
+      <f:param name="reportId" />  <!-- suppress propagation of the report id -->
+    </s:button>
+    <h:commandButton styleClass="button"
+                     action="#{charmsReportTable.setFragment('')}"
+                     value="#{messages['action.reset']}"
+                     rendered="#{(not empty charmsReportTable.fragment) &amp;&amp; (empty charmsUserTable.resultList)}">
+      <s:conversationId />
+    </h:commandButton>
+  </div>
+
+
+  </a4j:form>
+
+
+</ui:define>
+
+</ui:composition>

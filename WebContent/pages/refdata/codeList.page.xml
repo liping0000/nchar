@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+
+      
+  <description>list of change codes</description>
+  
+  <begin-conversation join="true" flush-mode="manual" />
+  
+  <action execute="#{changeRequestCodeTable.refresh()}" 
+          on-postback="false" /> 
+
+  <navigation>
+ 
+    <rule if-outcome="update" >
+      <redirect view-id="/pages/refdata/code.xhtml" >     
+        <param name="codeId" value="#{param.codeId}" 
+               converterId="javax.faces.Long" required="true" />
+      </redirect>
+    </rule>
+
+    <rule if-outcome="refreshed">
+      <redirect view-id="/pages/refdata/codeList.xhtml" />
+    </rule>
+   
+    <rule if-outcome="create">
+      <redirect view-id="/pages/refdata/code.xhtml" />    
+    </rule>
+  
+    <rule if-outcome="#{changeRequestCodeTable.setFragment('')}">
+      <redirect view-id="/pages/refdata/codeList.xhtml" />
+    </rule>
+   
+  </navigation>
+
+</page>

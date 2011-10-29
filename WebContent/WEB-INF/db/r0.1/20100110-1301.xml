@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <!--
+        changing boolean columns -->
+    <changeSet author="michael" id="r0.1-10" runInTransaction="true">
+
+        <!--
+             create a temp column to store the data
+             to rollback: alter table CHREQ_DATA drop column COST_A_NEW; -->
+        <addColumn schemaName="CAMS" tableName="CHREQ_DATA">
+            <column name="COST_A_NEW" type="CHAR(1)"/>
+        </addColumn>
+        <!--
+             copy the data over -->
+        <update tableName="CHREQ_DATA">
+          <column name="COST_A_NEW" value="Y" />
+          <where>COST_A_=1</where>
+        </update>
+        <update tableName="CHREQ_DATA">
+          <column name="COST_A_NEW" value="N" />
+          <where>COST_A_=0</where>
+        </update>
+        <!--
+             clean the old column -->
+        <update tableName="CHREQ_DATA">
+          <column name="COST_A_" valueComputed="null" />
+        </update>
+        <!--
+             modify the old column -->
+        <modifyDataType columnName="COST_A_" newDataType="CHAR(1)" schemaName="CAMS" tableName="CHREQ_DATA"/>
+        <!--
+             mode the data back  -->
+        <update tableName="CHREQ_DATA">
+          <column name="COST_A_" value="Y" />
+          <where>COST_A_NEW = 'Y'</where>
+        </update>
+        <update tableName="CHREQ_DATA">
+          <column name="COST_A_" value="N" />
+          <where>COST_A_NEW = 'N'</where>
+        </update>
+        <!--
+             delete the temp  column  -->
+        <dropColumn tableName="CHREQ_DATA" columnName="COST_A_NEW"/>
+    </changeSet>
+
+
+    <changeSet author="michael" id="r0.1-11">
+
+        <!--
+             create a temp column to store the data
+             to rollback: alter table CHREQ_DATA drop column COST_B_NEW; -->
+        <addColumn schemaName="CAMS" tableName="CHREQ_DATA">
+            <column name="COST_B_NEW" type="CHAR(1)"/>
+        </addColumn>
+        <!--
+             copy the data over -->
+        <update tableName="CHREQ_DATA">
+          <column name="COST_B_NEW" value="Y" />
+          <where>COST_B_=1</where>
+        </update>
+        <update tableName="CHREQ_DATA">
+          <column name="COST_B_NEW" value="N" />
+          <where>COST_B_=0</where>
+        </update>
+        <!--
+             clean the old column -->
+        <update tableName="CHREQ_DATA">
+          <column name="COST_B_" valueComputed="null" />
+        </update>
+        <!--
+             modify the old column -->
+        <modifyDataType columnName="COST_B_" newDataType="CHAR(1)" schemaName="CAMS" tableName="CHREQ_DATA"/>
+        <!--
+             mode the data back  -->
+        <update tableName="CHREQ_DATA">
+          <column name="COST_B_" value="Y" />
+          <where>COST_B_NEW = 'Y'</where>
+        </update>
+        <update tableName="CHREQ_DATA">
+          <column name="COST_B_" value="N" />
+          <where>COST_B_NEW = 'N'</where>
+        </update>
+        <!--
+             delete the temp  column  -->
+        <dropColumn tableName="CHREQ_DATA" columnName="COST_B_NEW"/>
+    </changeSet>
+
+
+
+    <changeSet author="michael" id="r0.1-12">
+
+        <!--
+             create a temp column to store the data
+             to rollback: alter table CHREQ_DATA drop column FAST_TRACK_NEW; -->
+        <addColumn schemaName="CAMS" tableName="CHREQ_DATA">
+            <column name="FAST_TRACK_NEW" type="CHAR(1)"/>
+        </addColumn>
+        <!--
+             copy the data over -->
+        <update tableName="CHREQ_DATA">
+          <column name="FAST_TRACK_NEW" value="Y" />
+          <where>FAST_TRACK_=1</where>
+        </update>
+        <update tableName="CHREQ_DATA">
+          <column name="FAST_TRACK_NEW" value="N" />
+          <where>FAST_TRACK_=0</where>
+        </update>
+        <!--
+             clean the old column -->
+        <update tableName="CHREQ_DATA">
+          <column name="FAST_TRACK_" valueComputed="null" />
+        </update>
+        <!--
+             modify the old column -->
+        <modifyDataType columnName="FAST_TRACK_" newDataType="CHAR(1)"  schemaName="CAMS" tableName="CHREQ_DATA"/>
+        <!--
+             mode the data back  -->
+        <update tableName="CHREQ_DATA">
+          <column name="FAST_TRACK_" value="Y" />
+          <where>FAST_TRACK_NEW = 'Y'</where>
+        </update>
+        <update tableName="CHREQ_DATA">
+          <column name="FAST_TRACK_" value="N" />
+          <where>FAST_TRACK_NEW = 'N'</where>
+        </update>
+        <!--
+             delete the temp  column  -->
+        <dropColumn tableName="CHREQ_DATA" columnName="FAST_TRACK_NEW"/>
+    </changeSet>
+
+
+
+    <changeSet author="michael" id="r0.1-13">
+
+        <!--
+             create a temp column to store the data
+             to rollback: alter table CHREQ_DATA drop column REGULAR_TRACK_NEW; -->
+        <addColumn schemaName="CAMS" tableName="CHREQ_DATA">
+            <column name="REGULAR_TRACK_NEW" type="CHAR(1)"/>
+        </addColumn>
+        <!--
+             copy the data over -->
+        <update tableName="CHREQ_DATA">
+          <column name="REGULAR_TRACK_NEW" value="Y" />
+          <where>REGULAR_TRACK_=1</where>
+        </update>
+        <update tableName="CHREQ_DATA">
+          <column name="REGULAR_TRACK_NEW" value="N" />
+          <where>REGULAR_TRACK_=0</where>
+        </update>
+        <!--
+             clean the old column -->
+        <update tableName="CHREQ_DATA">
+          <column name="REGULAR_TRACK_" valueComputed="null" />
+        </update>
+        <!--
+             modify the old column -->
+        <modifyDataType columnName="REGULAR_TRACK_" newDataType="CHAR(1)"  schemaName="CAMS" tableName="CHREQ_DATA"/>
+        <!--
+             mode the data back  -->
+        <update tableName="CHREQ_DATA">
+          <column name="REGULAR_TRACK_" value="Y" />
+          <where>REGULAR_TRACK_NEW = 'Y'</where>
+        </update>
+        <update tableName="CHREQ_DATA">
+          <column name="REGULAR_TRACK_" value="N" />
+          <where>REGULAR_TRACK_NEW = 'N'</where>
+        </update>
+        <!--
+             delete the temp  column  -->
+        <dropColumn tableName="CHREQ_DATA" columnName="REGULAR_TRACK_NEW"/>
+    </changeSet>
+
+
+
+</databaseChangeLog>

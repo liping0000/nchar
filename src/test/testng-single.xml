@@ -1,0 +1,29 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd">
+
+<suite name="Charms Test Suite" >
+  <test name="JSF jBPM ChangeRequest Tests" enabled="true">
+    <classes> 
+      <class name="net.wohlfart.charms.test.changerequest.faces.AssignRequestTest" />
+      <!--  
+      <class name="net.wohlfart.charms.test.changerequest.faces.LoginTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.StartCompleteRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.StartBusinessKeyTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.CompleteRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.CompleteReviewRequest1Test" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.CompleteReviewRequest2Test" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.CompleteReviewRequest3Test" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.CompleteForwardRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.DiscardRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.ProcessRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.RealizeRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.ImplementRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.HandleRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.Cancel1RequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.Cancel2RequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.BulkStartBusinessKeyTest" />
+      -->
+    </classes>
+  </test>
+ 
+</suite>
+

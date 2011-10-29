@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:a4j="http://richfaces.org/a4j"><!--
+
+  moduleIdNumber \n itemIdNumber, customerName
+
+   -->
+
+<tr>
+  <td>
+    <s:decorate id="businessKeyProperty"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['processInstance.key']}" /></ui:define>
+      <h:inputText value="#{changeRequestData.businessKey}"
+                   readonly="#{readonly?'true':'false'}"
+                   styleClass="#{readonly?'inputtext readonly':'inputtext'}" />
+    </s:decorate>
+  </td>
+  <td>
+    <s:decorate id="submitterNameProperty"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.submitUserName']}" /></ui:define>
+      <h:inputText value="#{changeRequestData.submitUser.fullname}"
+                   readonly="#{readonly?'true':'false'}"
+                   styleClass="#{readonly?'inputtext readonly':'inputtext'}" />
+    </s:decorate>
+  </td>
+</tr>
+
+
+</ui:composition>

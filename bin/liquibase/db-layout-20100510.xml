@@ -1,0 +1,1672 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog>
+    <changeSet author="michael (generated)" id="1273493446683-1">
+        <createTable tableName="CHARMS_CHILDROLES">
+            <column name="CHILD_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PARENT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-2">
+        <createTable tableName="CHARMS_DOC_BLB">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042742" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="CONTENT_" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-3">
+        <createTable tableName="CHARMS_DOCUMENT">
+            <column name="DOCUMENT_TYPE_" type="VARCHAR2(31 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042748" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="COMMENT_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="EDITOR_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LAST_MODIFIED_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MIME_TYPE_" type="VARCHAR2(250 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(250 CHAR)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DOC_BLOB_ID_" type="NUMBER(19,0)"/>
+            <column name="EDITOR_ID_" type="NUMBER(19,0)"/>
+            <column name="FOLDER_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-4">
+        <createTable tableName="CHARMS_EMSG">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042755" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="CONTENT_" type="CLOB"/>
+            <column name="CREATE_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="RECEIVER_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SENDER_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SENT_" type="TIMESTAMP(6)"/>
+            <column name="SUBJECT_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-5">
+        <createTable tableName="CHARMS_ETMPL">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042758" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="BODY_" type="CLOB"/>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="LAST_MODIFIED_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SENDER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SUBJECT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-6">
+        <createTable tableName="CHARMS_ETMPL_RCVR">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042761" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="ADDRESS_EXPR_" type="VARCHAR2(500 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="TEMPLATE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-7">
+        <createTable tableName="CHARMS_ETMPL_TRANS">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042765" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="BODY_" type="CLOB"/>
+            <column name="LOCALE_ID_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SUBJECT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="TEMPLATE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-8">
+        <createTable tableName="CHARMS_FOLDER">
+            <column name="FOLDER_TYPE_" type="VARCHAR2(31 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042768" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="COMMENT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="PARENT_ID_" type="NUMBER(19,0)"/>
+            <column name="ROOT_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-9">
+        <createTable tableName="CHARMS_LOG">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042774" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DATE_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LEVEL_" type="VARCHAR2(10 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOGGER_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MESSSAGE_" type="VARCHAR2(1024 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-10">
+        <createTable tableName="CHARMS_MEMBERSHIP">
+            <column name="ROLE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-11">
+        <createTable tableName="CHARMS_MESSAGES">
+            <column name="MSG_BUNDLE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(2500 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MSG_CODE_" type="VARCHAR2(250 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-12">
+        <createTable tableName="CHARMS_MSGBUNDLE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042785" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="LOCALE_ID_" type="VARCHAR2(20 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-13">
+        <createTable tableName="CHARMS_PERM_TARGET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042796" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="TARGET_STRING_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-14">
+        <createTable tableName="CHARMS_PERMISSION">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042792" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="ACTION_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="DISCRIMINATOR_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RECIPIENT_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-15">
+        <createTable tableName="CHARMS_PROP_SET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042801" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROP_TYPE_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-16">
+        <createTable tableName="CHARMS_PROP_VAL">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042806" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="SET_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(2048 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-17">
+        <createTable tableName="CHARMS_REPORT">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042811" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="UPDATE_" type="TIMESTAMP(6)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="REPORT_BLOB_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-18">
+        <createTable tableName="CHARMS_ROLE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042818" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="GRP_ACTOR_ID_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="CONDITIONAL_" type="CHAR(1)"/>
+            <column name="ORGANIZATIONAL_" type="CHAR(1)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-19">
+        <createTable tableName="CHARMS_RPT_BLB">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042823" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="CONTENT_" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-20">
+        <createTable tableName="CHARMS_TRGT_ACT">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042826" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="TARGET_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-21">
+        <createTable tableName="CHARMS_UID">
+            <column name="SEQUENCE_TYPE_" type="VARCHAR2(31 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042832" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="LAST_MODIFIED_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(250 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="LOCATION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PREFIX_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="VARCHAR2(255 CHAR)"/>
+            <column name="YEAR_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-22">
+        <createTable tableName="CHARMS_USER">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042837" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="ACCOUNT_EXPIRE_" type="TIMESTAMP(6)"/>
+            <column name="ACTOR_ID_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREDENTIALS_EXPIRE_" type="TIMESTAMP(6)"/>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="EMAIL_" type="VARCHAR2(100 CHAR)"/>
+            <column name="IS_ENABLED_" type="CHAR(1)"/>
+            <column name="EXTERNAL_ID1_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXTERNAL_ID2_" type="VARCHAR2(255 CHAR)"/>
+            <column name="FIRSTNAME_" type="VARCHAR2(60 CHAR)"/>
+            <column name="GENDER_" type="VARCHAR2(10 CHAR)"/>
+            <column name="LASTNAME_" type="VARCHAR2(60 CHAR)"/>
+            <column name="LOCALE_ID_" type="VARCHAR2(100 CHAR)"/>
+            <column name="NAME_" type="VARCHAR2(20 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWD_" type="VARCHAR2(100 CHAR)"/>
+            <column name="THEME_ID_" type="VARCHAR2(100 CHAR)"/>
+            <column name="TIMEZONE_ID_" type="VARCHAR2(100 CHAR)"/>
+            <column name="IS_UNLOCKED_" type="CHAR(1)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-23">
+        <createTable tableName="CHARMS_WFL_DATA">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042841" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="FINISH_DATE_" type="TIMESTAMP(6)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="SUBMIT_DATE_" type="TIMESTAMP(6)"/>
+            <column name="TITLE_" type="VARCHAR2(250 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="FINISH_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="SUBMIT_USER_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-24">
+        <createTable tableName="CHREQ_CODE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHREQ_CODE" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-25">
+        <createTable tableName="CHREQ_COSTSHEET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042849" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="COMMENT_" type="VARCHAR2(512 CHAR)"/>
+            <column name="CONTENT_" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(250 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-26">
+        <createTable tableName="CHREQ_DATA">
+            <column name="ASSIGN_DATE_" type="TIMESTAMP(6)"/>
+            <column name="CONCLUSION_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="COST_A_" type="CHAR(1)"/>
+            <column name="COST_AMOUNT_" type="NUMBER(10,0)"/>
+            <column name="COST_B_" type="CHAR(1)"/>
+            <column name="CUSTOMER_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="FAST_TRACK_" type="CHAR(1)"/>
+            <column name="IS_GOODWILL_" type="CHAR(1)"/>
+            <column name="GOODWILL_TEXT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HISTORY_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="IMPLEMENT_DATE_" type="TIMESTAMP(6)"/>
+            <column name="INITIATE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="ITEM_ID_NUMBER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="MANAGER_NAME_" type="VARCHAR2(100 CHAR)"/>
+            <column name="MODULE_ID_NUMBER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PROBLEM_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="PROCESS_DATE_" type="TIMESTAMP(6)"/>
+            <column name="PROJECT_ID_NUMBER_" type="VARCHAR2(50 CHAR)"/>
+            <column name="PROPOSAL_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="REGULAR_TRACK_" type="CHAR(1)"/>
+            <column name="IS_STANDARD_" type="CHAR(1)"/>
+            <column name="STANDARD_TEXT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042851" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="ASSIGN_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="PRODUCT_ID_" type="NUMBER(19,0)"/>
+            <column name="UNIT_ID_" type="NUMBER(19,0)"/>
+            <column name="IMPLEMENT_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="INITIATE_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="PROCESS_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="CODE_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-27">
+        <createTable tableName="CHREQ_FACET_DATA">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042854" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="CONCLUSION_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="FORWARD_DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="FORWARD_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="FORWARD_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="HANDLE_DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="HANDLE_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="HANDLE_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="HANDLED_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="IMPLEMENT_DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="IMPLEMENT_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="IMPLEMENT_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="IMPLEMENTED_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="PROCESS_DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="PROCESS_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="PROCESS_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="REVIEW_DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="REVIEW_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="REVIEW_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="REVIEWED_MESSAGE_" type="VARCHAR2(1024 CHAR)"/>
+            <column name="TID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="VISIBLE_FACET_" type="VARCHAR2(250 CHAR)"/>
+            <column name="FORWARD_ROLE_ID_" type="NUMBER(19,0)"/>
+            <column name="HANDLE_ROLE_ID_" type="NUMBER(19,0)"/>
+            <column name="IMPLEMENT_ROLE_ID_" type="NUMBER(19,0)"/>
+            <column name="PROCESS_ROLE_ID_" type="NUMBER(19,0)"/>
+            <column name="REVIEW_ROLE_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-28">
+        <createTable tableName="CHREQ_IMPACTSHEET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042859" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="COMMENT_" type="VARCHAR2(512 CHAR)"/>
+            <column name="CONTENT_" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(250 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-29">
+        <createTable tableName="CHREQ_MSG_ENTRY">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042861" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="AUTHOR_FULLNAME_" type="VARCHAR2(121 CHAR)"/>
+            <column name="AUTHOR_ID_" type="NUMBER(19,0)"/>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="CONTENT_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="RECEIVER_FULLNAME_" type="VARCHAR2(121 CHAR)"/>
+            <column name="RECEIVER_ID_" type="NUMBER(19,0)"/>
+            <column name="TIMESTAMP_" type="TIMESTAMP(6)"/>
+            <column name="TITLE_" type="VARCHAR2(250 CHAR)"/>
+            <column name="MSG_TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="PARENT_ID_" type="NUMBER(19,0)"/>
+            <column name="IDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-30">
+        <createTable tableName="CHREQ_PROD">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042865" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-31">
+        <createTable tableName="CHREQ_PROD_CODES">
+            <column name="PRODUCT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSITION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-32">
+        <createTable tableName="CHREQ_PROD_UNITS">
+            <column name="PRODUCT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UNIT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSITION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-33">
+        <createTable tableName="CHREQ_UNIT">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042879" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-34">
+        <createTable tableName="CONN_TEST">
+            <column name="A" type="CHAR(1)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-35">
+        <createTable tableName="HIBERNATE_SEQUENCES">
+            <column name="SEQUENCE_NAME" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042894" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="NEXT_VAL" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-36">
+        <createTable tableName="JBPM4_DEPLOYMENT">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042896" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="NAME_" type="CLOB"/>
+            <column name="TIMESTAMP_" type="NUMBER(19,0)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-37">
+        <createTable tableName="JBPM4_DEPLOYPROP">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042898" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DEPLOYMENT_" type="NUMBER(19,0)"/>
+            <column name="OBJNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="STRINGVAL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LONGVAL_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-38">
+        <createTable tableName="JBPM4_EXECUTION">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042902" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACTIVITYNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PROCDEFID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HASVARS_" type="NUMBER(1,0)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SUSPHISTSTATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="HISACTINST_" type="NUMBER(19,0)"/>
+            <column name="PARENT_" type="NUMBER(19,0)"/>
+            <column name="INSTANCE_" type="NUMBER(19,0)"/>
+            <column name="SUPEREXEC_" type="NUMBER(19,0)"/>
+            <column name="SUBPROCINST_" type="NUMBER(19,0)"/>
+            <column name="PARENT_IDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-39">
+        <createTable tableName="JBPM4_HIST_ACTINST">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042907" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HPROCI_" type="NUMBER(19,0)"/>
+            <column name="TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXECUTION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ACTIVITY_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="START_" type="TIMESTAMP(6)"/>
+            <column name="END_" type="TIMESTAMP(6)"/>
+            <column name="DURATION_" type="NUMBER(19,0)"/>
+            <column name="TRANSITION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NEXTIDX_" type="NUMBER(10,0)"/>
+            <column name="HTASK_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-40">
+        <createTable tableName="JBPM4_HIST_DETAIL">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042911" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TIME_" type="TIMESTAMP(6)"/>
+            <column name="HPROCI_" type="NUMBER(19,0)"/>
+            <column name="HPROCIIDX_" type="NUMBER(10,0)"/>
+            <column name="HACTI_" type="NUMBER(19,0)"/>
+            <column name="HACTIIDX_" type="NUMBER(10,0)"/>
+            <column name="HTASK_" type="NUMBER(19,0)"/>
+            <column name="HTASKIDX_" type="NUMBER(10,0)"/>
+            <column name="HVAR_" type="NUMBER(19,0)"/>
+            <column name="HVARIDX_" type="NUMBER(10,0)"/>
+            <column name="MESSAGE_" type="CLOB"/>
+            <column name="OLD_INT_" type="NUMBER(10,0)"/>
+            <column name="NEW_INT_" type="NUMBER(10,0)"/>
+            <column name="OLD_STR_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NEW_STR_" type="VARCHAR2(255 CHAR)"/>
+            <column name="OLD_TIME_" type="TIMESTAMP(6)"/>
+            <column name="NEW_TIME_" type="TIMESTAMP(6)"/>
+            <column name="PARENT_" type="NUMBER(19,0)"/>
+            <column name="PARENT_IDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-41">
+        <createTable tableName="JBPM4_HIST_PROCINST">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042914" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PROCDEFID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="START_" type="TIMESTAMP(6)"/>
+            <column name="END_" type="TIMESTAMP(6)"/>
+            <column name="DURATION_" type="NUMBER(19,0)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ENDACTIVITY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NEXTIDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-42">
+        <createTable tableName="JBPM4_HIST_TASK">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042917" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXECUTION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="OUTCOME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ASSIGNEE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="CREATE_" type="TIMESTAMP(6)"/>
+            <column name="END_" type="TIMESTAMP(6)"/>
+            <column name="DURATION_" type="NUMBER(19,0)"/>
+            <column name="NEXTIDX_" type="NUMBER(10,0)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="DUEDATE_" type="TIMESTAMP(6)"/>
+            <column name="PROCINST_" type="NUMBER(19,0)"/>
+            <column name="SUPERTASK_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-43">
+        <createTable tableName="JBPM4_HIST_VAR">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042920" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROCINSTID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXECUTIONID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VARNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VALUE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HPROCI_" type="NUMBER(19,0)"/>
+            <column name="HTASK_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-44">
+        <createTable tableName="JBPM4_JOB">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042924" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DUEDATE_" type="TIMESTAMP(6)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ISEXCLUSIVE_" type="NUMBER(1,0)"/>
+            <column name="LOCKOWNER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LOCKEXPTIME_" type="TIMESTAMP(6)"/>
+            <column name="EXCEPTION_" type="CLOB"/>
+            <column name="RETRIES_" type="NUMBER(10,0)"/>
+            <column name="PROCESSINSTANCE_" type="NUMBER(19,0)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+            <column name="CFG_" type="NUMBER(19,0)"/>
+            <column name="SIGNAL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EVENT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="REPEAT_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-45">
+        <createTable tableName="JBPM4_LOB">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042927" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BLOB_VALUE_" type="BLOB"/>
+            <column name="DEPLOYMENT_" type="NUMBER(19,0)"/>
+            <column name="NAME_" type="CLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-46">
+        <createTable tableName="JBPM4_PARTICIPATION">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042930" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GROUPID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="USERID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TASK_" type="NUMBER(19,0)"/>
+            <column name="SWIMLANE_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-47">
+        <createTable tableName="JBPM4_PROPERTY">
+            <column name="KEY_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042933" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-48">
+        <createTable tableName="JBPM4_SWIMLANE">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042936" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ASSIGNEE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-49">
+        <createTable tableName="JBPM4_TASK">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042940" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="CLASS_" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="DESCR_" type="CLOB"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SUSPHISTSTATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ASSIGNEE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="FORM_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="CREATE_" type="TIMESTAMP(6)"/>
+            <column name="DUEDATE_" type="TIMESTAMP(6)"/>
+            <column name="PROGRESS_" type="NUMBER(10,0)"/>
+            <column name="SIGNALLING_" type="NUMBER(1,0)"/>
+            <column name="EXECUTION_ID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ACTIVITY_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HASVARS_" type="NUMBER(1,0)"/>
+            <column name="SUPERTASK_" type="NUMBER(19,0)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+            <column name="PROCINST_" type="NUMBER(19,0)"/>
+            <column name="SWIMLANE_" type="NUMBER(19,0)"/>
+            <column name="TASKDEFNAME_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-50">
+        <createTable tableName="JBPM4_VARIABLE">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042944" primaryKeyTablespace="CAMS"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="CONVERTER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HIST_" type="NUMBER(1,0)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+            <column name="TASK_" type="NUMBER(19,0)"/>
+            <column name="LOB_" type="NUMBER(19,0)"/>
+            <column name="DATE_VALUE_" type="TIMESTAMP(6)"/>
+            <column name="DOUBLE_VALUE_" type="FLOAT(126)"/>
+            <column name="CLASSNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LONG_VALUE_" type="NUMBER(19,0)"/>
+            <column name="STRING_VALUE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TEXT_VALUE_" type="CLOB"/>
+            <column name="EXESYS_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-51">
+        <createTable tableName="TODOL_DATA">
+            <column name="TASK_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C0042946" primaryKeyTablespace="CAMS"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-52">
+        <addPrimaryKey columnNames="CHILD_ID_, PARENT_ID_" constraintName="SYS_C0042739" tableName="CHARMS_CHILDROLES" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-53">
+        <addPrimaryKey columnNames="ROLE_ID_, USER_ID_" constraintName="SYS_C0042777" tableName="CHARMS_MEMBERSHIP" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-54">
+        <addPrimaryKey columnNames="MSG_BUNDLE_ID_, MSG_CODE_" constraintName="SYS_C0042781" tableName="CHARMS_MESSAGES" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-55">
+        <addPrimaryKey columnNames="PRODUCT_ID_, POSITION_" constraintName="PK_PRDCDS" tableName="CHREQ_PROD_CODES" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-56">
+        <addPrimaryKey columnNames="PRODUCT_ID_, POSITION_" constraintName="SYS_C0042875" tableName="CHREQ_PROD_UNITS" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-57">
+        <addUniqueConstraint columnNames="DOC_BLOB_ID_" constraintName="SYS_C0042749" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_DOCUMENT" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-58">
+        <addUniqueConstraint columnNames="NAME_, LOCALE_ID_" constraintName="SYS_C0042786" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_MSGBUNDLE" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-59">
+        <addUniqueConstraint columnNames="RECIPIENT_, DISCRIMINATOR_, TARGET_" constraintName="SYS_C0042793" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PERMISSION" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-60">
+        <addUniqueConstraint columnNames="TARGET_STRING_" constraintName="SYS_C0042797" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PERM_TARGET" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-61">
+        <addUniqueConstraint columnNames="NAME_, PROP_TYPE_" constraintName="SYS_C0042802" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PROP_SET" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-62">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C0042812" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-63">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C0042813" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-64">
+        <addUniqueConstraint columnNames="REPORT_BLOB_ID_" constraintName="SYS_C0042814" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-65">
+        <addUniqueConstraint columnNames="GRP_ACTOR_ID_" constraintName="SYS_C0042819" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_ROLE" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-66">
+        <addUniqueConstraint columnNames="NAME_" constraintName="SYS_C0042820" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_ROLE" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-67">
+        <addUniqueConstraint columnNames="NAME_, TARGET_ID_" constraintName="SYS_C0042827" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_TRGT_ACT" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-68">
+        <addUniqueConstraint columnNames="SEQUENCE_TYPE_, VALUE_" constraintName="SYS_C0042833" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_UID" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-69">
+        <addUniqueConstraint columnNames="ACTOR_ID_" constraintName="SYS_C0042838" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_USER" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-70">
+        <addUniqueConstraint columnNames="NAME_" constraintName="SYS_C0042839" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_USER" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-71">
+        <addUniqueConstraint columnNames="TID_" constraintName="SYS_C0042855" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_FACET_DATA" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-72">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C0042866" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-73">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C0042867" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-74">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C0042880" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_UNIT" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-75">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C0042881" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_UNIT" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-76">
+        <addUniqueConstraint columnNames="ID_" constraintName="SYS_C0042903" deferrable="false" disabled="false" initiallyDeferred="false" tableName="JBPM4_EXECUTION" tablespace="CAMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-77">
+        <addForeignKeyConstraint baseColumnNames="CHILD_ID_" baseTableName="CHARMS_CHILDROLES" baseTableSchemaName="CAMS" constraintName="FKA2D54FC4BD0A4A2E" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-78">
+        <addForeignKeyConstraint baseColumnNames="PARENT_ID_" baseTableName="CHARMS_CHILDROLES" baseTableSchemaName="CAMS" constraintName="FKA2D54FC4B420E6BC" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-79">
+        <addForeignKeyConstraint baseColumnNames="DOC_BLOB_ID_" baseTableName="CHARMS_DOCUMENT" baseTableSchemaName="CAMS" constraintName="FK74FA867E36732CF6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_DOC_BLB" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-80">
+        <addForeignKeyConstraint baseColumnNames="EDITOR_ID_" baseTableName="CHARMS_DOCUMENT" baseTableSchemaName="CAMS" constraintName="FK74FA867E65F35154" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-81">
+        <addForeignKeyConstraint baseColumnNames="FOLDER_ID_" baseTableName="CHARMS_DOCUMENT" baseTableSchemaName="CAMS" constraintName="FK74FA867EDAD4E6F6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_FOLDER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-82">
+        <addForeignKeyConstraint baseColumnNames="TEMPLATE_ID_" baseTableName="CHARMS_ETMPL_RCVR" baseTableSchemaName="CAMS" constraintName="FK1A3A75254AE5E2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ETMPL" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-83">
+        <addForeignKeyConstraint baseColumnNames="TEMPLATE_ID_" baseTableName="CHARMS_ETMPL_TRANS" baseTableSchemaName="CAMS" constraintName="FK34FC5C0254AE5E2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ETMPL" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-84">
+        <addForeignKeyConstraint baseColumnNames="PARENT_ID_" baseTableName="CHARMS_FOLDER" baseTableSchemaName="CAMS" constraintName="FK7CFD291FD9A5532" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_FOLDER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-85">
+        <addForeignKeyConstraint baseColumnNames="ROOT_ID_" baseTableName="CHARMS_FOLDER" baseTableSchemaName="CAMS" constraintName="FK7CFD29123DF16A" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_FOLDER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-86">
+        <addForeignKeyConstraint baseColumnNames="ROLE_ID_" baseTableName="CHARMS_MEMBERSHIP" baseTableSchemaName="CAMS" constraintName="FK1236C79B2D29888" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-87">
+        <addForeignKeyConstraint baseColumnNames="USER_ID_" baseTableName="CHARMS_MEMBERSHIP" baseTableSchemaName="CAMS" constraintName="FK1236C79B2D5BCB2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-88">
+        <addForeignKeyConstraint baseColumnNames="MSG_BUNDLE_ID_" baseTableName="CHARMS_MESSAGES" baseTableSchemaName="CAMS" constraintName="FK2612B6AF63D6AEF1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_MSGBUNDLE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-89">
+        <addForeignKeyConstraint baseColumnNames="SET_ID_" baseTableName="CHARMS_PROP_VAL" baseTableSchemaName="CAMS" constraintName="FK6777188DD2D057F" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_PROP_SET" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-90">
+        <addForeignKeyConstraint baseColumnNames="REPORT_BLOB_ID_" baseTableName="CHARMS_REPORT" baseTableSchemaName="CAMS" constraintName="FK1BBF0B5731F8FD1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_RPT_BLB" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-91">
+        <addForeignKeyConstraint baseColumnNames="TARGET_ID_" baseTableName="CHARMS_TRGT_ACT" baseTableSchemaName="CAMS" constraintName="FK988D6F81F46918A6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_PERM_TARGET" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-92">
+        <addForeignKeyConstraint baseColumnNames="FINISH_USER_ID_" baseTableName="CHARMS_WFL_DATA" baseTableSchemaName="CAMS" constraintName="FK5E7D28AFEE5AD6DE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-93">
+        <addForeignKeyConstraint baseColumnNames="SUBMIT_USER_ID_" baseTableName="CHARMS_WFL_DATA" baseTableSchemaName="CAMS" constraintName="FK5E7D28AFA80948F9" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-94">
+        <addForeignKeyConstraint baseColumnNames="ASSIGN_USER_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA395630674B0A02" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-95">
+        <addForeignKeyConstraint baseColumnNames="CODE_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FK_CHREQD_TO_CODE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_CODE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-96">
+        <addForeignKeyConstraint baseColumnNames="ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA39563049EAE22" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_WFL_DATA" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-97">
+        <addForeignKeyConstraint baseColumnNames="IMPLEMENT_USER_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA395630A7B2B84E" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-98">
+        <addForeignKeyConstraint baseColumnNames="INITIATE_USER_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA39563084BA3798" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-99">
+        <addForeignKeyConstraint baseColumnNames="PROCESS_USER_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA39563040679C82" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-100">
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA395630C90BD99C" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_PROD" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-101">
+        <addForeignKeyConstraint baseColumnNames="UNIT_ID_" baseTableName="CHREQ_DATA" baseTableSchemaName="CAMS" constraintName="FKBA395630E4C7B434" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_UNIT" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-102">
+        <addForeignKeyConstraint baseColumnNames="PARENT_ID_" baseTableName="CHREQ_MSG_ENTRY" baseTableSchemaName="CAMS" constraintName="FKDFC3872E6AF4F41F" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_MSG_ENTRY" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-103">
+        <addForeignKeyConstraint baseColumnNames="CODE_ID_" baseTableName="CHREQ_PROD_CODES" baseTableSchemaName="CAMS" constraintName="FK_PRDCDS_CODE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_CODE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-104">
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID_" baseTableName="CHREQ_PROD_CODES" baseTableSchemaName="CAMS" constraintName="FK_PRDCDS_PROD" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_PROD" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-105">
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID_" baseTableName="CHREQ_PROD_UNITS" baseTableSchemaName="CAMS" constraintName="FK38C4326DC90BD99C" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_PROD" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-106">
+        <addForeignKeyConstraint baseColumnNames="UNIT_ID_" baseTableName="CHREQ_PROD_UNITS" baseTableSchemaName="CAMS" constraintName="FK38C4326DE4C7B434" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_UNIT" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-107">
+        <addForeignKeyConstraint baseColumnNames="DEPLOYMENT_" baseTableName="JBPM4_DEPLOYPROP" baseTableSchemaName="CAMS" constraintName="FK_DEPLPROP_DEPL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_DEPLOYMENT" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-108">
+        <addForeignKeyConstraint baseColumnNames="INSTANCE_" baseTableName="JBPM4_EXECUTION" baseTableSchemaName="CAMS" constraintName="FK_EXEC_INSTANCE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-109">
+        <addForeignKeyConstraint baseColumnNames="PARENT_" baseTableName="JBPM4_EXECUTION" baseTableSchemaName="CAMS" constraintName="FK_EXEC_PARENT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-110">
+        <addForeignKeyConstraint baseColumnNames="SUBPROCINST_" baseTableName="JBPM4_EXECUTION" baseTableSchemaName="CAMS" constraintName="FK_EXEC_SUBPI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-111">
+        <addForeignKeyConstraint baseColumnNames="SUPEREXEC_" baseTableName="JBPM4_EXECUTION" baseTableSchemaName="CAMS" constraintName="FK_EXEC_SUPEREXEC" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-112">
+        <addForeignKeyConstraint baseColumnNames="HPROCI_" baseTableName="JBPM4_HIST_ACTINST" baseTableSchemaName="CAMS" constraintName="FK_HACTI_HPROCI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_PROCINST" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-113">
+        <addForeignKeyConstraint baseColumnNames="HTASK_" baseTableName="JBPM4_HIST_ACTINST" baseTableSchemaName="CAMS" constraintName="FK_HTI_HTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-114">
+        <addForeignKeyConstraint baseColumnNames="HACTI_" baseTableName="JBPM4_HIST_DETAIL" baseTableSchemaName="CAMS" constraintName="FK_HDETAIL_HACTI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_ACTINST" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-115">
+        <addForeignKeyConstraint baseColumnNames="HPROCI_" baseTableName="JBPM4_HIST_DETAIL" baseTableSchemaName="CAMS" constraintName="FK_HDETAIL_HPROCI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_PROCINST" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-116">
+        <addForeignKeyConstraint baseColumnNames="HTASK_" baseTableName="JBPM4_HIST_DETAIL" baseTableSchemaName="CAMS" constraintName="FK_HDETAIL_HTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-117">
+        <addForeignKeyConstraint baseColumnNames="HVAR_" baseTableName="JBPM4_HIST_DETAIL" baseTableSchemaName="CAMS" constraintName="FK_HDETAIL_HVAR" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_VAR" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-118">
+        <addForeignKeyConstraint baseColumnNames="SUPERTASK_" baseTableName="JBPM4_HIST_TASK" baseTableSchemaName="CAMS" constraintName="FK_HSUPERT_SUB" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-119">
+        <addForeignKeyConstraint baseColumnNames="HPROCI_" baseTableName="JBPM4_HIST_VAR" baseTableSchemaName="CAMS" constraintName="FK_HVAR_HPROCI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_PROCINST" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-120">
+        <addForeignKeyConstraint baseColumnNames="HTASK_" baseTableName="JBPM4_HIST_VAR" baseTableSchemaName="CAMS" constraintName="FK_HVAR_HTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-121">
+        <addForeignKeyConstraint baseColumnNames="CFG_" baseTableName="JBPM4_JOB" baseTableSchemaName="CAMS" constraintName="FK_JOB_CFG" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_LOB" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-122">
+        <addForeignKeyConstraint baseColumnNames="DEPLOYMENT_" baseTableName="JBPM4_LOB" baseTableSchemaName="CAMS" constraintName="FK_LOB_DEPLOYMENT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_DEPLOYMENT" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-123">
+        <addForeignKeyConstraint baseColumnNames="SWIMLANE_" baseTableName="JBPM4_PARTICIPATION" baseTableSchemaName="CAMS" constraintName="FK_PART_SWIMLANE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_SWIMLANE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-124">
+        <addForeignKeyConstraint baseColumnNames="TASK_" baseTableName="JBPM4_PARTICIPATION" baseTableSchemaName="CAMS" constraintName="FK_PART_TASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-125">
+        <addForeignKeyConstraint baseColumnNames="EXECUTION_" baseTableName="JBPM4_SWIMLANE" baseTableSchemaName="CAMS" constraintName="FK_SWIMLANE_EXEC" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-126">
+        <addForeignKeyConstraint baseColumnNames="SUPERTASK_" baseTableName="JBPM4_TASK" baseTableSchemaName="CAMS" constraintName="FK_TASK_SUPERTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-127">
+        <addForeignKeyConstraint baseColumnNames="SWIMLANE_" baseTableName="JBPM4_TASK" baseTableSchemaName="CAMS" constraintName="FK_TASK_SWIML" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_SWIMLANE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-128">
+        <addForeignKeyConstraint baseColumnNames="EXECUTION_" baseTableName="JBPM4_VARIABLE" baseTableSchemaName="CAMS" constraintName="FK_VAR_EXECUTION" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-129">
+        <addForeignKeyConstraint baseColumnNames="EXESYS_" baseTableName="JBPM4_VARIABLE" baseTableSchemaName="CAMS" constraintName="FK_VAR_EXESYS" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-130">
+        <addForeignKeyConstraint baseColumnNames="LOB_" baseTableName="JBPM4_VARIABLE" baseTableSchemaName="CAMS" constraintName="FK_VAR_LOB" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_LOB" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-131">
+        <addForeignKeyConstraint baseColumnNames="TASK_" baseTableName="JBPM4_VARIABLE" baseTableSchemaName="CAMS" constraintName="FK_VAR_TASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-132">
+        <addForeignKeyConstraint baseColumnNames="ID_" baseTableName="TODOL_DATA" baseTableSchemaName="CAMS" constraintName="FK5B1E838349EAE22" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_WFL_DATA" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-133">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042739" tableName="CHARMS_CHILDROLES" tablespace="CAMS" unique="false">
+            <column name="CHILD_ID_"/>
+            <column name="PARENT_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-134">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042748" tableName="CHARMS_DOCUMENT" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-135">
+        <createIndex associatedWith="uniqueConstraint,foreignKey" indexName="SYS_C0042749" tableName="CHARMS_DOCUMENT" tablespace="CAMS" unique="false">
+            <column name="DOC_BLOB_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-136">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042742" tableName="CHARMS_DOC_BLB" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-137">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042755" tableName="CHARMS_EMSG" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-138">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042758" tableName="CHARMS_ETMPL" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-139">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042761" tableName="CHARMS_ETMPL_RCVR" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-140">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042765" tableName="CHARMS_ETMPL_TRANS" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-141">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042768" tableName="CHARMS_FOLDER" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-142">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042774" tableName="CHARMS_LOG" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-143">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042777" tableName="CHARMS_MEMBERSHIP" tablespace="CAMS" unique="false">
+            <column name="ROLE_ID_"/>
+            <column name="USER_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-144">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042781" tableName="CHARMS_MESSAGES" tablespace="CAMS" unique="false">
+            <column name="MSG_BUNDLE_ID_"/>
+            <column name="MSG_CODE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-145">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042785" tableName="CHARMS_MSGBUNDLE" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-146">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042786" tableName="CHARMS_MSGBUNDLE" tablespace="CAMS" unique="false">
+            <column name="NAME_"/>
+            <column name="LOCALE_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-147">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042792" tableName="CHARMS_PERMISSION" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-148">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042793" tableName="CHARMS_PERMISSION" tablespace="CAMS" unique="false">
+            <column name="RECIPIENT_"/>
+            <column name="DISCRIMINATOR_"/>
+            <column name="TARGET_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-149">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042796" tableName="CHARMS_PERM_TARGET" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-150">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042797" tableName="CHARMS_PERM_TARGET" tablespace="CAMS" unique="false">
+            <column name="TARGET_STRING_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-151">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042801" tableName="CHARMS_PROP_SET" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-152">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042802" tableName="CHARMS_PROP_SET" tablespace="CAMS" unique="false">
+            <column name="NAME_"/>
+            <column name="PROP_TYPE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-153">
+        <createIndex associatedWith="" indexName="IDX_PROPV_SET" tableName="CHARMS_PROP_VAL" tablespace="CAMS" unique="false">
+            <column name="NAME_"/>
+            <column name="SET_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-154">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042806" tableName="CHARMS_PROP_VAL" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-155">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042811" tableName="CHARMS_REPORT" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-156">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042812" tableName="CHARMS_REPORT" tablespace="CAMS" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-157">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042813" tableName="CHARMS_REPORT" tablespace="CAMS" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-158">
+        <createIndex associatedWith="uniqueConstraint,foreignKey" indexName="SYS_C0042814" tableName="CHARMS_REPORT" tablespace="CAMS" unique="false">
+            <column name="REPORT_BLOB_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-159">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042818" tableName="CHARMS_ROLE" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-160">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042819" tableName="CHARMS_ROLE" tablespace="CAMS" unique="false">
+            <column name="GRP_ACTOR_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-161">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042820" tableName="CHARMS_ROLE" tablespace="CAMS" unique="false">
+            <column name="NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-162">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042823" tableName="CHARMS_RPT_BLB" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-163">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042826" tableName="CHARMS_TRGT_ACT" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-164">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042827" tableName="CHARMS_TRGT_ACT" tablespace="CAMS" unique="false">
+            <column name="NAME_"/>
+            <column name="TARGET_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-165">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042832" tableName="CHARMS_UID" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-166">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042833" tableName="CHARMS_UID" tablespace="CAMS" unique="false">
+            <column name="SEQUENCE_TYPE_"/>
+            <column name="VALUE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-167">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042837" tableName="CHARMS_USER" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-168">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042838" tableName="CHARMS_USER" tablespace="CAMS" unique="false">
+            <column name="ACTOR_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-169">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042839" tableName="CHARMS_USER" tablespace="CAMS" unique="false">
+            <column name="NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-170">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042841" tableName="CHARMS_WFL_DATA" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-171">
+        <createIndex associatedWith="" indexName="IDX_CHRQCD_DNAME" tableName="CHREQ_CODE" tablespace="CAMS" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-172">
+        <createIndex associatedWith="" indexName="IDX_CHRQCD_SINDX" tableName="CHREQ_CODE" tablespace="CAMS" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-173">
+        <createIndex associatedWith="primaryKey" indexName="PK_CHREQ_CODE" tableName="CHREQ_CODE" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-174">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042849" tableName="CHREQ_COSTSHEET" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-175">
+        <createIndex associatedWith="primaryKey,foreignKey" indexName="SYS_C0042851" tableName="CHREQ_DATA" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-176">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042854" tableName="CHREQ_FACET_DATA" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-177">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042855" tableName="CHREQ_FACET_DATA" tablespace="CAMS" unique="false">
+            <column name="TID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-178">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042859" tableName="CHREQ_IMPACTSHEET" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-179">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042861" tableName="CHREQ_MSG_ENTRY" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-180">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042865" tableName="CHREQ_PROD" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-181">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042866" tableName="CHREQ_PROD" tablespace="CAMS" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-182">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042867" tableName="CHREQ_PROD" tablespace="CAMS" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-183">
+        <createIndex associatedWith="" indexName="IDX_CHRQPCD_P_C" tableName="CHREQ_PROD_CODES" tablespace="CAMS" unique="false">
+            <column name="PRODUCT_ID_"/>
+            <column name="CODE_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-184">
+        <createIndex associatedWith="primaryKey" indexName="PK_PRDCDS" tableName="CHREQ_PROD_CODES" tablespace="CAMS" unique="false">
+            <column name="PRODUCT_ID_"/>
+            <column name="POSITION_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-185">
+        <createIndex associatedWith="" indexName="SYS_C00186572" tableName="CHREQ_PROD_UNITS" tablespace="CAMS" unique="false">
+            <column name="PRODUCT_ID_"/>
+            <column name="UNIT_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-186">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042875" tableName="CHREQ_PROD_UNITS" tablespace="CAMS" unique="false">
+            <column name="PRODUCT_ID_"/>
+            <column name="POSITION_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-187">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042879" tableName="CHREQ_UNIT" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-188">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042880" tableName="CHREQ_UNIT" tablespace="CAMS" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-189">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042881" tableName="CHREQ_UNIT" tablespace="CAMS" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-190">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042894" tableName="HIBERNATE_SEQUENCES" tablespace="CAMS" unique="false">
+            <column name="SEQUENCE_NAME"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-191">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042896" tableName="JBPM4_DEPLOYMENT" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-192">
+        <createIndex associatedWith="foreignKey" indexName="IDX_DEPLPROP_DEPL" tableName="JBPM4_DEPLOYPROP" tablespace="CAMS" unique="false">
+            <column name="DEPLOYMENT_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-193">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042898" tableName="JBPM4_DEPLOYPROP" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-194">
+        <createIndex associatedWith="foreignKey" indexName="IDX_EXEC_INSTANCE" tableName="JBPM4_EXECUTION" tablespace="CAMS" unique="false">
+            <column name="INSTANCE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-195">
+        <createIndex associatedWith="foreignKey" indexName="IDX_EXEC_PARENT" tableName="JBPM4_EXECUTION" tablespace="CAMS" unique="false">
+            <column name="PARENT_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-196">
+        <createIndex associatedWith="foreignKey" indexName="IDX_EXEC_SUBPI" tableName="JBPM4_EXECUTION" tablespace="CAMS" unique="false">
+            <column name="SUBPROCINST_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-197">
+        <createIndex associatedWith="foreignKey" indexName="IDX_EXEC_SUPEREXEC" tableName="JBPM4_EXECUTION" tablespace="CAMS" unique="false">
+            <column name="SUPEREXEC_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-198">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042902" tableName="JBPM4_EXECUTION" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-199">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C0042903" tableName="JBPM4_EXECUTION" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-200">
+        <createIndex associatedWith="foreignKey" indexName="IDX_HACTI_HPROCI" tableName="JBPM4_HIST_ACTINST" tablespace="CAMS" unique="false">
+            <column name="HPROCI_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-201">
+        <createIndex associatedWith="foreignKey" indexName="IDX_HTI_HTASK" tableName="JBPM4_HIST_ACTINST" tablespace="CAMS" unique="false">
+            <column name="HTASK_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-202">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042907" tableName="JBPM4_HIST_ACTINST" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-203">
+        <createIndex associatedWith="foreignKey" indexName="IDX_HDET_HACTI" tableName="JBPM4_HIST_DETAIL" tablespace="CAMS" unique="false">
+            <column name="HACTI_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-204">
+        <createIndex associatedWith="foreignKey" indexName="IDX_HDET_HPROCI" tableName="JBPM4_HIST_DETAIL" tablespace="CAMS" unique="false">
+            <column name="HPROCI_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-205">
+        <createIndex associatedWith="foreignKey" indexName="IDX_HDET_HTASK" tableName="JBPM4_HIST_DETAIL" tablespace="CAMS" unique="false">
+            <column name="HTASK_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-206">
+        <createIndex associatedWith="foreignKey" indexName="IDX_HDET_HVAR" tableName="JBPM4_HIST_DETAIL" tablespace="CAMS" unique="false">
+            <column name="HVAR_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-207">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042911" tableName="JBPM4_HIST_DETAIL" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-208">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042914" tableName="JBPM4_HIST_PROCINST" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-209">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042917" tableName="JBPM4_HIST_TASK" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-210">
+        <createIndex associatedWith="foreignKey" indexName="IDX_HVAR_HPROCI" tableName="JBPM4_HIST_VAR" tablespace="CAMS" unique="false">
+            <column name="HPROCI_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-211">
+        <createIndex associatedWith="foreignKey" indexName="IDX_HVAR_HTASK" tableName="JBPM4_HIST_VAR" tablespace="CAMS" unique="false">
+            <column name="HTASK_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-212">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042920" tableName="JBPM4_HIST_VAR" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-213">
+        <createIndex associatedWith="" indexName="IDX_JOBDUEDATE" tableName="JBPM4_JOB" tablespace="CAMS" unique="false">
+            <column name="DUEDATE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-214">
+        <createIndex associatedWith="" indexName="IDX_JOBLOCKEXP" tableName="JBPM4_JOB" tablespace="CAMS" unique="false">
+            <column name="LOCKEXPTIME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-215">
+        <createIndex associatedWith="" indexName="IDX_JOBRETRIES" tableName="JBPM4_JOB" tablespace="CAMS" unique="false">
+            <column name="RETRIES_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-216">
+        <createIndex associatedWith="foreignKey" indexName="IDX_JOB_CFG" tableName="JBPM4_JOB" tablespace="CAMS" unique="false">
+            <column name="CFG_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-217">
+        <createIndex associatedWith="" indexName="IDX_JOB_EXE" tableName="JBPM4_JOB" tablespace="CAMS" unique="false">
+            <column name="EXECUTION_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-218">
+        <createIndex associatedWith="" indexName="IDX_JOB_PRINST" tableName="JBPM4_JOB" tablespace="CAMS" unique="false">
+            <column name="PROCESSINSTANCE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-219">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042924" tableName="JBPM4_JOB" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-220">
+        <createIndex associatedWith="foreignKey" indexName="IDX_LOB_DEPLOYMENT" tableName="JBPM4_LOB" tablespace="CAMS" unique="false">
+            <column name="DEPLOYMENT_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-221">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042927" tableName="JBPM4_LOB" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-222">
+        <createIndex associatedWith="foreignKey" indexName="IDX_PART_TASK" tableName="JBPM4_PARTICIPATION" tablespace="CAMS" unique="false">
+            <column name="TASK_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-223">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042930" tableName="JBPM4_PARTICIPATION" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-224">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042933" tableName="JBPM4_PROPERTY" tablespace="CAMS" unique="false">
+            <column name="KEY_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-225">
+        <createIndex associatedWith="foreignKey" indexName="IDX_SWIMLANE_EXEC" tableName="JBPM4_SWIMLANE" tablespace="CAMS" unique="false">
+            <column name="EXECUTION_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-226">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042936" tableName="JBPM4_SWIMLANE" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-227">
+        <createIndex associatedWith="foreignKey" indexName="IDX_TASK_SUPERTASK" tableName="JBPM4_TASK" tablespace="CAMS" unique="false">
+            <column name="SUPERTASK_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-228">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042940" tableName="JBPM4_TASK" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-229">
+        <createIndex associatedWith="foreignKey" indexName="IDX_VAR_EXECUTION" tableName="JBPM4_VARIABLE" tablespace="CAMS" unique="false">
+            <column name="EXECUTION_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-230">
+        <createIndex associatedWith="foreignKey" indexName="IDX_VAR_EXESYS" tableName="JBPM4_VARIABLE" tablespace="CAMS" unique="false">
+            <column name="EXESYS_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-231">
+        <createIndex associatedWith="foreignKey" indexName="IDX_VAR_LOB" tableName="JBPM4_VARIABLE" tablespace="CAMS" unique="false">
+            <column name="LOB_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-232">
+        <createIndex associatedWith="foreignKey" indexName="IDX_VAR_TASK" tableName="JBPM4_VARIABLE" tablespace="CAMS" unique="false">
+            <column name="TASK_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-233">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C0042944" tableName="JBPM4_VARIABLE" tablespace="CAMS" unique="false">
+            <column name="DBID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1273493446683-234">
+        <createIndex associatedWith="primaryKey,foreignKey" indexName="SYS_C0042946" tableName="TODOL_DATA" tablespace="CAMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

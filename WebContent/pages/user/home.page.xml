@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true"
+      >
+
+
+  <description>home page</description>
+
+  <action execute="#{usersStatistics.refresh()}"
+          on-postback="false" />
+
+
+    <navigation>
+      
+      <rule if-outcome="viewDrafts" >
+        <redirect view-id="#{processTable.setupDraft()}" /> 
+      </rule>
+   
+      <rule if-outcome="viewOngoing" >
+        <redirect view-id="#{processTable.setupOngoing()}" /> 
+      </rule>
+   
+      <rule if-outcome="viewComplete" >
+        <redirect view-id="#{processTable.setupComplete()}" /> 
+      </rule>
+      
+      <rule if-outcome="startProcess" >
+        <redirect view-id="/pages/wfl/start.html"
+                  include-page-params="true">
+          <param name="pdName" value="#{param.pdName}"/>
+        </redirect>
+      </rule>
+      
+      <rule if-outcome="viewUserProcList" >
+        <redirect view-id="/pages/wfl/changerequest/userProcList.html" /> 
+      </rule>
+ 
+      <rule if-outcome="viewTaskList" >
+        <redirect view-id="/pages/user/taskList.html" /> 
+      </rule>
+ 
+      <rule if-outcome="viewBlockedTaskList" >
+        <redirect view-id="#{userTaskTable.setupBlocked()}" /> 
+      </rule>
+ 
+      <rule if-outcome="viewUnblockedTaskList" >
+        <redirect view-id="#{userTaskTable.setupUnblocked()}" /> 
+      </rule>
+  
+    
+    </navigation>
+  
+
+</page>

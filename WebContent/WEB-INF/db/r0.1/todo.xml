@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+
+    <!--
+
+    tests only :
+
+
+
+
+    <changeSet author="michael" id="r0.1-34">
+       <renameTable newTableName="CHARMS_PROP_SET_OLD" oldTableName="CHARMS_PROP_SET"/>
+        <createTable schemaName="CAMS" tableName="CHARMS_PROP_SET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_PSET"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false" uniqueConstraintName="U_CHARMS_PSET"/>
+            </column>
+            <column name="PROP_TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="SET_ID_" baseTableName="CHARMS_PROP_VAL" baseTableSchemaName="CAMS" constraintName="FK_PROP_VAL_TO_SET" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_PROP_SET"/>
+        <createIndex indexName="IDX_PROPS_NAME_TYP" schemaName="CAMS" tableName="CHARMS_PROP_SET" unique="true">
+            <column name="NAME_"/>
+            <column name="PROP_TYPE_"/>
+        </createIndex>
+    </changeSet>
+
+
+
+        drop an index, this index was responsible for a unique name of the properties set,
+        however now the (name, type) pair is unique so we may have same name for different property types
+
+
+    <changeSet author="michael" id="r0.1-31">
+       <dropNotNullConstraint tableName="CHARMS_PROP_SET" columnName="NAME_"/>
+    </changeSet>
+
+    <!- - try to drop one of oracles auto names constraints here: - ->
+    <changeSet author="michael" id="r0.1-32">
+       <modifyDataType columnName="NAME_" newDataType="VARCHAR2(100 CHAR)" nullable="true" schemaName="CAMS" tableName="CHARMS_PROP_SET"/>
+    </changeSet>
+
+    <changeSet author="michael" id="r0.1-33">
+       <modifyDataType columnName="NAME_" newDataType="VARCHAR2(100 CHAR)" nullable="true" schemaName="CAMS" tableName="CHARMS_PROP_SET"/>
+    </changeSet>
+
+
+    <changeSet author="michael" id="r0.1-31">
+        <dropUniqueConstraint tableName="CHARMS_PROP_SET" uniqueColumns="NAME_" constraintName="SYS_C00189941"  />
+    </changeSet>
+
+
+    <changeSet author="michael" id="r0.1-31">
+        <dropUniqueConstraint tableName="CHARMS_PROP_SET" uniqueColumns="NAME_" constraintName="SYS_C00189941" />
+    </changeSet>
+
+    <changeSet author="michael" id="r0.1-32">
+        <addNotNullConstraint columnDataType="VARCHAR2(100 CHAR)" columnName="NAME_" schemaName="CAMS" tableName="CHARMS_PROP_SET"/>
+    </changeSet>
+
+    <changeSet author="michael" id="r0.1-33">
+        <dropIndex indexName="SYS_C00185977" schemaName="CAMS" tableName="CHARMS_PROP_SET"/>
+    </changeSet>
+    -->
+
+</databaseChangeLog>

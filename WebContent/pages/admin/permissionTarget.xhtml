@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.permissionTarget.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.permissionTarget.title']}" />
+
+<ui:define name="body">
+
+
+<a4j:form>
+
+  <s:decorate id="nameProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsPermissionTarget.targetString']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{charmsPermissionTarget.targetString}"
+                  title="#{messages['charmsPermissionTarget.targetString']}"
+                  styleClass="inputtext"
+                  style="width: 350px;">
+     </h:inputText>
+  </s:decorate>
+
+
+
+  <s:decorate id="receiverProperty"
+              template="/layout/fragments/editproperty.xhtml">
+  <ui:define name="label"><h:outputText value="#{messages['charmsPermissionTarget.action']}" /></ui:define>
+  <table><tr><td>
+  <s:div id="rpy">
+  <a4j:region>
+
+    <a4j:repeat var="action"
+                value="#{charmsPermissionTargetActionBean.actions}"
+                rowKeyVar="key">
+      <h:inputText value="#{action.name}"
+                   style="width: 350px;"
+                   styleClass="inputtext"
+                   title="#{messages['action.name']}" />
+      <br />
+    </a4j:repeat>
+
+
+    <a4j:commandLink title="add"
+                     action="#{charmsPermissionTargetActionBean.addAction()}"
+                     immediate="false"
+                     ajaxSingle="false"
+                     reRender="rpy">
+      <h:graphicImage url="/#{theme['iconset']}/seam_add.png"
+                      border="0"/></a4j:commandLink>
+
+    <a4j:commandLink title="del"
+                     action="#{charmsPermissionTargetActionBean.delAction()}"
+                     immediate="false"
+                     ajaxSingle="false"
+                     reRender="rpy"
+                     rendered="#{charmsPermissionTargetActionBean.multiActions}">
+      <h:graphicImage url="/#{theme['iconset']}/cross.png"
+                      border="0"/></a4j:commandLink>
+  </a4j:region>
+  </s:div>
+  </td></tr></table>
+  </s:decorate>
+
+
+
+
+        <div class="actionButtons">
+
+            <!-- persist for unmanaged bean -->
+            <h:commandButton styleClass="button"
+                             id="persist"
+                             value="Persist"
+                             action="#{charmsPermissionTargetActionBean.persist()}"
+                             rendered="#{not charmsPermissionTargetActionBean.managed}">
+               <f:param name="charmsPermissionTargetId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- update for managed bean -->
+            <h:commandButton styleClass="button"
+                             id="update"
+                             value="Update"
+                             action="#{charmsPermissionTargetActionBean.update()}"
+                             rendered="#{charmsPermissionTargetActionBean.managed}">
+               <f:param name="charmsPermissionTargetId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- remove the managed bean -->
+            <h:commandButton styleClass="button"
+                             id="remove"
+                             value="Remove"
+                             action="#{charmsPermissionTargetActionBean.remove()}"
+                             immediate="true"
+                             rendered="#{charmsPermissionTargetActionBean.managed}">
+              <f:param name="charmsPermissionTargetId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="cancel"
+                             value="Cancel"
+                             action="#{charmsPermissionTargetActionBean.cancel()}"
+                             immediate="true">
+              <f:param name="charmsPermissionTargetId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+        </div>
+
+
+</a4j:form>
+
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

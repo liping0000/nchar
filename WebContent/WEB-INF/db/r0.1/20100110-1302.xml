@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <!--
+
+     property values are no longer split up in number and string values-->
+    <changeSet author="michael" id="r0.1-20">
+        <addColumn schemaName="CAMS" tableName="CHARMS_PROP_VAL">
+            <column name="VALUE_" type="VARCHAR2(2048 CHAR)"/>
+        </addColumn>
+
+        <update tableName="CHARMS_PROP_VAL">
+          <column name="VALUE_" valueComputed="STRING_" />
+          <where>STRING_ is not null</where>
+        </update>
+
+        <update tableName="CHARMS_PROP_VAL">
+          <column name="VALUE_" valueComputed="NUMBER_" />
+          <where>NUMBER_ is not null</where>
+        </update>
+
+        <addNotNullConstraint columnDataType="NUMBER(19,0)" columnName="SET_ID_" schemaName="CAMS" tableName="CHARMS_PROP_VAL"/>
+        <dropColumn columnName="NUMBER_" schemaName="CAMS" tableName="CHARMS_PROP_VAL"/>
+        <dropColumn columnName="STRING_" schemaName="CAMS" tableName="CHARMS_PROP_VAL"/>
+    </changeSet>
+
+
+
+
+</databaseChangeLog>

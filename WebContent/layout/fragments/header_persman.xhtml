@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"><!--
+
+
+    this is the general header for all pages including logo, name and a horizontal line separator
+
+--><div class="persman_heads"><h:outputLink value="#{request.contextPath}/pages/user/home.html"><!--
+  --><h:graphicImage value="/#{theme['logo']}"
+                     alt="charms"
+                     class="logo" /><!--
+--></h:outputLink><br /><!--
+--><h:graphicImage value="/#{theme['logo2']}"
+                     alt="charms"
+                     class="catchphrase" /><!--
+--><h:panelGroup class="userfullname" rendered="#{identity.loggedIn}"><!-- show name if the user is logged in -->
+           <h:outputText value="#{messages['messages.loggedOnAs']}" /><!--
+--></h:panelGroup><!--
+--></div><!--
+--><div class="fadeline"><h:graphicImage value="/img/pixel.gif" alt="" /></div><!--
+--><div class="persman_heads_faded">
+     <h:form style="float: right; padding: 5px;">
+       <ui:repeat var="t" value="#{themeSelector.supportedThemeIds}">
+         <h:commandLink action="#{themeSelector.selectThemeId(t)}">
+           <h:graphicImage url="/img/themes/theme_#{t}.gif" />
+         </h:commandLink>
+         <span> </span>
+       </ui:repeat>
+     </h:form>
+</div>
+</ui:composition>

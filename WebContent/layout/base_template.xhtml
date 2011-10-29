@@ -1,0 +1,92 @@
+<rich:page xmlns:a4j="http://richfaces.org/a4j"
+           xmlns:c="http://java.sun.com/jstl/core"
+           xmlns:f="http://java.sun.com/jsf/core"
+           xmlns:h="http://java.sun.com/jsf/html"
+           xmlns:rich="http://richfaces.org/rich"
+           xmlns:ui="http://java.sun.com/jsf/facelets"
+           xmlns:p="http://primefaces.prime.com.tr/ui"
+           xmlns:ft="http://primefaces.prime.com.tr/facestrace"
+           xmlns:s="http://jboss.com/products/seam/taglib"
+           markupType="xhtml"
+           id="p"
+           sidebarWidth="#{identity.loggedIn?theme['sidebarWidth']:''}"
+           theme="cfs"
+           pageTitle="#{pageTitle} - #{facesContext.externalContext.context.servletContextName}">
+
+<!-- sidebar width is null if user is not logged in -->
+
+<!--   header for the html page: -->
+<f:facet name="pageHeader">
+  <h:panelGroup>
+     <ui:include src="fragments/pageHeader.xhtml" />
+  </h:panelGroup>
+</f:facet>
+
+
+<!--   template header depends on the theme: -->
+<f:facet name="header">
+  <h:panelGroup layout="block">
+     <ui:include src="#{theme['header']}" />
+  </h:panelGroup>
+</f:facet>
+
+
+<!--   show menu only if user is logged in -->
+<f:facet name="sidebar" >
+  <h:panelGroup rendered="#{identity.loggedIn}">
+    <!-- the menu is cached, hopefully we get some performance out of this
+         the cache region needs to be cleared when the user changes locale  -->
+    <s:cache key="menu-#{authenticatedUser}" region="navMenuCache"> 
+     <ui:include src="fragments/menu.xhtml" />    <!--  -->
+    </s:cache> 
+  </h:panelGroup>
+</f:facet>
+
+
+<!--   the main content of this page: -->
+<ui:decorate template="#{theme['contentcontainer']}">
+  <ui:insert name="body" />
+</ui:decorate>
+
+
+<!--   the footer depending on the theme: -->
+<f:facet name="footer">
+  <h:panelGroup layout="block">
+    <ui:include src="#{theme['footer']}" />
+  </h:panelGroup>
+</f:facet>
+
+
+<!-- table for conversations
+<h:form >
+<h:dataTable value="#{conversationList}" var="entry"
+        rendered="#{not empty conversationList}">
+    <h:column>
+        <f:facet name="header">Workspace</f:facet>
+        <h:commandLink action="#{entry.select}" value="#{entry.description}"/>
+        <h:outputText value="[current]" rendered="#{entry.current}"/>
+    </h:column>
+    <h:column>
+        <f:facet name="header">Activity</f:facet>
+        <h:outputText value="#{entry.startDatetime}">
+            <f:convertDateTime type="time" pattern="hh:mm a"/>
+        </h:outputText>
+        <h:outputText value=" - "/>
+        <h:outputText value="#{entry.lastDatetime}">
+            <f:convertDateTime type="time" pattern="hh:mm a"/>
+        </h:outputText>
+    </h:column>
+    <h:column>
+        <f:facet name="header">Action</f:facet>
+        <h:commandButton action="#{entry.select}" value="#{msg.Switch}"/>
+        <h:commandButton action="#{entry.destroy}" value="#{msg.Destroy}"/>
+    </h:column>
+</h:dataTable>
+</h:form>
+-->
+
+<!-- use &trace=true or ?trace=true in the link
+<ft:trace />
+-->
+
+</rich:page>

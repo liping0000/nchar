@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Charms"
+         default="tattletale-report"
+         basedir="../../">
+
+  <!--
+
+    ant resources: http://ant.apache.org/external.html
+    xmltask: http://www.oopsconsultancy.com/software/xmltask/#download
+  -->
+
+  <description>
+        simple build file,
+        this generates a tattletale report for charms
+  </description>
+
+
+  <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"/>
+
+  <taskdef name="report" classname="org.jboss.tattletale.ant.ReportTask" />
+
+
+
+  <!-- java source files -->
+  <property name="src" location="src"/>
+
+  <!-- compiled class files -->
+  <property name="build" location="build"/>
+
+  <!-- working subdir -->
+  <property name="dist" location="dist"/>
+  <!-- this is where we prepare the deployment files for the war creation -->
+  <property name="prepare" location="dist/prepare"/>
+
+  <!-- this is where the xhtml stuff is -->
+  <property name="content" location="WebContent"/>
+
+  <!-- report subdir -->
+  <property name="report" location="trashcan/report"/>
+
+  <tstamp>
+    <format property="tstamp" pattern="yyyyMMdd" locale="en"/>
+  </tstamp>
+
+
+  <!-- the classpath -->
+  <path id="classpath">
+    <fileset dir="WebContent/WEB-INF/lib">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="/opt/tomcat/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+
+
+
+
+  <!-- Delete the ${build} and ${dist} directory trees,
+       ${build} is recreated by eclipse on project build
+       ${dist} is recreated by the setup task               -->
+  <target name="clean"
+          description="clean up" >
+    <delete dir="${build}/**"/>
+    <delete dir="${dist}"/>
+  </target>
+
+
+
+  <!-- create the ${build} and ${dist} directory    -->
+  <target name="setup"
+          description="setup empty build dir" >
+    <mkdir dir="${build}"/>
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${report}"/>
+    <!-- this directory is used by eclipse -->
+    <mkdir dir="${build}/classes"/>
+  </target>
+
+
+
+
+  <target name="tattletale-report" depends="clean, setup, build, roundup"
+        description="create tattletale report" >
+    <report source="${dist}"
+    	    destination="${report}"
+            profiles="seam22, spring30"/>
+  </target>
+
+
+  <!-- copy all jars into the dist directory -->
+  <target name="roundup" depends="build">
+  	<copy overwrite="true" todir="${dist}">
+  	  <fileset dir="/home/michael/Projects/charms/eclipse_workspace/charms/WebContent/WEB-INF/lib" includes="**/*.jar" />
+    </copy>
+  	<jar destfile="${dist}/charms-${tstamp}.jar" basedir="${build}" />
+  </target>
+
+
+  <!-- compile the classfiles into the build directory -->
+  <target name="build" depends="clean, setup">
+    <javac srcdir="${src}"
+           destdir="${build}/classes"
+           debug="on"
+           source="1.6"
+           failonerror="true" >
+      <classpath><path refid="classpath"/></classpath>
+    </javac>
+  </target>
+
+  <!-- copy the properties into the build directory -->
+  <target name="properties" depends="clean">
+    <copy todir="${build}/classes">
+       <fileset dir="${src}/jbpm4">
+          <include name="**/*.xml" />
+       </fileset>
+       <fileset dir="${src}/main">
+          <include name="**/*.mime" />
+          <include name="**/*.xml" />
+          <include name="**/*.html" />
+          <include name="**/*.properties" />
+          <include name="META-INF/**" />
+       </fileset>
+       <fileset dir="${src}/rich">
+          <include name="**/*.properties" />
+          <include name="**/*.xcss" />
+       </fileset>
+    </copy>
+  </target>
+
+
+  <!-- copy the build directory into the webapp
+
+       after this target we have a full working web application in the prepare directory
+       all we need to do now is to set up the application for the target environment
+
+  -->
+  <target name="prepare" depends="build, properties">
+    <copy todir="${prepare}" >
+      <fileset dir="${content}" />
+    </copy>
+    <copy todir="${prepare}/WEB-INF" >
+      <fileset dir="${build}" />
+    </copy>
+  </target>
+
+
+
+</project>

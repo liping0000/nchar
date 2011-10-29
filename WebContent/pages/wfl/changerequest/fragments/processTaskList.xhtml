@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:a4j="http://richfaces.org/a4j">
+
+
+    <rich:dataTable id="tbl"
+                    var="row"
+                    value="#{processTaskTable.allTaskList}"
+                    width="100%"
+                    rowKeyVar="rowKey"
+                    columnsWidth="1%,45%,25%,7%,7%,7%,0*">
+
+
+            <rich:column>
+              <f:facet name="header"><h:outputText value="#{messages['taskInstances.id']}" /></f:facet>
+              <span>
+                 <h:outputText value="&#160;" escape="false" />
+                 <h:outputText value="#{row.dbid}" />
+                 <h:outputText value="&#160;" escape="false" />
+              </span>
+            </rich:column>
+
+            <rich:column>
+              <f:facet name="header"><h:outputText value="#{messages['taskInstances.name']}" /></f:facet>
+              <span>
+                 <h:outputText value="&#160;" escape="false" />
+                 <h:outputText value="#{messages[row.taskName]}" />
+                 <h:outputText value="&#160;" escape="false" />
+              </span>
+            </rich:column>
+
+            <rich:column>
+              <f:facet name="header"><h:outputText value="#{messages['taskInstances.actor']}" /></f:facet>
+              <span>
+                 <h:outputText value="&#160;" escape="false" />
+                 <h:outputText value="#{row.firstname} #{row.lastname}" />
+                 <h:outputText value="&#160;" escape="false" />
+              </span>
+            </rich:column>
+
+            <rich:column>
+              <f:facet name="header"><h:outputText value="#{messages['taskInstances.createDate']}" /></f:facet>
+              <span>
+                 <h:outputText value="&#160;" escape="false" />
+                 <h:outputText value="#{row.createTime}" />
+                 <h:outputText value="&#160;" escape="false" />
+              </span>
+            </rich:column>
+
+            <rich:column>
+              <f:facet name="header"><h:outputText value="#{messages['taskInstances.dueDate']}" /></f:facet>
+              <span>
+                 <h:outputText value="&#160;" escape="false" />
+                 <h:outputText value="#{row.duedate}" />
+                 <h:outputText value="&#160;" escape="false" />
+              </span>
+            </rich:column>
+
+            <rich:column>
+              <f:facet name="header"><h:outputText value="#{messages['taskInstances.endDate']}" /></f:facet>
+              <span>
+                 <h:outputText value="&#160;" escape="false" />
+                 <h:outputText value="#{row.endTime}" />
+                 <h:outputText value="&#160;" escape="false" />
+              </span>
+            </rich:column>
+            
+            <!-- 
+             
+             -->
+             
+            <rich:column rendered="#{readonly?'false':'true'}">
+              <!--              
+              this is the edit task feature:
+              - create a page for the task view
+              - edit the task attributes
+              - attach a comment to the task's execution
+              
+            using lightbox here wouldn't allow to use dare popups since the 
+            popup woud be cut off
+            for lughtbox see: 
+            http://www.primefaces.org/showcase/ui/lightBoxExternal.jsf
+              
+              -->
+              
+              <h:outputLink 
+                  value="JavaScript:void(0);"
+                  onclick="openTaskEditDialog(#{row.dbid});"
+                  rendered="#{empty row.endTime}" ><h:graphicImage 
+                      url="/#{theme['iconset']}/pencil.png"
+                      border="0"/></h:outputLink>
+              
+              <!--  
+              <p:lightBox iframe="true" width="200" height="200" opacity="0" transition="none" >
+                <s:link rendered="#{empty row.endTime}" 
+                        view="/pages/jbpm/task.xhtml"
+                        immediate="true">
+                  <f:param name="taskDbid" value="#{row.dbid}" />
+                  <h:graphicImage url="/#{theme['iconset']}/pencil.png" border="0" />
+                </s:link>
+                
+                < ! - - 
+                <h:outputLink value="http://www.primefaces.org" title="PrimeFaces HomePage">
+                  <h:outputText value="PrimeFaces HomePage"/>
+                </h:outputLink>
+                - - >
+              </p:lightBox>           
+              -->
+            
+             </rich:column>
+             
+
+          </rich:dataTable>
+          
+                <a4j:jsFunction name="rerenderTaskDlgForm" reRender="taskDlgContent" />
+          
+                <script>
+      
+function openTaskEditDialog( /* int */  dbid) {
+	// set the task id for the backing bean, the popup is in the taskEditDialog.xhtml
+    var field =  jQuery('#taskDlgForm').find('#taskDlgForm\\:taskDbid');
+    field.val(dbid);
+    field.change();
+    //field.trigger('change');
+    // open the task dialog
+	//taskDlg.hide();
+	taskDlg.show();
+    //rerenderTaskDlgForm();
+    //taskDlg.show();
+};
+               </script>
+
+</ui:composition>

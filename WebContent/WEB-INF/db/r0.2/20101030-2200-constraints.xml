@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+  
+    <changeSet author="Michael Wohlfart" id="1288190585258-55">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_INCL_ROLES"/></not></preConditions>        
+        <addPrimaryKey columnNames="MAIN_ID_, INCL_ID_" constraintName="PK_CHARMS_INCL_ROLES" tableName="CHARMS_INCL_ROLES" />
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-56">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_MEMBERSHIP"/></not></preConditions>        
+        <addPrimaryKey columnNames="ROLE_ID_, USER_ID_" constraintName="PK_CHARMS_MEMBERSHIP" tableName="CHARMS_MEMBERSHIP" />
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-57">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_MESSAGES"/></not></preConditions>        
+        <addPrimaryKey columnNames="MSG_BUNDLE_ID_, MSG_CODE_" constraintName="PK_CHARMS_MESSAGES" tableName="CHARMS_MESSAGES" />
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-58">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_UPSTRM_ROL"/></not></preConditions>        
+        <addPrimaryKey columnNames="DOWN_ID_, UP_ID_" constraintName="PK_CHARMS_UPSTRM_ROL" tableName="CHARMS_UPSTRM_ROLES" />
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-59">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHREQ_PROD_CODES"/></not></preConditions>        
+        <addPrimaryKey columnNames="PRODUCT_ID_, POSITION_" constraintName="PK_CHREQ_PROD_CODES" tableName="CHREQ_PROD_CODES" />
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-60">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHREQ_PROD_UNITS"/></not></preConditions>        
+        <addPrimaryKey columnNames="PRODUCT_ID_, POSITION_" constraintName="PK_CHREQ_PROD_UNITS" tableName="CHREQ_PROD_UNITS" />
+    </changeSet>
+    
+
+    <changeSet author="Michael Wohlfart" id="1288189448693-88">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_DOC_USER"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="EDITOR_ID_" baseTableName="CHARMS_DOCUMENT" constraintName="FK_DOC_USER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-89">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_DOC_FOLDER"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="FOLDER_ID_" baseTableName="CHARMS_DOCUMENT" constraintName="FK_DOC_FOLDER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_FOLDER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-87">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_DOC_DOCBLB"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="DOC_BLOB_ID_" baseTableName="CHARMS_DOCUMENT" constraintName="FK_DOC_DOCBLB" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_DOC_BLB" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-55">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_DOCB_ID"/></not></preConditions>    
+        <addUniqueConstraint columnNames="DOC_BLOB_ID_" constraintName="IDX_DOCB_ID" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_DOCUMENT"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_DOCB_ID" tableName="CHARMS_DOCUMENT" unique="false">
+            <column name="DOC_BLOB_ID_"/>
+        </createIndex>
+    </changeSet>
+
+
+    <changeSet author="Michael Wohlfart" id="1288189448693-90">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_ETMPLR_ETMPL"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="TEMPLATE_ID_" baseTableName="CHARMS_ETMPL_RCVR" constraintName="FK_ETMPLR_ETMPL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ETMPL" referencesUniqueColumn="false"/>
+    </changeSet>
+
+
+    <changeSet author="Michael Wohlfart" id="1288189448693-91">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_ETMPLT_ETMPL"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="TEMPLATE_ID_" baseTableName="CHARMS_ETMPL_TRANS" constraintName="FK_ETMPLT_ETMPL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ETMPL" referencesUniqueColumn="false"/>
+    </changeSet>
+
+
+    <changeSet author="Michael Wohlfart" id="1288189448693-92">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_PARENTFOLDER"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="PARENT_ID_" baseTableName="CHARMS_FOLDER" constraintName="FK_PARENTFOLDER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_FOLDER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-93">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_ROOTFOLDER"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="ROOT_ID_" baseTableName="CHARMS_FOLDER" constraintName="FK_ROOTFOLDER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_FOLDER" referencesUniqueColumn="false"/>
+    </changeSet>
+  
+  
+    <changeSet author="Michael Wohlfart" id="1288456308471-56">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_INCL_ROLE"/></not></preConditions>    
+        <addUniqueConstraint columnNames="INCL_ID_, MAIN_ID_" constraintName="IDX_INCL_ROLE" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_INCL_ROLES"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_INCL_ROLE" tableName="CHARMS_INCL_ROLES" unique="false">
+            <column name="MAIN_ID_"/>
+            <column name="INCL_ID_"/>
+        </createIndex>
+    </changeSet>       
+    <changeSet author="Michael Wohlfart" id="1288189448693-94">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_INCLROLE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="INCL_ID_" baseTableName="CHARMS_INCL_ROLES" constraintName="FK_INCLROLE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-95">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_MAINROLE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="MAIN_ID_" baseTableName="CHARMS_INCL_ROLES" constraintName="FK_MAINROLE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencesUniqueColumn="false"/>
+    </changeSet>
+
+
+    <changeSet author="Michael Wohlfart" id="1288189448693-96">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_MEMB_ROLE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="ROLE_ID_" baseTableName="CHARMS_MEMBERSHIP" constraintName="FK_MEMB_ROLE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-97">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_MEMB_USER"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="USER_ID_" baseTableName="CHARMS_MEMBERSHIP" constraintName="FK_MEMB_USER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288189448693-98">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_MESS_MSGBDLE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="MSG_BUNDLE_ID_" baseTableName="CHARMS_MESSAGES" constraintName="FK_MESS_MSGBDLE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_MSGBUNDLE" referencesUniqueColumn="false"/>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288456308471-57">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_MSGN_LOCL"/></not></preConditions>    
+        <addUniqueConstraint columnNames="NAME_, LOCALE_ID_" constraintName="IDX_MSGN_LOCL" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_MSGBUNDLE"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_MSGN_LOCL" tableName="CHARMS_MSGBUNDLE" unique="false">
+            <column name="NAME_"/>
+            <column name="LOCALE_ID_"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-59">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_PTARG_STR"/></not></preConditions>    
+        <addUniqueConstraint columnNames="TARGET_STRING_" constraintName="IDX_PTARG_STR" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PERM_TARGET"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_PTARG_STR" tableName="CHARMS_PERM_TARGET" unique="false">
+            <column name="TARGET_STRING_"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288456308471-58">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_PERMISSION"/></not></preConditions>    
+        <addUniqueConstraint columnNames="RECIPIENT_, DISCRIMINATOR_, TARGET_, TARGET_ID_" constraintName="IDX_PERMISSION" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PERMISSION"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_PERMISSION" tableName="CHARMS_PERMISSION" unique="false">
+            <column name="RECIPIENT_"/>
+            <column name="DISCRIMINATOR_"/>
+            <column name="TARGET_"/>
+            <column name="TARGET_ID_"/>
+        </createIndex>
+    </changeSet>    
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-60">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_PROPSET"/></not></preConditions>    
+        <addUniqueConstraint columnNames="NAME_, SET_TYPE_" constraintName="IDX_PROPSET" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PROP_SET"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_PROPSET" tableName="CHARMS_PROP_SET" unique="false">
+            <column name="NAME_"/>
+            <column name="SET_TYPE_"/>
+        </createIndex>
+    </changeSet>
+   
+    <changeSet author="Michael Wohlfart" id="1288456308471-61">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_PROPVAL"/></not></preConditions>    
+        <addUniqueConstraint columnNames="NAME_, SET_ID_" constraintName="IDX_PROPVAL" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PROP_VAL"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_PROPVAL" tableName="CHARMS_PROP_VAL" unique="false">
+            <column name="NAME_"/>
+            <column name="SET_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-99">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_PROPV_PROPS"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="SET_ID_" baseTableName="CHARMS_PROP_VAL" constraintName="FK_PROPV_PROPS" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_PROP_SET" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-62">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_REP_DNAME"/></not></preConditions>    
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="IDX_REP_DNAME" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_REP_DNAME" tableName="CHARMS_REPORT" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-63">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_REP_SORT"/></not></preConditions>    
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="IDX_REP_SORT" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_REP_SORT" tableName="CHARMS_REPORT" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-64">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_REP_BLOBID"/></not></preConditions>    
+        <addUniqueConstraint columnNames="REPORT_BLOB_ID_" constraintName="IDX_REP_BLOBID" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_REP_BLOBID" tableName="CHARMS_REPORT" unique="false">
+            <column name="REPORT_BLOB_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-100">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_REP_RPTBLB"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="REPORT_BLOB_ID_" baseTableName="CHARMS_REPORT" constraintName="FK_REP_RPTBLB" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_RPT_BLB" referencesUniqueColumn="false"/>
+    </changeSet>
+        
+    <changeSet author="Michael Wohlfart" id="1288456308471-65">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_ROLE_GACTID"/></not></preConditions>    
+        <addUniqueConstraint columnNames="GRP_ACTOR_ID_" constraintName="IDX_ROLE_GACTID" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_ROLE"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_ROLE_GACTID" tableName="CHARMS_ROLE" unique="false">
+            <column name="GRP_ACTOR_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-66">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_ROLE_NAME"/></not></preConditions>    
+        <addUniqueConstraint columnNames="NAME_" constraintName="IDX_ROLE_NAME" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_ROLE"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_ROLE_NAME" tableName="CHARMS_ROLE" unique="false">
+            <column name="NAME_"/>
+        </createIndex>
+    </changeSet>
+   
+    <changeSet author="Michael Wohlfart" id="1288456308471-67">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_TACT"/></not></preConditions>    
+        <addUniqueConstraint columnNames="NAME_, TARGET_ID_" constraintName="IDX_TACT" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_TRGT_ACT"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_TACT" tableName="CHARMS_TRGT_ACT" unique="false">
+            <column name="NAME_"/>
+            <column name="TARGET_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-101">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_TRGTA_PTRGT"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="TARGET_ID_" baseTableName="CHARMS_TRGT_ACT" constraintName="FK_TRGTA_PTRGT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_PERM_TARGET" referencesUniqueColumn="false"/>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288189448693-102">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_TDAT_TCHOICE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="CHOICE_ID_" baseTableName="CHARMS_TRNS_DATA" constraintName="FK_TDAT_TCHOICE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_TRNS_CHOICE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-103">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CHARMS_TDAT_ROLE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="RCVR_GRP_ID_" baseTableName="CHARMS_TRNS_DATA" constraintName="FK_CHARMS_TDAT_ROLE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-104">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_TDAT_USER"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="RCVR_USR_ID_" baseTableName="CHARMS_TRNS_DATA" constraintName="FK_TDAT_USER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-105">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_TRNSD_SWIML"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="SWIMLANE_ID_" baseTableName="CHARMS_TRNS_DATA" constraintName="FK_TRNSD_SWIML" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_SWIMLANE" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-68">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_CHARMS_UID"/></not></preConditions>    
+        <addUniqueConstraint columnNames="SEQUENCE_TYPE_, VALUE_" constraintName="IDX_CHARMS_UID" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_UID"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_CHARMS_UID" tableName="CHARMS_UID" unique="false">
+            <column name="SEQUENCE_TYPE_"/>
+            <column name="VALUE_"/>
+        </createIndex>
+    </changeSet>
+   
+    <changeSet author="Michael Wohlfart" id="1288456308471-69">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_UPSTRM_ROLES"/></not></preConditions>    
+        <addUniqueConstraint columnNames="UP_ID_, DOWN_ID_" constraintName="IDX_UPSTRM_ROLES" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_UPSTRM_ROLES"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_UPSTRM_ROLES" tableName="CHARMS_UPSTRM_ROLES" unique="false">
+            <column name="DOWN_ID_"/>
+            <column name="UP_ID_"/>
+        </createIndex>
+    </changeSet>    
+    <changeSet author="Michael Wohlfart" id="1288189448693-106">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_DOWNROLE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="DOWN_ID_" baseTableName="CHARMS_UPSTRM_ROLES" constraintName="FK_DOWNROLE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-107">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_UPROLE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="UP_ID_" baseTableName="CHARMS_UPSTRM_ROLES" constraintName="FK_UPROLE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-70">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_USER_ACTID"/></not></preConditions>    
+        <addUniqueConstraint columnNames="ACTOR_ID_" constraintName="IDX_USER_ACTID" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_USER"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_USER_ACTID" tableName="CHARMS_USER" unique="false">
+            <column name="ACTOR_ID_"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288456308471-71">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_USER_NAME"/></not></preConditions>    
+        <addUniqueConstraint columnNames="NAME_" constraintName="IDX_USER_NAME" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_USER"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_USER_NAME" tableName="CHARMS_USER" unique="false">
+            <column name="NAME_"/>
+        </createIndex>
+    </changeSet>
+       
+    <changeSet author="Michael Wohlfart" id="1288189448693-108">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CWFL_DAT_FINIU"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="FINISH_USER_ID_" baseTableName="CHARMS_WFL_DATA" constraintName="FK_CWFL_DAT_FINIU" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-109">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CWFL_DAT_SUBMU"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="SUBMIT_USER_ID_" baseTableName="CHARMS_WFL_DATA" constraintName="FK_CWFL_DAT_SUBMU" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-72">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_CODE_DNAME"/></not></preConditions>    
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="IDX_CODE_DNAME" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_CODE"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_CODE_DNAME" tableName="CHREQ_CODE" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-73">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_CODE_SORT"/></not></preConditions>    
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="IDX_CODE_SORT" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_CODE"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_CODE_SORT" tableName="CHREQ_CODE" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288189448693-110">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CDAT_ASSIGU"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="ASSIGN_USER_ID_" baseTableName="CHREQ_DATA" constraintName="FK_CDAT_ASSIGU" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-111">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CDAT_CCODE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="CODE_ID_" baseTableName="CHREQ_DATA" constraintName="FK_CDAT_CCODE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_CODE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-112">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CDAT_WDAT"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="ID_" baseTableName="CHREQ_DATA" constraintName="FK_CDAT_WDAT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_WFL_DATA" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-113">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CDAT_IMPLU"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="IMPLEMENT_USER_ID_" baseTableName="CHREQ_DATA" constraintName="FK_CDAT_IMPLU" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-114">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CDAT_INUTU"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="INITIATE_USER_ID_" baseTableName="CHREQ_DATA" constraintName="FK_CDAT_INUTU" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-115">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CDAT_PROC"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="PROCESS_USER_ID_" baseTableName="CHREQ_DATA" constraintName="FK_CDAT_PROC" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-116">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CDAT_CPROD"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID_" baseTableName="CHREQ_DATA" constraintName="FK_CDAT_CPROD" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_PROD" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-117">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_DATA_UNIT"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="UNIT_ID_" baseTableName="CHREQ_DATA" constraintName="FK_DATA_UNIT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_UNIT" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288189448693-118">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CMSGE_CMSGE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="PARENT_ID_" baseTableName="CHREQ_MSG_ENTRY" constraintName="FK_CMSGE_CMSGE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_MSG_ENTRY" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-74">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_PROD_DNAME"/></not></preConditions>    
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="IDX_PROD_DNAME" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_PROD_DNAME" tableName="CHREQ_PROD" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-75">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_PROD_SORT"/></not></preConditions>    
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="IDX_PROD_SORT" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_PROD_SORT" tableName="CHREQ_PROD" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>
+ 
+    <changeSet author="Michael Wohlfart" id="1288456308471-76">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_PROD_CODES"/></not></preConditions>    
+        <addUniqueConstraint columnNames="PRODUCT_ID_, CODE_ID_" constraintName="IDX_PROD_CODES" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD_CODES"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_PROD_CODES" tableName="CHREQ_PROD_CODES" unique="false">
+            <column name="PRODUCT_ID_"/>
+            <column name="CODE_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-119">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CPCODES_CODE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="CODE_ID_" baseTableName="CHREQ_PROD_CODES" constraintName="FK_CPCODES_CODE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_CODE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-120">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CPCODES_PROD"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID_" baseTableName="CHREQ_PROD_CODES" constraintName="FK_CPCODES_PROD" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_PROD" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-77">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_PROD_UNITS"/></not></preConditions>    
+        <addUniqueConstraint columnNames="PRODUCT_ID_, UNIT_ID_" constraintName="IDX_PROD_UNITS" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD_UNITS"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_PROD_UNITS" tableName="CHREQ_PROD_UNITS" unique="false">
+            <column name="PRODUCT_ID_"/>
+            <column name="UNIT_ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-121">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_CPUNITS_PROD"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID_" baseTableName="CHREQ_PROD_UNITS" constraintName="FK_CPUNITS_PROD" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_PROD" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-122">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_PRODU_UNIT"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="UNIT_ID_" baseTableName="CHREQ_PROD_UNITS" constraintName="FK_PRODU_UNIT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHREQ_UNIT" referencesUniqueColumn="false"/>
+    </changeSet>
+       
+    <changeSet author="Michael Wohlfart" id="1288456308471-78">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_UNIT_DNAME"/></not></preConditions>    
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="IDX_UNIT_DNAME" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_UNIT"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_UNIT_DNAME" tableName="CHREQ_UNIT" unique="false">
+            <column name="DEFAULT_NAME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-79">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_UNIT_SORT"/></not></preConditions>    
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="IDX_UNIT_SORT" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_UNIT"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_UNIT_SORT" tableName="CHREQ_UNIT" unique="false">
+            <column name="SORT_INDEX_"/>
+        </createIndex>
+    </changeSet>    
+  
+    <changeSet author="Michael Wohlfart" id="1288456308471-106">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_DEPLPROP_DEPL"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_DEPLPROP_DEPL" tableName="JBPM4_DEPLOYPROP" unique="false">
+            <column name="DEPLOYMENT_"/>
+        </createIndex>
+    </changeSet>
+    
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-127">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_LOB_DEPLOYMENT"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="DEPLOYMENT_" baseTableName="JBPM4_LOB" constraintName="FK_LOB_DEPLOYMENT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_DEPLOYMENT" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-138">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_LOB_DEPLOYMENT"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_LOB_DEPLOYMENT" tableName="JBPM4_LOB" unique="false">
+            <column name="DEPLOYMENT_"/>
+        </createIndex>
+    </changeSet>
+
+
+    <changeSet author="Michael Wohlfart" id="1288189448693-123">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_DEPLPROP_DEPL"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="DEPLOYMENT_" baseTableName="JBPM4_DEPLOYPROP" constraintName="FK_DEPLPROP_DEPL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_DEPLOYMENT" referencesUniqueColumn="false"/>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288456308471-80">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_EXEC_ID"/></not></preConditions>    
+        <addUniqueConstraint columnNames="ID_" constraintName="IDX_EXEC_ID" deferrable="false" disabled="false" initiallyDeferred="false" tableName="JBPM4_EXECUTION"/>
+        <createIndex associatedWith="uniqueConstraint" indexName="IDX_EXEC_ID" tableName="JBPM4_EXECUTION" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-107">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_EXEC_INSTANCE"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_EXEC_INSTANCE" tableName="JBPM4_EXECUTION" unique="false">
+            <column name="INSTANCE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-108">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_EXEC_PARENT"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_EXEC_PARENT" tableName="JBPM4_EXECUTION" unique="false">
+            <column name="PARENT_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-109">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_EXEC_SUBPI"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_EXEC_SUBPI" tableName="JBPM4_EXECUTION" unique="false">
+            <column name="SUBPROCINST_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-110">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_EXEC_SUPEREXEC"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_EXEC_SUPEREXEC" tableName="JBPM4_EXECUTION" unique="false">
+            <column name="SUPEREXEC_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-124">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_EXEC_INSTANCE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="INSTANCE_" baseTableName="JBPM4_EXECUTION" constraintName="FK_EXEC_INSTANCE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-125">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_EXEC_PARENT"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="PARENT_" baseTableName="JBPM4_EXECUTION" constraintName="FK_EXEC_PARENT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-126">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_EXEC_SUBPI"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="SUBPROCINST_" baseTableName="JBPM4_EXECUTION" constraintName="FK_EXEC_SUBPI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-127">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_EXEC_SUPEREXEC"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="SUPEREXEC_" baseTableName="JBPM4_EXECUTION" constraintName="FK_EXEC_SUPEREXEC" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-112">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_HACTI_HPROCI"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_HACTI_HPROCI" tableName="JBPM4_HIST_ACTINST" unique="false">
+            <column name="HPROCI_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-113">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_HTI_HTASK"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_HTI_HTASK" tableName="JBPM4_HIST_ACTINST" unique="false">
+            <column name="HTASK_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-128">
+        <addForeignKeyConstraint baseColumnNames="HPROCI_" baseTableName="JBPM4_HIST_ACTINST" constraintName="FK_HACTI_HPROCI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_PROCINST" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-129">
+        <addForeignKeyConstraint baseColumnNames="HTASK_" baseTableName="JBPM4_HIST_ACTINST" constraintName="FK_HTI_HTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288456308471-114">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_HDET_HACTI"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_HDET_HACTI" tableName="JBPM4_HIST_DETAIL" unique="false">
+            <column name="HACTI_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-115">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_HDET_HPROCI"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_HDET_HPROCI" tableName="JBPM4_HIST_DETAIL" unique="false">
+            <column name="HPROCI_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-116">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_HDET_HTASK"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_HDET_HTASK" tableName="JBPM4_HIST_DETAIL" unique="false">
+            <column name="HTASK_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-117">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_HDET_HVAR"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_HDET_HVAR" tableName="JBPM4_HIST_DETAIL" unique="false">
+            <column name="HVAR_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-130">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_HDETAIL_HACTI"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="HACTI_" baseTableName="JBPM4_HIST_DETAIL" constraintName="FK_HDETAIL_HACTI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_ACTINST" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-131">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_HDETAIL_HPROCI"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="HPROCI_" baseTableName="JBPM4_HIST_DETAIL" constraintName="FK_HDETAIL_HPROCI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_PROCINST" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-132">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_HDETAIL_HTASK"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="HTASK_" baseTableName="JBPM4_HIST_DETAIL" constraintName="FK_HDETAIL_HTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-133">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_HDETAIL_HVAR"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="HVAR_" baseTableName="JBPM4_HIST_DETAIL" constraintName="FK_HDETAIL_HVAR" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_VAR" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+    <changeSet author="Michael Wohlfart" id="1288456308471-118">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_HSUPERT_SUB"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_HSUPERT_SUB" tableName="JBPM4_HIST_TASK" unique="false">
+            <column name="SUPERTASK_"/>
+        </createIndex>
+    </changeSet>    
+    <changeSet author="Michael Wohlfart" id="1288189448693-134">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_HSUPERT_SUB"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="SUPERTASK_" baseTableName="JBPM4_HIST_TASK" constraintName="FK_HSUPERT_SUB" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288456308471-119">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_HVAR_HPROCI"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_HVAR_HPROCI" tableName="JBPM4_HIST_VAR" unique="false">
+            <column name="HPROCI_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-120">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_HVAR_HTASK"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_HVAR_HTASK" tableName="JBPM4_HIST_VAR" unique="false">
+            <column name="HTASK_"/>
+        </createIndex>
+    </changeSet>    
+    <changeSet author="Michael Wohlfart" id="1288189448693-135">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_HVAR_HPROCI"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="HPROCI_" baseTableName="JBPM4_HIST_VAR" constraintName="FK_HVAR_HPROCI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_PROCINST" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-136">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_HVAR_HTASK"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="HTASK_" baseTableName="JBPM4_HIST_VAR" constraintName="FK_HVAR_HTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_HIST_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288456308471-121">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_JOBDUEDATE"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_JOBDUEDATE" tableName="JBPM4_JOB" unique="false">
+            <column name="DUEDATE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-122">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_JOBLOCKEXP"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_JOBLOCKEXP" tableName="JBPM4_JOB" unique="false">
+            <column name="LOCKEXPTIME_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-123">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_JOBRETRIES"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_JOBRETRIES" tableName="JBPM4_JOB" unique="false">
+            <column name="RETRIES_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-124">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_JOB_CFG"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_JOB_CFG" tableName="JBPM4_JOB" unique="false">
+            <column name="CFG_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-125">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_JOB_EXE"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_JOB_EXE" tableName="JBPM4_JOB" unique="false">
+            <column name="EXECUTION_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-126">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_JOB_PRINST"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_JOB_PRINST" tableName="JBPM4_JOB" unique="false">
+            <column name="PROCESSINSTANCE_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-137">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_JOB_CFG"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="CFG_" baseTableName="JBPM4_JOB" constraintName="FK_JOB_CFG" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_LOB" referencesUniqueColumn="false"/>
+    </changeSet>
+             
+    <changeSet author="Michael Wohlfart" id="1288456308471-128">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_PART_TASK"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_PART_TASK" tableName="JBPM4_PARTICIPATION" unique="false">
+            <column name="TASK_"/>
+        </createIndex>
+    </changeSet>    
+    <changeSet author="Michael Wohlfart" id="1288189448693-139">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_PART_SWIMLANE"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="SWIMLANE_" baseTableName="JBPM4_PARTICIPATION" constraintName="FK_PART_SWIMLANE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_SWIMLANE" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-140">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_PART_TASK"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="TASK_" baseTableName="JBPM4_PARTICIPATION" constraintName="FK_PART_TASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288456308471-129">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_SWIMLANE_EXEC"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_SWIMLANE_EXEC" tableName="JBPM4_SWIMLANE" unique="false">
+            <column name="EXECUTION_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-141">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_SWIMLANE_EXEC"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="EXECUTION_" baseTableName="JBPM4_SWIMLANE" constraintName="FK_SWIMLANE_EXEC" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288456308471-130">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_TASK_SUPERTASK"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_TASK_SUPERTASK" tableName="JBPM4_TASK" unique="false">
+            <column name="SUPERTASK_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-142">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_TASK_SUPERTASK"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="SUPERTASK_" baseTableName="JBPM4_TASK" constraintName="FK_TASK_SUPERTASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-143">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_TASK_SWIML"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="SWIMLANE_" baseTableName="JBPM4_TASK" constraintName="FK_TASK_SWIML" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_SWIMLANE" referencesUniqueColumn="false"/>
+    </changeSet>
+         
+    <changeSet author="Michael Wohlfart" id="1288456308471-131">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_VAR_EXECUTION"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_VAR_EXECUTION" tableName="JBPM4_VARIABLE" unique="false">
+            <column name="EXECUTION_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-132">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_VAR_EXESYS"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_VAR_EXESYS" tableName="JBPM4_VARIABLE" unique="false">
+            <column name="EXESYS_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-133">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_VAR_LOB"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_VAR_LOB" tableName="JBPM4_VARIABLE" unique="false">
+            <column name="LOB_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288456308471-134">
+        <preConditions onFail="MARK_RAN"><not><indexExists indexName="IDX_VAR_TASK"/></not></preConditions>  
+        <createIndex associatedWith="" indexName="IDX_VAR_TASK" tableName="JBPM4_VARIABLE" unique="false">
+            <column name="TASK_"/>
+        </createIndex>
+    </changeSet>    
+    <changeSet author="Michael Wohlfart" id="1288189448693-144">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_VAR_EXECUTION"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="EXECUTION_" baseTableName="JBPM4_VARIABLE" constraintName="FK_VAR_EXECUTION" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-145">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_VAR_EXESYS"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="EXESYS_" baseTableName="JBPM4_VARIABLE" constraintName="FK_VAR_EXESYS" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_EXECUTION" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-146">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_VAR_LOB"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="LOB_" baseTableName="JBPM4_VARIABLE" constraintName="FK_VAR_LOB" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_LOB" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288189448693-147">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_VAR_TASK"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="TASK_" baseTableName="JBPM4_VARIABLE" constraintName="FK_VAR_TASK" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_TASK" referencesUniqueColumn="false"/>
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288189448693-148">
+        <preConditions onFail="MARK_RAN"><not><foreignKeyConstraintExists foreignKeyName="FK_TDAT_WDAT"/></not></preConditions>        
+        <addForeignKeyConstraint baseColumnNames="ID_" baseTableName="TODOL_DATA" constraintName="FK_TDAT_WDAT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_WFL_DATA" referencesUniqueColumn="false"/>
+    </changeSet>
+
+ </databaseChangeLog>    

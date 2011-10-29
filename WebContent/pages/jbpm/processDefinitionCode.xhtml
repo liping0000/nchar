@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.jbpm.processDefinitions.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.jbpm.processDefinitions.title']}" />
+
+<ui:define name="body">
+
+      <h:form>
+
+       <h:inputTextarea value="#{jbpmProcessDefinitionAction.code}"
+                        styleClass="text"
+                        style="width: 700px; height: 700px; font-family: monospace;" />
+
+
+        <div class="actionButtons">
+
+            <h:commandButton styleClass="button"
+                             id="update"
+                             onclick="if (!confirm('Sind Sie sicher? (Das manuelle Ändern einer Prozessdefinition is sehr riskant)')) { return false; } else { jQuery.blockUI(); return true; }"
+                             value="#{messages['action.update']}"
+                             action="#{jbpmProcessDefinitionAction.updateCode()}">
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="back"
+                             value="#{messages['action.back']}"
+                             action="back"
+                             immediate="true">
+              <f:param name="processDefinitionId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+        </div>
+
+      </h:form>
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

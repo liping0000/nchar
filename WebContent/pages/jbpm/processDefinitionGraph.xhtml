@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.jbpm.processDefinitions.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.jbpm.processDefinitions.title']}" />
+
+<ui:define name="body">
+
+      <h:form>
+
+       <s:graphicImage value="#{jbpmProcessDefinitionAction.image}"
+                      fileName="ProcessImage"
+                      alt="[process image]"
+                      usemap="#nodeMap" >
+        <s:transformImageType contentType="image/png" />
+      </s:graphicImage>
+      <map id="nodeMap" name="nodeMap">
+        <ui:repeat var="activity" value="#{jbpmProcessDefinitionAction.activities}">  <!--   FIXME: link to a page for editing the activity... -->
+          <area shape="rect"
+                coords="#{activity.coordinates.x}, #{activity.coordinates.y}, #{activity.coordinates.x + activity.coordinates.width}, #{activity.coordinates.y + activity.coordinates.height}"
+                alt="#{activity.dbid}"
+                href="?activityName=#{activity.name}&amp;actionOutcome=activity&amp;cid=#{conversation.id}" />  <!--   FIXME: this is tied to using "cid" as conversation parameter... -->
+        </ui:repeat>
+      </map>
+
+        <div class="actionButtons">
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="back"
+                             value="#{messages['action.back']}"
+                             action="back"
+                             immediate="true">
+              <f:param name="processDefinitionId" /> <!-- suppress propagation -->
+            </h:commandButton>
+
+        </div>
+
+      </h:form>
+
+  <br/>
+  <br/>
+  <br/>
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

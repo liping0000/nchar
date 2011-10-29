@@ -1,0 +1,137 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.jbpm.activities.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.jbpm.activities.title']}" />
+
+<ui:define name="body">
+
+
+Name:<br />
+  <h:outputText value="#{jbpmActivitAction.activityName}" />
+<br />
+<br />
+
+Target Actions:<br />
+  <rich:dataTable var="row"
+                  value="#{jbpmActivitAction.targetActions}"
+                  rendered="#{not empty jbpmActivitAction.targetActions}"
+                  width="100%"
+                  rowKeyVar="rowKey"
+                  columnsWidth="10%, 10%, 80%">
+
+      <rich:column>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.target}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+      <rich:column>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.action}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+
+      <rich:column>
+        <span>
+          <ui:repeat var="permission" value="#{row.permissions}">
+              <span><h:outputText value="&#160;" escape="false" /></span>
+              <s:link title="Update"
+                      action="editPermission">
+              <f:param name="charmsPermissionId" value="#{permission.id}"/>
+              <h:graphicImage url="/#{theme['iconset']}/group.png"
+                              border="0"
+                              rendered="#{permission.isRolePermission()}" />
+              <h:graphicImage url="/#{theme['iconset']}/user.png"
+                              border="0"
+                              rendered="#{permission.isUserPermission()}"/>
+              <h:outputText value="#{permission.recipient}" escape="true" /></s:link>
+          </ui:repeat>
+            <span><h:outputText value="&#160;" escape="false" /></span>
+            <span><h:outputText value="&#160;" escape="false" /></span>
+            <s:link title="Add"
+                    action="addPermission">
+              <f:param name="predefinedTarget" value="#{jbpmActivitAction.activityName}"/>
+              <f:param name="predefinedAction" value="#{row.action}"/>
+              <h:graphicImage url="/#{theme['iconset']}/seam_add.png"
+                              border="0"/></s:link><h:outputText value="#{permission.recipient}" escape="true" />
+        </span>
+      </rich:column>
+
+
+  </rich:dataTable>
+
+<br />
+
+Email Templates:<br />
+  <rich:dataTable var="row"
+                  value="#{jbpmActivitAction.emailTemplates}"
+                  rendered="#{not empty jbpmActivitAction.emailTemplates}"
+                  width="100%"
+                  rowKeyVar="rowKey"
+                  columnsWidth="20%, 80%">
+
+      <rich:column>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.name}" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+      <rich:column>
+        <span>
+          <ui:repeat var="id" value="#{row.ids}">
+            <s:link title="Update"
+                    action="editEmail">
+              <f:param name="emailTemplateId" value="#{id}"/>
+              <h:graphicImage url="/#{theme['iconset']}/pencil.png"
+                              border="0"/></s:link>
+          </ui:repeat>
+            <span><h:outputText value="&#160;" escape="false" /></span>
+            <span><h:outputText value="&#160;" escape="false" /></span>
+            <s:link title="Add"
+                    action="addEmail">
+              <f:param name="predefinedName" value="#{row.name}"/>
+              <h:graphicImage url="/#{theme['iconset']}/seam_add.png"
+                              border="0"/></s:link>
+        </span>
+      </rich:column>
+
+  </rich:dataTable>
+
+     <h:form>
+
+        <div class="actionButtons">
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="back"
+                             action="back"
+                             value="#{messages['action.back']}"
+                             immediate="true">
+              <f:param name="jbpmDeploymentId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+        </div>
+
+      </h:form>
+
+<br />
+<br />
+
+<br />
+<br />
+</ui:define>
+</ui:composition>

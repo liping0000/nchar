@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Charms"
+         default="generateDatabaseDescription"
+         basedir="../../">
+
+  <description>
+
+      liquibase toolkit, create diff, merge database changes
+
+  </description>
+
+  <!--
+    libs for additional tasks are in ~/.ant/lib
+    there is also a properties file inside the liquibase jar
+    defining all the liquibase tasks -->
+  <taskdef resource="liquibasetasks.properties" />
+
+
+  <!-- the classpath -->
+  <path id="classpath">
+    <fileset dir="WebContent/WEB-INF/lib">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="/opt/tomcat/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+
+
+  <!-- java source files -->
+  <property name="src" location="src"/>
+
+  <!-- compiled class files -->
+  <property name="build" location="build"/>
+
+  <!-- working subdir -->
+  <property name="dist" location="dist"/>
+  <!-- this is where we prepare the deployment files for the war creation -->
+  <property name="prepare" location="dist/prepare"/>
+
+  <!-- this is where the xhtml stuff is -->
+  <property name="content" location="WebContent"/>
+
+  <!-- report subdir -->
+  <property name="report" location="report"/>
+
+  <tstamp>
+    <format property="tstamp" pattern="yyyyMMdd" locale="en"/>
+  </tstamp>
+
+
+
+  <!--
+       database setup:  (copy of production database) -->
+  <property name="database0.url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+  <property name="database0.username" value="CAMS"/>
+  <property name="database0.password" value="xxxxxx"/>
+  <property name="database0.driver" value="oracle.jdbc.OracleDriver"/>
+
+
+  <!--
+	   database setup:  (the actual production database) -->
+  <property name="database1.url" value="jdbc:oracle:thin:@pegasus.sfc-intra.net:1521:sfcweb"/>
+  <property name="database1.username" value="CAMS"/>
+  <property name="database1.password" value="xxxxxx"/>
+  <property name="database1.driver" value="oracle.jdbc.OracleDriver"/>
+
+
+  <!--
+     another database to run a changeset against: (the new database) -->
+  <property name="database2.url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+  <property name="database2.username" value="CHARMS"/>
+  <property name="database2.password" value="xxxxxx"/>
+  <property name="database2.driver" value="oracle.jdbc.OracleDriver"/>
+
+
+  <!--
+   this generates a database changelog file describing the compete
+   content of the database                                                  -->
+  <target name="generateDatabaseDescription" >
+     <fail unless="database2.url">database.url not set</fail>
+     <fail unless="database2.driver">database.driver not set</fail>
+
+      <fail unless="database2.username">database.username not set</fail>
+      <fail unless="database2.password">database.password not set</fail>
+
+      <generateChangeLog
+              outputFile="/tmp/initial-changelog.xml"
+              classpathref="classpath"
+
+              driver="${database2.driver}"
+              url="${database2.url}"
+              username="${database2.username}"
+              password="${database2.password}"
+              />
+        <echo>initial changelog written to /tmp/initial-changelog.xml</echo>
+  </target>
+
+
+  <!--
+     this compares the hibernate mapping to the current database  -->
+  <target name="generateHibernateDiff">
+
+      <diffDatabaseToChangeLog
+               outputFile="/tmp/output-hibernate-diff.xml"
+               classpathref="classpath"
+
+               referenceurl="${database0.url}"
+               referencedriver="${database0.driver}"
+               referenceusername="${database0.username}"
+               referencepassword="${database0.password}"
+
+               />
+        <echo>changelog written to /tmp/output-hibernate-diff.xml</echo>
+  </target>
+
+
+
+	  <target name="generateDatabaseDiff">
+
+	      <diffDatabaseToChangeLog
+	               outputFile="/tmp/output-db-diff.xml"
+	               classpathref="classpath"
+
+	               referenceurl="${database2.url}"
+	               referencedriver="${database2.driver}"
+	               referenceusername="${database2.username}"
+	               referencepassword="${database2.password}"
+
+	               url="${database0.url}"
+                   driver="${database0.driver}"
+                   username="${database0.username}"
+                   password="${database0.password}"
+	               >
+	      	</diffDatabaseToChangeLog>
+	        <echo>changelog written to /tmp/output-db-diff.xml</echo>
+	  </target>
+
+
+</project>

@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:ui="http://java.sun.com/jsf/facelets"><!--
+
+
+   show the list of messages
+
+   -->
+
+<!-- JSF way to load a message bundle: 
+<f:loadBundle basename="messages" var="msgs" />  -->
+
+<!-- recursion break (1st test in case we accidently get called with an empty value...)  -->
+<f:subview rendered="#{not empty messageEntry}">
+
+  <s:div styleClass="dr-pnl" style="padding: 4px;" >
+  
+    <!-- this is the headline of the message -->
+    <s:div styleClass="dr-table-subheader #{messageEntry.type.styleClass}" 
+           rendered="#{not empty messageEntry.type}">
+      <h:graphicImage value="/#{theme['iconset']}/messagetypes/#{messageEntry.type.image}" />
+      <h:outputText value="&#160;" escape="false" />
+      <h:outputFormat value=" #{messages[messageEntry.type.msgCode]}" >
+         <f:param value="#{messageEntry.timestamp}" />                <!-- 0 -->
+         <f:param value="#{messageEntry.authorFullname}" />           <!-- 1 -->
+         <!-- one of the following two is usually null, msg is either to a single user or to a group of users...  -->
+         <f:param value="#{messageEntry.receiverFullname}" />         <!-- 2 -->
+         <f:param value="#{messageEntry.receiverGroupname}" />        <!-- 3 -->
+         <f:param value="#{messageEntry.discriminator}" />            <!-- 4 -->
+      </h:outputFormat> 
+      <!--  was for debugging:
+      <h:outputText value="( #{messageEntry.type.msgCode} )" escape="false" />  -->
+    </s:div>
+    
+    <s:div styleClass="dr-table-cell" 
+           style="background-color: #f0f0f0;padding: 2px;" 
+           rendered="#{not empty messageEntry.content}">
+      <h:outputText value="#{messageEntry.content}" escape="false" />
+    </s:div>
+    
+  </s:div>
+  
+  
+  <!-- left inset to show the recursion... -->
+  <div style="padding-left: 20px;">
+
+      <!-- recursion break condition (2nd check, save the loop) -->
+      <c:if test="#{not empty messageEntry.children}">
+
+        <div style="padding: 2px; border: 2px solid #e0e0f0;">
+        <c:forEach var="child" items="#{messageEntry.children}">
+          <s:fragment>
+                  <!-- recursion -->
+                   <ui:include src="messageTree.xhtml" >
+                     <ui:param name="messageEntry" value="#{child}" />
+                   </ui:include>
+          </s:fragment>
+        </c:forEach>
+        </div>
+        
+        <!--  <br />  -->
+      </c:if>
+
+  </div>
+  
+
+</f:subview>
+</ui:composition>

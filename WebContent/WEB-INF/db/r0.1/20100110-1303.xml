@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+   <!--
+     changing these indeces might fail,
+
+     you have to manually apply the changes:
+     in oracle:
+       - select * from user_constraints where table_name = 'CHARMS_PROP_VAL'
+       - drop any index on NAME_ and SET_ID_
+
+
+    -->
+
+
+    <!--
+         new index, every name should be unique within the set -->
+    <changeSet author="michael" id="r0.1-30">
+        <dropNotNullConstraint tableName="CHARMS_PROP_VAL" columnName="NAME_"/>
+        <dropNotNullConstraint tableName="CHARMS_PROP_VAL" columnName="SET_ID_"/>
+        <createIndex indexName="IDX_PROPV_SET" schemaName="CAMS" tableName="CHARMS_PROP_VAL" unique="false">
+            <column name="NAME_"/>
+            <column name="SET_ID_"/>
+        </createIndex>
+        <addNotNullConstraint columnName="NAME_" schemaName="CAMS" tableName="CHARMS_PROP_VAL"/>
+        <addNotNullConstraint columnName="SET_ID_" schemaName="CAMS" tableName="CHARMS_PROP_VAL"/>
+    </changeSet>
+
+
+</databaseChangeLog>

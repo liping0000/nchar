@@ -1,0 +1,91 @@
+/* ------------------  header section  ------------------- */
+
+span.userfullname {
+  position: absolute;
+  top: 27px;
+  left: 182px;
+  font-weight: bold;
+  font-size: 108%;
+}
+
+/* only footer separator */
+div.fadeline-footer {
+  clear: both;
+  height: 75px;
+  border: none;
+  /* background: url("img/stripes_fade.gif"); */
+  font-size: 1px;
+  line-height: 1px;
+}
+/* only header separator */
+div.fadeline-header {
+  clear: both;
+  height: 10px;
+  border: none;
+  background: url("img/stripes_fade.gif");
+  font-size: 1px;
+  line-height: 1px;
+}
+
+
+
+/* ------------------  header section  ------------------- */
+div.rich-page-header {
+  /* background-color: #eeeced; */
+}
+
+
+/* ----- fadeline is a header and footer separator ------- */
+
+
+/* ------------------  center section  ------------------- */
+div.rich-page-main {
+  /* background: url("img/stripes_plain.gif"); */
+  /* background-color: #ffffff; */
+}
+body {
+  background: url("img/processImage.png") no-repeat fixed right top;	
+}
+/* the floating container with the menu */
+div.rich-page-sidebar {
+  background-color: #ffffff;
+  float: left;
+}
+/* the most tricky part of the layout */
+div.rich-page-main-content {
+  overflow: hidden;
+}
+div.rich-page-main-body {
+  padding-bottom: 0px;
+  padding-top: 1px;  /* needed for h1 content */
+  padding-left: 20px;
+  padding-right: 10px;
+  min-height: 400px;    /* hack for IE6, see: http://www.dustindiaz.com/min-height-fast-hack/ */
+  height: auto !important;
+  height: 400px;
+}
+
+/* ------------------  footer section  ------------------- */
+div.rich-page-footer {
+  /* position: absolute; */
+  /* bottom: 0; */
+  /* background-color: #eeeced;  needed for alignment in IE */
+  width: 100%;
+  /* height: 30px;   height of the footer */
+  /* vertical-align: top; */
+}
+div.rich-page-footer form img {
+  vertical-align: top;   /* align the flags and theme icons to the top */
+}
+div.rich-page-footer form {
+  vertical-align: top;
+  background-color: #eeeced; /* needed for alignment in IE */
+  padding: 0px;
+  border: 0px;
+  margin: 0px;
+}
+
+input {
+  /* not a good idea to have background for all inputs since IE6 also applies them to checkbox inputs... */
+  /* background: #ffffff url("img/input.bg.gif")	 no-repeat scroll 0 0;  */
+}

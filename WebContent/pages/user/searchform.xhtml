@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <s:div id="searchform" >
+    <a4j:region renderRegionOnly="false">
+
+    <!-- display a note indicating whatever the current user may search -->
+
+    <!-- user has "all" permission -->
+    <s:fragment rendered="#{s:hasPermission('charms.search','all')}">
+        <h:outputText value="#{messages['page.user.searchpermission.all']}"/><br />
+    </s:fragment>
+
+    <!-- user doesn't have "all" permission but "participated" permission -->
+    <s:fragment rendered="#{not s:hasPermission('charms.search','all') and s:hasPermission('charms.search','participated')}">
+        <h:outputText value="#{messages['page.user.searchpermission.participated']}"/><br />
+    </s:fragment>
+
+    <!-- user doesn't have "all" or "participated" permission but "submitted" permission -->
+    <s:fragment rendered="#{not s:hasPermission('charms.search','all') and not s:hasPermission('charms.search','participated') and s:hasPermission('charms.search','submitted')}">
+        <h:outputText value="#{messages['page.user.searchpermission.submitted']}"/><br />
+    </s:fragment>
+
+
+    <!-- focus the search field -->
+    <script type="text/javascript">
+    <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+       jQuery(document).ready(function() {
+           // focus doesn't work in IE so we have to register a keyboard listener and check for the
+           // return key, see: http://old.nabble.com/jQuery%28%29.focus%28%29-not-working-in-IE-7-td17661010s27240.html
+    	   jQuery('#f\\:searchfield').focus();
+
+    	   jQuery('#f\\:searchfield').keypress(function(e) {
+        	   var c = e.which ? e.which : e.keyCode;
+    	       if (c == 13) {
+    	            jQuery(this).blur();
+    	            jQuery('#f\\:search').click();
+    	            return false; // prevent double submit
+    	        }
+    	    });
+       });
+    <h:outputText value="/* ]]> */" escape="false"/>
+    </script>
+
+      <table>
+        <tr>
+          <td colspan="2">
+           <h:inputText id="searchfield"
+                        styleClass="inputtext"
+                        style="width: 250px;"
+                        value="#{searchActionBean.expression}" /> <!-- removed required here -->
+          </td>
+          <td>
+
+        <s:span rendered="#{not searchActionBean.normalSearch}">
+        <a4j:commandLink value="#{messages['page.user.search.normalSearch']}"
+                         action="#{searchActionBean.doNormalSearch()}"
+                         style="padding-left: 5px;"
+                         reRender="searchform, msgs" /><br /></s:span>
+
+        <s:span rendered="#{not searchActionBean.advancedSearch}">
+        <a4j:commandLink value="#{messages['page.user.search.advancedSearch']}"
+                         action="#{searchActionBean.doAdvancedSearch()}"
+                         style="padding-left: 5px;"
+                         reRender="searchform, msgs" /><br /></s:span>
+<!--
+        <s:span rendered="#{not searchActionBean.expertSearch}">
+        <a4j:commandLink value="#{messages['page.user.search.expertSearch']}"
+                         action="#{searchActionBean.doExpertSearch()}"
+                         style="padding-left: 5px;"
+                         reRender="searchform, msgs" /><br /></s:span>
+-->
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+
+          <ui:include src="searchformAdvanced.xhtml" />
+<!--
+          <ui:include src="searchformExpert.xhtml" />
+-->
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <s:div style="display:block; text-align:center; border-top: 5px; padding-top: 5px;">
+              <h:commandButton id="search"
+                               styleClass="button"
+                               value="#{messages['action.search']}"
+                               action="#{searchActionBean.search()}"
+                               type="submit" />
+
+              <a4j:commandButton id="clear"
+                               styleClass="button"
+                               value="#{messages['action.clear']}"
+                               action="#{searchActionBean.clear()}"
+                               type="submit"
+                               reRender="searchform" />
+            </s:div>
+          </td>
+          <td>
+          </td>
+        </tr>
+      </table>
+
+   </a4j:region>
+   </s:div>
+
+
+
+
+<!-- FIXME: check the a4j:region tag if we can minimize some ajax trafic... -->
+
+
+</ui:composition>

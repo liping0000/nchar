@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+  <!--
+
+   the initial database layout installing the structure from an empty database   -->
+
+
+  <include file="20100101-initial.xml" relativeToChangelogFile="true" />
+  <include file="20100110-1300.xml" relativeToChangelogFile="true" />
+  <include file="20100110-1301.xml" relativeToChangelogFile="true" />
+  <include file="20100110-1302.xml" relativeToChangelogFile="true" />
+  <include file="20100110-1303.xml" relativeToChangelogFile="true" />
+
+  <include file="20100117-1300.xml" relativeToChangelogFile="true" />
+  <include file="20100117-1301.xml" relativeToChangelogFile="true" />
+  <include file="20100117-1302.xml" relativeToChangelogFile="true" />
+
+  <!-- after running the updates scripts there is still one change to apply manually
+       since the index name is different on each install:
+
+        <dropIndex indexName="SYS_C00190488" schemaName="CAMS" tableName="CHARMS_PROP_SET"/>
+         select * from user_constraints where constraint_name = 'SYS_C00190488'
+         select * from user_constraints where table_name = 'CHARMS_PROP_SET' and constraint_type = 'U'
+
+         drop index SYS_C00190488  -> doesn't work since it is a uniqueConstraint
+
+         alter table CHARMS_PROP_SET
+         drop CONSTRAINT SYS_C00190488
+
+
+         alter table CHARMS_PROP_SET
+         drop CONSTRAINT SYS_C00190489
+
+        -->
+
+</databaseChangeLog>

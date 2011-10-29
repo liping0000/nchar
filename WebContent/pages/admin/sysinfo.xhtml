@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.sysinfo.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.sysinfo.title']}" />
+
+<ui:define name="body">
+
+
+<!-- ((HibernateSessionProxy)em.getDelegate()).getSessionFactory().getStatistics(); -->
+
+
+
+    <rich:panel>
+        <f:facet name="header">sysinfo</f:facet>
+
+
+
+        <h2><h:outputText  value="FacesContext.getViewRoot()"/></h2>
+
+        <h:panelGrid columns="2">
+        <h:outputText  value="renderKitId"/>
+        <h:outputText     id="renderKitIdFC"
+                       value="#{facesContext.viewRoot.renderKitId}"/>
+
+        <h:outputText  value="viewId"/>
+        <h:outputText     id="viewIdFC"
+                       value="#{facesContext.viewRoot.viewId}"/>
+        </h:panelGrid>
+
+
+
+
+        <h2><h:outputText  value="ExternalContext"/></h2>
+
+        <h:panelGrid columns="2">
+        <h:outputText  value="authType"/>
+        <h:outputText     id="authTypeEC"
+                       value="#{facesContext.externalContext.authType}"/>
+
+        <h:outputText  value="remoteUser"/>
+        <h:outputText     id="remoteUserEC"
+                       value="#{facesContext.externalContext.remoteUser}"/>
+
+        <h:outputText  value="requestContextPath"/>
+        <h:outputText     id="requestContextPathEC"
+                       value="#{facesContext.externalContext.requestContextPath}"/>
+
+        <h:outputText  value="requestLocale"/>
+        <h:outputText     id="requestLocaleEC"
+                       value="#{facesContext.externalContext.requestLocale}"/>
+
+        <h:outputText  value="requestPathInfo"/>
+        <h:outputText     id="requestPathInfoEC"
+                       value="#{facesContext.externalContext.requestPathInfo}"/>
+
+        <h:outputText  value="requestServletPath"/>
+        <h:outputText     id="requestServletPathEC"
+                       value="#{facesContext.externalContext.requestServletPath}"/>
+        </h:panelGrid>
+
+
+
+
+        <h2><h:outputText  value="HttpServletRequest"/></h2>
+
+        <h:panelGrid columns="2">
+        <h:outputText  value="authType"/>
+        <h:outputText     id="authTypeRQ"
+                       value="#{facesContext.externalContext.request.authType}"/>
+
+        <h:outputText  value="contextPath"/>
+        <h:outputText     id="contextPathRQ"
+                       value="#{facesContext.externalContext.request.contextPath}"/>
+
+        <h:outputText  value="locale"/>
+        <h:outputText     id="localeRQ"
+                       value="#{facesContext.externalContext.request.locale}"/>
+
+        <h:outputText  value="pathInfo"/>
+        <h:outputText     id="pathInfoRQ"
+                       value="#{facesContext.externalContext.request.pathInfo}"/>
+
+        <h:outputText  value="remoteUser"/>
+        <h:outputText     id="remoteUserRQ"
+                       value="#{facesContext.externalContext.request.remoteUser}"/>
+
+        <h:outputText  value="servletPath"/>
+        <h:outputText     id="servletPathRQ"
+                       value="#{facesContext.externalContext.request.servletPath}"/>
+        </h:panelGrid>
+
+
+
+
+        <h2><h:outputText  value="ServletContext"/></h2>
+
+        <h:panelGrid columns="2">
+        <h:outputText  value="majorVersion"/>
+        <h:outputText     id="majorVersionSC"
+                       value="#{facesContext.externalContext.context.majorVersion}"/>
+
+        <h:outputText  value="minorVersion"/>
+        <h:outputText     id="minorVersionSC"
+                       value="#{facesContext.externalContext.context.minorVersion}"/>
+
+        <h:outputText  value="serverInfo"/>
+        <h:outputText     id="serverInfoSC"
+                       value="#{facesContext.externalContext.context.serverInfo}"/>
+
+        <h:outputText  value="servletContextName"/>
+        <h:outputText     id="servletContextNameSC"
+                       value="#{facesContext.externalContext.context.servletContextName}"/>
+        </h:panelGrid>
+
+
+
+
+    </rich:panel>
+
+</ui:define>
+
+</ui:composition>

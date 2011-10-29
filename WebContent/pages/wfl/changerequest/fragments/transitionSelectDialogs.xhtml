@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui"><!-- 
+    
+    provides UI and functions for the 
+    selection of users and roles for assigning tasks after a transition
+    
+    
+    
+    
+     -->
+
+
+<!-- recover the previous state -->
+<script type="text/javascript">
+<h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+  jQuery(document).ready(function() {
+	// check if we got a get parameter to use as facet name
+    if ( '#{param.visibleFacet}'.length > 0 ) {
+    	// set it in case user is just saving without a actual transition
+        jQuery('.tabpanel').find('.selectedPane').val('#{param.visibleFacet}');
+    }
+	// use the value from the form to show the facet
+    var selected = jQuery('.tabpanel').find('.selectedPane').val();
+    if (selected) {
+        jQuery('.tabpanel').openFormPanel(selected);
+    }
+  });
+<h:outputText value="/* ]]> */" escape="false"/>
+</script>
+
+<ui:include src="userSelectDialog.xhtml" />
+<ui:include src="roleSelectDialog.xhtml" />
+
+  <script>
+
+  function setUserActor(id, label, actorId) {
+	jQuery("#tPanelId").find(".tFacet:visible").find(".receiverGroupActorId").val("");
+	jQuery("#tPanelId").find(".tFacet:visible").find(".receiverGroupId").val("");
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverUserActorId").val(actorId);
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverUserId").val(id);
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverLabel").val(label);
+  }
+  
+  function setGroupActor(id, label, actorId) {
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverGroupActorId").val(actorId);
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverGroupId").val(id);
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverUserActorId").val("");
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverUserId").val("");
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverLabel").val(label);
+  }
+
+  function clearActorId() {
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverGroupActorId").val("");
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverGroupId").val("");
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverUserActorId").val("");
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverUserId").val("");
+    jQuery("#tPanelId").find(".tFacet:visible").find(".receiverLabel").val("");
+  }
+
+  </script>
+
+
+</ui:composition>

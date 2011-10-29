@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bindings>
+
+  <activity binding="net.wohlfart.jbpm4.binding.AutomaticTaskBinding" />
+  <activity binding="net.wohlfart.jbpm4.binding.CreateBusinessKeyBinding" />
+  <activity binding="net.wohlfart.jbpm4.binding.CustomTaskBinding" />
+  <activity binding="net.wohlfart.jbpm4.binding.CustomMailBinding" />
+
+  <!-- not really an activity:  -->
+  <activity binding="net.wohlfart.jbpm4.binding.UserSelectBinding" />
+  <activity binding="net.wohlfart.jbpm4.binding.GroupSelectBinding" />
+  <activity binding="net.wohlfart.jbpm4.binding.TimerSelectBinding" />
+  <activity binding="net.wohlfart.jbpm4.binding.UserRemarkBinding" />
+
+  <eventlistener binding="net.wohlfart.jbpm4.binding.CustomMailBinding" />
+  <eventlistener binding="net.wohlfart.jbpm4.binding.TransitionConfigBinding" />
+  <eventlistener binding="net.wohlfart.jbpm4.binding.TransitionValidationBinding" />
+
+</bindings>

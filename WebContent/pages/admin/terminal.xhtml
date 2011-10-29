@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.terminal.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.terminal.title']}" />
+
+<ui:define name="body"><!--
+
+
+      remoting support:   -->
+  <script type="text/javascript"
+          src="#{request.contextPath}/seam/resource/remoting/resource/remote.js"></script>
+  <script type="text/javascript"
+          src="#{request.contextPath}/seam/resource/remoting/interface.js?terminalController"></script>
+
+    <!-- enable terminal -->
+    <script type="text/javascript">
+    <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+
+       jQuery(document).ready(function() {
+         jQuery('#terminal').terminal( );
+         // to keep the conversation context
+         Seam.Remoting.getContext().setConversationId( #{conversation.id} );
+         // hide the loading messages
+         // don't display the loading indicator
+         Seam.Remoting.displayLoadingMessage = function() {};
+         Seam.Remoting.hideLoadingMessage = function() {};
+       });
+
+    <h:outputText value="/* ]]> */" escape="false"/>
+    </script>
+
+
+
+    <div id='terminal'>
+    </div>
+
+
+<!-- 
+
+fixme: use this instead of our homebrew version:
+
+<h:form id="term">
+<p:terminal id="terminal"
+            commandHandler="#{terminalController.handleCommand}"
+            width="100"
+            height="100"
+            prompt="charms >"
+            welcomeMessage="Welcome to PrimeFaces Terminal, how are you today?">
+</p:terminal>
+</h:form>
+
+-->
+
+
+
+</ui:define>
+
+</ui:composition>

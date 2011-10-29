@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:birt="http://www.eclipse.org/birt/taglibs/birt.tld"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.user.reports.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.user.reports.title']}" />
+
+<ui:define name="body">
+
+
+    <!-- no rows are available -->
+    <h:outputText value="#{messages['page.user.reports.noReportFound']}"
+                  rendered="#{empty charmsReportLinkTable.resultList}"/>
+
+
+     <ui:repeat var="row" value="#{charmsReportLinkTable.resultList}">
+       <s:download src="/pages/user/reportResource.xhtml">
+            <s:conversationId/>
+            <f:param name="reportId" value="#{row.id}"/>
+            <h:outputText value="#{messages.get(row.messageCode, row.defaultName)}" />
+       </s:download>
+       <br/>
+     </ui:repeat>
+
+
+</ui:define>
+
+</ui:composition>

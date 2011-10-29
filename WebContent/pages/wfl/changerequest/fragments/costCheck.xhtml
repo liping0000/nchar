@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:a4j="http://richfaces.org/a4j">
+
+<tr>
+  <td>
+    <s:decorate id="costACheckbox"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.costA']}" /></ui:define>
+      <h:selectBooleanCheckbox value="#{changeRequestData.costA}"
+                               readonly="#{readonly?'true':'false'}"
+                               disabled="#{readonly?'true':'false'}"
+                               styleClass="checkbox#{readonly?' readonly':''}"
+                               onclick="costACheckboxClick(); return true" >
+      </h:selectBooleanCheckbox>
+  </s:decorate>
+  </td>
+  <td>
+ <script type="text/javascript">
+<h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+
+  function costACheckboxClick() {
+    var valA = jQuery('#changeRequest\\:costACheckbox').find('input').attr('checked');
+    var valB = jQuery('#changeRequest\\:costBCheckbox').find('input').attr('checked');
+    //jQuery('#changeRequest\\:costBCheckbox').find('input').attr('checked', !val);
+    if ( (valA &amp;&amp; valB) || (!valA &amp;&amp; !valB)) {
+      jQuery('#changeRequest\\:costBCheckbox').find('input').click(); // needed for ajax to trigger
+    }
+  }
+
+  function costBCheckboxClick() {
+    var val = jQuery('#changeRequest\\:costBCheckbox').find('input').attr('checked');
+    jQuery('#changeRequest\\:costACheckbox').find('input').attr('checked', !val);
+  }
+
+<h:outputText value="/* ]]> */" escape="false"/>
+</script>
+  </td>
+</tr>
+
+<tr>
+  <td>
+    <s:decorate id="costBCheckbox"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.costB']}" /></ui:define>
+      <h:selectBooleanCheckbox value="#{changeRequestData.costB}"
+                               readonly="#{readonly?'true':'false'}"
+                               disabled="#{readonly?'true':'false'}"
+                               styleClass="checkbox#{readonly?' readonly':''}"><!-- hack for IE6 -->
+               <a4j:support event="onclick"
+                            reRender="costBCheckbox, costAmountProperty"
+                            ajaxSingle="true"
+                            limitToList="true"
+                            oncomplete="costBCheckboxClick(); return true"/>
+      </h:selectBooleanCheckbox>
+  </s:decorate>
+  </td>
+  <td>
+    <s:decorate id="costAmountProperty"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="Betrag" /></ui:define>
+      <h:inputText value="#{changeRequestData.costAmount}"
+                   readonly="#{readonly?'true':'false'}"
+                   styleClass="#{readonly?'inputtext readonly':'inputtext'}"
+                   required="#{changeRequestData.costB}">
+        <a4j:support event="onblur"
+                     reRender="costAmountProperty"
+                     ajaxSingle="true"
+                     limitToList="true" />
+      </h:inputText>
+    </s:decorate>
+  </td>
+</tr>
+
+</ui:composition>

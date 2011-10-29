@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:j2ee="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee    http://java.sun.com/xml/ns/j2ee/web-app_3.0.xsd"
+         version="3.0" 
+         >
+         
+<!-- 
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5" >  -->
+  <description>Change Request Management System</description>
+  <display-name>charms</display-name>
+  
+    <!--
+
+    history:
+    01.10.2009 refactored for production release
+
+
+
+
+  *  the spring bean config file this is moved to the components.xml spring:context-loader
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/config/spring-beans.xml </param-value>
+    </context-param>
+
+
+  *  these listeners cause a lookup of the spring context definition file:
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+            org.springframework.web.context.request.RequestContextListener
+        </listener-class>
+    </listener>
+
+
+  * the RichFaces filter is included in the seam filter
+    <filter>
+      <display-name>Ajax4jsf Filter</display-name>
+      <filter-name>ajax4jsf</filter-name>
+      <filter-class>org.ajax4jsf.Filter</filter-class>
+    </filter>
+    <filter-mapping>
+      <filter-name>ajax4jsf</filter-name>
+      <servlet-name>Faces Servlet</servlet-name>
+      <dispatcher>REQUEST</dispatcher>
+      <dispatcher>FORWARD</dispatcher>
+      <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    -->
+   
+
+    <!-- ########################
+
+          application parameters
+
+         ######################## -->
+
+    <context-param>
+        <description>
+        the base url including hostname and port, appcontext is added by the application
+        production: http://pegasus.sfc-intra.net:8181
+        test environments: http://speedy.persman.de
+                           http://localhost:8080
+                           http://charms.persman.de/charms
+                           http://unison.persman.de/charms
+        </description>
+        <param-name>charms.baseUrl</param-name>
+        <param-value>http://localhost:8080</param-value>
+    </context-param>
+
+
+
+
+    <!-- ########################
+
+         faces/facelets parameters
+         see: https://facelets.dev.java.net/nonav/docs/dev/docbook.html#config-webapp-init
+
+         ######################## -->
+
+
+    <context-param>
+        <description>
+        fix a broken JSF spec with the risk to break some AJAX frameworks, 
+        setting this to true breaks primefaces fileupload...
+        the problem is there are  multiple id="javax.faces.ViewState" generated
+        setting this to false breaks the seam:fileupload component in IE8 
+        see: http://wiki.glassfish.java.net/Wiki.jsp?page=JavaServerFacesRI
+             http://www.icanmakeit.de/2009/05/27/jsf-multiple-javaxfacesviewstate-hidden-fields/
+        </description>
+        <param-name>com.sun.faces.enableViewStateIdRendering</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+
+    <context-param>
+        <description>
+        silently restore the view when hitting a timeout, instead of throwing an exception
+        see: http://blog.maaloe.com/2008/10/jsf-how-to-get-rid-of-jsf1054-phase-id.html
+             http://seamframework.org/Community/IsThereAnyWayToHideViewExpiredExceptionFromLogs
+        </description>
+        <param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
+        <param-value>true</param-value>
+    </context-param>
+  
+    <context-param>
+        <description>
+        this parameter used to be in faces-config.xml
+        see: http://docs.jboss.org/richfaces/3.3.2.GA/en/devguide/html/SettingsForDifferentEnvironments.html
+        </description>
+        <param-name>org.ajax4jsf.VIEW_HANDLERS</param-name>
+        <param-value>com.sun.facelets.FaceletViewHandler</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+         view cache refresh time
+          0:  for development, no cache (https://facelets.dev.java.net/issues/show_bug.cgi?id=277)
+         -1:  for production, no refresh (https://facelets.dev.java.net/issues/show_bug.cgi?id=276)
+
+         this option used to be called facelets.REFRESH_PERIOD
+         the name javax.faces.FACELETS_REFRESH_PERIOD is used since JSF2
+
+        </description>
+        <param-name>facelets.REFRESH_PERIOD</param-name>
+        <param-value>0</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+        Setting this to true will cause the FaceletViewHandler to print out debug information
+        in an easy to use screen when an error occurs during the rendering process.
+        </description>
+        <param-name>facelets.DEVELOPMENT</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+        A boolean value that tells the compiler to skip comments (default is true).
+        Even if you comment out code in your page, the tags will not be compiled but
+        expressions (EL) will be treated as if they were inlined, still compiled
+        and evaluated for output in the document. Skipping comments will remove all
+        comments completely from the document.
+
+        this options used to be called  facelets.SKIP_COMMENTS in JSF1.2
+        the name javax.faces.FACELETS_SKIP_COMMENTS is recommended for JSF2
+
+        </description>
+        <param-name>facelets.SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+        default ending for JSF pages
+        </description>
+        <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+        <param-value>.xhtml</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+        we use server side states
+        see: http://www.jroller.com/mert/entry/state_saving_method_client_side
+        </description>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>server</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+         we want the faces config file in the common config/ subdirectory
+         see: http://one-size-doesnt-fit-all.blogspot.com/2007/01/using-multiple-faces-configxml-files-in.html
+         used to be javax.faces.application.CONFIG_FILES
+        </description>
+        <param-name>javax.faces.CONFIG_FILES</param-name>
+        <param-value>/WEB-INF/config/faces-config.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+         disable spawning threads for Googles application Engine,
+         other than that the startup is not really critical and it's
+         probably better to have a single thread startup that is reproducable
+         than multiple threads with unreproducable race conditions for debugging
+         used to be called  com.sun.faces.enableMultiThreadedStartup
+        </description>
+        <param-name>com.sun.faces.enableThreading</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+        disable the "power by" header parameter, saves us some byte per request
+        </description>
+        <param-name>com.sun.faces.sendPoweredByHeader</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+    <!-- facelets configs -->
+    <context-param>
+        <description>
+        https://javaserverfaces.dev.java.net/nonav/rlnotes/1.2_14/changelog.html
+        we have to set this to true here since not binding will break seams conversations stuff
+        </description>
+        <param-name>com.sun.faces.IS_SAVE_BINDINGS_STATE</param-name>  
+        <param-value>true</param-value>  
+    </context-param>  
+
+    <context-param>
+        <description>
+        https://javaserverfaces.dev.java.net/nonav/rlnotes/1.2_14/changelog.html
+        </description>
+        <param-name>facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+        https://javaserverfaces.dev.java.net/nonav/rlnotes/1.2_14/changelog.html
+        </description>
+        <param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+
+    <!-- ########################
+
+         seam config parameters
+
+         ######################## -->
+
+    <context-param>
+        <description>
+        choose one of:
+             * DEFAULT
+             * plain: simple scheme, no gradient, transparent panels, simple border
+             * emeraldTown
+             * blueSky
+             * wine
+             * japanCherry
+             * ruby
+             * classic
+             * deepMarine
+             * NULL
+        </description>
+        <param-name>org.richfaces.SKIN</param-name>
+        <param-value>#{themeSelector.theme}</param-value>
+        <!-- <param-value>DEFAULT</param-value>  -->
+    </context-param>
+
+    <context-param>
+        <description>
+        global queue to prevent concurrent access to the conversation context
+        <!--  see: http://www.jboss.org/index.html?module=bb&op=viewtopic&t=144339&postdays=0&postorder=asc&start=10 -->
+        </description>
+        <param-name>org.richfaces.queue.global.enabled</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <!-- Making the RichFaces skin spread to standard HTML controls,
+         this makes inputboxes blue -->
+    <context-param>
+        <param-name>org.richfaces.CONTROL_SKINNING</param-name>
+        <param-value>disable</param-value>
+    </context-param>
+<!--  testexlude:
+    <context-param>
+        <param-name>org.ajax4jsf.COMPRESS_SCRIPT</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>org.ajax4jsf.COMPRESS_STYLE</param-name>
+        <param-value>true</param-value>
+    </context-param>
+-->
+    <context-param>
+        <description>
+        Java Script loading strategy
+        see: http://docs.jboss.org/richfaces/latest_3_3_X/en/devguide/html/ArchitectureOverview.html#ScriptsandStylesLoadStrategy
+        </description>
+        <param-name>org.richfaces.LoadScriptStrategy</param-name>
+        <param-value>ALL</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+        CSS loading strategy
+        see: http://docs.jboss.org/richfaces/latest_3_3_X/en/devguide/html/ArchitectureOverview.html#ScriptsandStylesLoadStrategy
+        </description>
+        <param-name>org.richfaces.LoadStyleStrategy</param-name>
+        <param-value>ALL</param-value>
+    </context-param>
+
+
+    <context-param>
+        <description>
+        try to reduce heap usage by reducing the amount of memory that
+        org.ajax4jsf.application.AjaxStateHolder needs this also reduces the
+        ability to use the back button in browsers...
+        the default value seems to be 15
+        see: https://jira.jboss.org/jira/browse/RF-2292
+        </description>
+        <param-name>com.sun.faces.numberOfViewsInSession</param-name>
+        <param-value>2</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+        see: http://wiki.glassfish.java.net/Wiki.jsp?page=JavaServerFacesRI
+        </description>
+        <param-name>com.sun.faces.numberOfLogicalViews</param-name>
+        <param-value>2</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+        send xhtml when html/xhtml are equally requested
+        see: http://wiki.glassfish.java.net/Wiki.jsp?page=JavaServerFacesRI
+        the richeditor doesn't work when this parameter is set to true
+        </description>
+        <param-name>com.sun.faces.preferXHTML</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+    <context-param>
+        <description>
+        class caching is disabled when set to true
+        see: http://wiki.glassfish.java.net/Wiki.jsp?page=JavaServerFacesRI
+        </description>
+        <param-name>com.sun.faces.developmentMode</param-name>
+        <param-value>true</param-value>
+    </context-param>
+<!--  testexlude:
+    <context-param>
+        <description>
+        a custom resource resolver for logging the page views,
+        the implementing class must be changed for JSF2
+        tag for JSF2: javax.faces.FACELETS_RESOURCE_RESOLVER
+        tag for JSF12: facelets.RESOURCE_RESOLVER
+        </description>
+        <param-name>facelets.RESOURCE_RESOLVER</param-name>
+        <param-value>net.wohlfart.framework.CustomResourceResolver</param-value>
+    </context-param>
+-->  
+  
+  <!--  
+    <context-param>
+        <description>
+        turning off the internal JSF2 viewhandler since it doesn't work yet
+        in richfaces3.3.3, we need to provide our own facelets-api.jar file for this to work
+        this breaks primefaces compatibility with JSF2
+        </description>
+        <param-name>javax.faces.DISABLE_FACELET_JSF_VIEWHANDLER</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    -->
+
+    <!-- ########################
+
+         listener
+
+         ######################## -->
+
+    <!-- triggers the JSF init in order to have the JSF application fab when seam local-config is
+         setting the available locale ids...  -->
+    <listener>
+        <description>
+        see:  http://www.crazysquirrel.com/computing/java/jsf/eclipse-with-tomcat-6-and-jsf-1-2.jspx
+              http://forums.java.net/jive/thread.jspa?messageID=368766
+              there is an issue with the locale selector:
+              https://jira.jboss.org/jira/browse/JBSEAM-4401
+          startup procedure: http://hatim.wordpress.com/2008/02/04/q-how-does-seam-hookup-with-jsf-at-server-startup/
+        bootup says its already configured:, probably too late...
+        </description>
+        <listener-class>
+            com.sun.faces.config.ConfigureListener
+        </listener-class>
+    </listener>
+
+
+<!--  the WebappLifecycleListener is installed in the ConfigureListener,
+      so we don't need to configure it here
+    <listener>
+        <description>
+        Listener implementation to handle web application lifecycle events
+        </description>
+        <listener-class>
+            com.sun.faces.application.WebappLifecycleListener
+        </listener-class>
+    </listener>
+-->
+
+    <!-- ########################
+
+         filters
+
+         ######################## -->
+  
+  <!--  not used yet, this filter trashes the form posts it seems...
+    <filter>
+      <filter-name>PrimeFaces FileUpload Filter</filter-name>
+      <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+    </filter>   
+    <filter-mapping>  
+      <filter-name>PrimeFaces FileUpload Filter</filter-name>
+      <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
+ -->
+
+    <filter>
+      <description>
+      The Seam master filter should be the first filter specified in web.xml. This ensures it is run first.
+      see: http://docs.jboss.org/seam/2.0.1.GA/reference/en/html/configuration.html
+      </description>
+      <filter-name>Seam Filter</filter-name>
+      <filter-class>org.jboss.seam.servlet.SeamFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+      <filter-name>Seam Filter</filter-name>
+      <url-pattern>/*</url-pattern>
+      <dispatcher>FORWARD</dispatcher>
+      <dispatcher>REQUEST</dispatcher>
+      <dispatcher>INCLUDE</dispatcher>
+      <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
+
+    <filter>
+      <description>
+      seam redirect filter to preserve conversation/messages across redirects
+      </description>
+      <filter-name>Seam Redirect Filter</filter-name>
+      <filter-class>org.jboss.seam.servlet.SeamRedirectFilter</filter-class>
+    </filter>
+
+    <!-- guess we need the same as for the servlet mapping -->
+    <filter-mapping>
+      <filter-name>Seam Redirect Filter</filter-name>
+      <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+
+    <!-- ########################
+
+         listener
+
+         ######################## -->
+
+    <listener>
+      <description>
+      main seam workhorse
+      </description>
+      <listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
+    </listener>  
+<!--  testexlude:
+    <listener>
+      <description>
+      custom listener to check the resources of this application
+      </description>
+      <listener-class>net.wohlfart.framework.debug.HttpSessionCollector</listener-class>
+    </listener>
+-->
+    <!-- ########################################################################
+
+         begin servlets
+
+         ######################################################################## -->
+
+
+    <!-- ### faces servlet ### -->
+
+    <servlet>
+        <description>
+        faces servlet
+        </description>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>
+          javax.faces.webapp.FacesServlet
+        </servlet-class>  <!-- -->
+        <load-on-startup>1</load-on-startup>  
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- ### seam resource servlet ### -->
+
+    <servlet>
+      <description>
+      seam resource servlet
+      </description>
+      <servlet-name>Seam Resource Servlet</servlet-name>
+      <servlet-class>
+        org.jboss.seam.servlet.SeamResourceServlet
+      </servlet-class> <!-- -->
+      <load-on-startup>2</load-on-startup>  
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>Seam Resource Servlet</servlet-name>
+      <url-pattern>/seam/resource/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- ### primfaces resource servlet ### -->
+<!--  we need to disable primefaces2 until Richfaces full supports JSF2  -->
+    <servlet>
+      <description>
+      the primfaces resource servlet
+      </description>
+      <servlet-name>Primefaces Resource Servlet</servlet-name>
+      <servlet-class>
+        org.primefaces.resource.ResourceServlet
+      </servlet-class> 
+      <load-on-startup>3</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>Primefaces Resource Servlet</servlet-name>
+      <url-pattern>/primefaces_resource/*</url-pattern>
+    </servlet-mapping>
+
+<!--
+    <servlet>
+      <description>AtmosphereServlet</description>
+      <servlet-name>AtmosphereServlet</servlet-name>
+      <!- -  custom servlet:
+      <servlet-class>net.wohlfart.framework.comet.CharmsCometServlet</servlet-class>
+      - ->
+      <!- -  original Servlet:
+      <servlet-class>org.atmosphere.cpr.AtmosphereServlet</servlet-class>
+       - ->
+      <servlet-class>net.wohlfart.framework.comet.CharmsCometServlet</servlet-class>
+      <!- - async is part of the Servlet 3.0 spec but not yet implemented in 
+           tomcat7-beta so we can't use it here  - ->
+      <async-supported>false</async-supported>
+      <init-param>
+        <!- - seems we need blocking here since the async Servlet3 stuff is not
+             yet implemented in Tomcat  - ->
+        <param-name>org.atmosphere.useBlockingIO</param-name>
+        <param-value>true</param-value>
+      </init-param> 
+      <init-param>
+         <!- - defines weather to use the native container specific comet support  - ->
+         <param-name>org.atmosphere.useNative</param-name>
+         <param-value>false</param-value>
+      </init-param>   
+      <init-param>
+         <!- - to prevent memory leaks
+              see: http://jfarcand.wordpress.com/?by-user=t   - ->
+         <param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
+         <param-value>30000</param-value>
+      </init-param>
+   
+      <!- -  
+        <init-param>
+            <param-name>directDeliver</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>refsThreshold</param-name>
+            <param-value>10</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.disableOnStateEvent</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+        - ->
+    </servlet>
+    <servlet-mapping>
+       <servlet-name>AtmosphereServlet</servlet-name>
+       <url-pattern>/atmosphere/*</url-pattern>  <!- - /atmosphere/* - ->
+    </servlet-mapping>
+-->
+
+
+
+
+    <!-- ### seam remoting servlet ### 
+       error in jetty, removed this
+
+    <servlet>
+      <servlet-name>Seam Remoting</servlet-name>
+      <servlet-class>
+        org.jboss.seam.remoting.SeamRemotingServlet
+      </servlet-class> <!- -
+      <load-on-startup>4</load-on-startup>  - ->
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>Seam Remoting</servlet-name>
+      <url-pattern>/seam/remoting/*</url-pattern>
+    </servlet-mapping>
+    -->
+
+
+<!--  
+     <servlet>
+        <servlet-name>Comet Servlet</servlet-name>
+        <servlet-class>
+           net.wohlfart.framework.comet.CharmsCometServlet
+        </servlet-class>
+        <init-param>
+            <description>we end up with blocking IO on tomcat anyways</description>
+            <param-name>org.atmosphere.useBlocking</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <description>native is ok for tomcat</description>
+            <param-name>org.atmosphere.useNative</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <description>streams don't work with the current config it seems</description>
+            <param-name>org.atmosphere.useStream</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Comet Servlet</servlet-name>
+        < ! - - this path is defined in primefaces CometContext - - >
+        <url-pattern>/primefaces_comet/*</url-pattern>
+    </servlet-mapping>
+-->
+
+    <!-- another comet servlet
+    <servlet>
+      <servlet-name>cometd</servlet-name>
+      <servlet-class>org.apache.tomcat.bayeux.BayeuxServlet</servlet-class>
+      <init-param>
+        < ! - - server timeout - - >
+        <param-name>timeout</param-name>
+        <param-value>120000</param-value>
+      </init-param>
+      <init-param>
+        < ! - - poll interval for long-polling, use 0 to immediatly poll - - >
+        <param-name>interval</param-name>
+        <param-value>0</param-value>
+      </init-param>
+      <init-param>
+        < ! - - from google talk video, make request available in the comet servlet - - >
+        <param-name>requestAvailable</param-name>
+        <param-value>true</param-value>
+      </init-param>
+      <load-on-startup>3</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>cometd</servlet-name>
+      <url-pattern>/cometd/*</url-pattern>
+    </servlet-mapping>
+
+
+
+     ### primfaces resource servlet ###
+
+     <servlet>
+        <servlet-name>Primfaces Comet Servlet</servlet-name>
+        <servlet-class>org.primefaces.ui.comet.PrimeFacesCometServlet</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Primfaces Comet Servlet</servlet-name>
+        <url-pattern>/primefaces_comet</url-pattern>
+    </servlet-mapping>
+
+    -->
+
+    <!-- ########################################################################
+
+         end servlets, start misc app stuff
+
+         ######################################################################## -->
+
+
+    <!--  see: http://blogs.sans.org/appsecstreetfighter/author/frankykim/
+               http://andrius.miasnikovas.lt/2010/07/whats-new-in-tomcat-7/  -->
+    <session-config>
+      <!-- session timeout in minutes -->
+      <session-timeout>10</session-timeout>
+      <tracking-mode>COOKIE</tracking-mode>
+      <cookie-config>
+        <http-only>true</http-only>
+        <name>CHARMS_SESSIONID</name> 
+      </cookie-config>
+    </session-config>
+
+    <welcome-file-list>
+      <!-- can't use *.html here since the servlet would be triggered -->
+      <welcome-file>index.htm</welcome-file>
+    </welcome-file-list>
+
+    <error-page>
+      <!-- index.htm is in the root folder and contains the hardcoded context 
+           path for unknown pages we just send the user to the login page -->
+      <error-code>404</error-code>
+      <location>/index.htm</location>
+    </error-page>
+
+
+    <security-constraint>
+        <display-name>protect the source</display-name>
+        <web-resource-collection>
+            <web-resource-name>block raw xhtml pages</web-resource-name>
+            <url-pattern>*.xhtml</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+
+
+
+</web-app>

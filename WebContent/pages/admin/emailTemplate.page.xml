@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+
+      login-required="true">
+
+  <begin-conversation join="true" flush-mode="manual" if="#{!conversation.nested}"  />
+
+  <description>page for editing email templates</description>
+
+  <action execute="#{charmsEmailTemplateAction.setEmailTemplateId(param.emailTemplateId)}" 
+          on-postback="false" /> 
+  
+  <navigation from-action="#{charmsEmailTemplateAction.setEmailTemplateId(param.emailTemplateId)}">
+    <rule if-outcome="invalid">
+      <redirect view-id="/pages/admin/emailTemplateList.xhtml" />
+    </rule>
+    <rule if-outcome="valid">
+      <render view-id="/pages/admin/emailTemplate.xhtml" />
+    </rule>
+  </navigation>
+          
+             
+  <navigation>
+ 
+    <rule if-outcome="persisted" if="#{!conversation.nested}">
+      <redirect view-id="/pages/admin/emailTemplateList.xhtml" />
+    </rule>
+ 
+    <rule if-outcome="updated" if="#{!conversation.nested}">
+      <redirect view-id="/pages/admin/emailTemplateList.xhtml" />
+    </rule>
+ 
+    <rule if-outcome="removed" if="#{!conversation.nested}">
+      <redirect view-id="/pages/admin/emailTemplateList.xhtml" />
+    </rule>
+ 
+    <rule if-outcome="canceled" if="#{!conversation.nested}">
+      <redirect view-id="/pages/admin/emailTemplateList.xhtml" />
+    </rule>
+     
+  </navigation>
+
+</page>

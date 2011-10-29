@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"><!--
+
+
+    this is the general header for all pages including logo, name and a horizontal line separator
+
+--><a href="#{request.contextPath}/pages/user/home.html"><h:graphicImage
+              value="/#{theme['logo']}"
+              alt="charms"
+              styleClass="logo"
+              style="float: left; padding-bottom: 25px;"/></a>
+    <span class="userfullname"> <!-- show name if the user is logged in -->
+       <h:outputText value="#{messages['messages.welcome']}"
+                     rendered="#{identity.loggedIn}" />
+     </span>
+
+     <s:div style="float: right; padding-top: 5px; padding-right: 20px" rendered="#{not identity.loggedIn}" >
+     <h:form >
+       <ui:repeat var="l" value="#{localeSelector.supportedLocaleIds}">
+         <h:commandLink action="#{localeSelector.selectLocaleId(l)}">
+           <h:graphicImage url="/img/locales/locale_#{l}.gif" />
+         </h:commandLink>
+         <br />
+       </ui:repeat>
+     </h:form>
+         <br />
+         <br />
+     </s:div>
+  <div class="fadeline"><h:graphicImage value="/img/pixel.gif"
+    alt="" /></div>
+
+</ui:composition>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diagram model-entity="SeamPagesDiagram">
+ <item ID="#pages#login.xhtml" NAME="#xpages#xlogin.xhtml"
+  PATH="/pages/login.xhtml" SHAPE="344,17,0,0" TYPE="page" model-entity="SeamPagesDiagramItem">
+  <output ID="/pages/user/home.xhtml" NAME="output"
+   PATH="/pages/user/home.xhtml" TARGET="#xpages#xuser#xhome.xhtml" model-entity="SeamPagesDiagramItemOutput"/>
+  <output NAME="output1" model-entity="SeamPagesDiagramItemOutput"/>
+ </item>
+ <item ID="#pages#doLogout.xhtml" NAME="#xpages#xdoLogout.xhtml"
+  PATH="/pages/doLogout.xhtml" SHAPE="344,329,0,0" TYPE="page" model-entity="SeamPagesDiagramItem">
+  <output ID="/pages/logout.xhtml" NAME="output"
+   PATH="/pages/logout.xhtml" TARGET="#xpages#xlogout.xhtml" model-entity="SeamPagesDiagramItemOutput"/>
+ </item>
+ <item ID="#pages#logout.xhtml" NAME="#xpages#xlogout.xhtml"
+  PATH="/pages/logout.xhtml" SHAPE="664,329,0,0" TYPE="page" model-entity="SeamPagesDiagramItem"/>
+ <item ID="#pages#preferences.xhtml" NAME="#xpages#xpreferences.xhtml"
+  PATH="/pages/preferences.xhtml" SHAPE="1304,329,0,0" TYPE="page" model-entity="SeamPagesDiagramItem"/>
+ <item ID="#pages#test.xhtml" NAME="#xpages#xtest.xhtml"
+  PATH="/pages/test.xhtml" SHAPE="1624,329,0,0" TYPE="page" model-entity="SeamPagesDiagramItem"/>
+ <item ID="javax.faces.application.ViewExpiredException"
+  NAME="exception:javax.faces.application.ViewExpiredException"
+  PATH="javax.faces.application.ViewExpiredException" SHAPE="24,17,0,0"
+  TYPE="exception" model-entity="SeamPagesDiagramItem">
+  <output ID="/pages/login.xhtml" NAME="output"
+   PATH="/pages/login.xhtml" TARGET="#xpages#xlogin.xhtml" model-entity="SeamPagesDiagramItemOutput"/>
+ </item>
+ <item ID="org.jboss.seam.security.AuthorizationException"
+  NAME="exception:org.jboss.seam.security.AuthorizationException"
+  PATH="org.jboss.seam.security.AuthorizationException"
+  SHAPE="24,121,0,0" TYPE="exception" model-entity="SeamPagesDiagramItem">
+  <output ID="/pages/errors/error.xhtml" NAME="output"
+   PATH="/pages/errors/error.xhtml"
+   TARGET="#xpages#xerrors#xerror.xhtml" model-entity="SeamPagesDiagramItemOutput"/>
+ </item>
+ <item ID="org.jboss.seam.ConcurrentRequestTimeoutException"
+  NAME="exception:org.jboss.seam.ConcurrentRequestTimeoutException"
+  PATH="org.jboss.seam.ConcurrentRequestTimeoutException"
+  SHAPE="24,225,0,0" TYPE="exception" model-entity="SeamPagesDiagramItem">
+  <output ID="/pages/errors/error.xhtml" NAME="output"
+   PATH="/pages/errors/error.xhtml"
+   TARGET="#xpages#xerrors#xerror.xhtml" model-entity="SeamPagesDiagramItemOutput"/>
+ </item>
+ <item NAME="#xpages#xerrors#xerror.xhtml"
+  PATH="/pages/errors/error.xhtml" SHAPE="376,121,0,0" TYPE="page" model-entity="SeamPagesDiagramItem"/>
+ <item NAME="#xpages#xuser#xhome.xhtml" PATH="/pages/user/home.xhtml"
+  SHAPE="728,17,0,0" TYPE="page" model-entity="SeamPagesDiagramItem"/>
+ <item SHAPE="24,329,0,0" TYPE="page" model-entity="SeamPagesDiagramItem"/>
+ <item ID="org.hibernate.exception.GenericJDBCException"
+  NAME="exception:org.hibernate.exception.GenericJDBCException"
+  PATH="org.hibernate.exception.GenericJDBCException" SHAPE="24,433,0,0"
+  TYPE="exception" model-entity="SeamPagesDiagramItem">
+  <output ID="/pages/errors/error.xhtml" NAME="output"
+   PATH="/pages/errors/error.xhtml"
+   TARGET="#xpages#xerrors#xerror.xhtml" model-entity="SeamPagesDiagramItemOutput"/>
+ </item>
+</diagram>

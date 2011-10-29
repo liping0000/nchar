@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<!--
+
+
+   cost estimate sheet
+   we use jquery.sheet for this
+
+   changes in jquery.sheet-0.53.js:
+
+    since we don't use scrolling:
+       overflow: show; for jSheetBarTopParent (~line 85)
+       overflow: show; for jSheetBarLeftParent (~line 87)
+
+
+
+
+   -->
+	<script type="text/javascript">
+<h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+jQuery(document).ready(function() {
+   jQuery('div#sheet').sheet({
+           urlGet:         false,
+           urlSave:        false,
+           title:          '',
+           editable:       true,
+           urlBaseCss:     false,
+           urlTheme:       false,
+           urlMenu:        false,
+           urlMenuJs:      false,
+           urlMenuCss:     false,
+           urlMetaData:    false,
+           urlScrollTo:    false,
+           urlScrollsync:  false,
+           urlJGCharts:    false,
+           log:            false,
+
+           fnBefore: function() {
+             // alert("fnBefore");
+             jQuery("div#sheet").append(jQuery("#changeRequest\\:costSheet").val());
+           },
+           fnAfter: function() { alert("fnAfter"); },
+           fnSave: function() { alert("fnSave"); },
+           fnOpen: function() { alert("fnOpen"); },
+           fnClose: function() { alert("fnClose"); }
+
+   });
+
+
+   // hook into the parent form submit:
+   jQuery('div#sheet').parents("form").submit(function(event) {
+     var sheetClone = jQuery.sheet.obj.sheet().clone()[0];
+	 jQuery.sheet.sheetDecorateRemove(sheetClone);
+     // var s = jQuery.sheet.HTMLtoPrettySource(sheetClone);
+     var s = jQuery.sheet.HTMLtoCompactSource(sheetClone);
+     jQuery("#changeRequest\\:costSheet").val(s);
+     //alert("fill textarea with sheet data somehow..." + jQuery.sheet.version + s);
+     return true;
+     // event.preventDefault();
+   });
+
+
+});
+<h:outputText value="/* ]]> */" escape="false"/>
+</script>
+
+	<div id="sheet" />
+
+	<h:inputTextarea id="costSheet"
+		style="width: 500px; height: 600px; display:none; visibility:hidden;"
+		value="#{changeRequestCostSheet.content}" readonly="false"
+		rendered="#{not empty changeRequestCostSheet.content}" />
+
+</ui:composition>
+

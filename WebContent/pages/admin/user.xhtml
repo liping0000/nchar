@@ -1,0 +1,407 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.users.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.users.title']}" />
+
+<ui:define name="body">
+
+
+<h:form>
+
+
+  <rich:tabPanel switchType="client" >
+
+    <rich:tab id="tab1" label="Benutzerdaten">
+
+  <!--
+
+     first section the person data
+
+   -->
+  <br />
+  <!--  <h2><h:outputText value="#{messages['page.admin.user.userdata']}" /></h2> -->
+
+  <s:decorate id="genderProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.gender']}" /></ui:define>
+     <h:selectOneMenu value="#{charmsUser.gender}">
+              <s:selectItems var="gender"
+                             value="#{genderSelects}"
+                             noSelectionLabel="#{messages['user.gender.noSelection']}"
+                             label="#{messages[gender.msgCode]}" />
+              <s:convertEnum/>
+     </h:selectOneMenu>
+  </s:decorate>
+
+  <s:decorate id="firstnameProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.firstname']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{charmsUser.firstname}"
+                  styleClass="inputtext" >
+        <a4j:support event="onblur"
+                     ajaxSingle="true"
+                     reRender="firstnameProperty" />
+     </h:inputText>
+  </s:decorate>
+
+  <s:decorate id="lastnameProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.lastname']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{charmsUser.lastname}"
+                  styleClass="inputtext">
+        <a4j:support event="onblur"
+                     ajaxSingle="true"
+                     reRender="lastnameProperty" />
+     </h:inputText>
+  </s:decorate>
+
+
+  <s:decorate id="externalId1Property"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.externalId1']}" /></ui:define>
+     <h:inputText value="#{charmsUser.externalId1}"
+                  styleClass="inputtext" />
+  </s:decorate>
+
+  <s:decorate id="externalId2Property"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.externalId2']}" /></ui:define>
+     <h:inputText value="#{charmsUser.externalId2}"
+                  styleClass="inputtext" />
+  </s:decorate>
+
+
+
+  <s:decorate id="loginProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.name']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{charmsUser.name}"
+                  styleClass="inputtext" >
+        <a4j:support event="onblur"
+                     ajaxSingle="true"
+                     reRender="loginProperty" />
+     </h:inputText>
+  </s:decorate>
+
+  <s:decorate id="emailProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.email']}" /></ui:define>
+     <h:inputText required="false"
+                  value="#{charmsUser.email}"
+                  styleClass="inputtext" >
+     </h:inputText>
+  </s:decorate>
+  <!--
+
+     the password section
+
+   -->
+  <br />
+  <!--  <h2><h:outputText value="#{messages['page.admin.user.passwdview']}" /></h2> -->
+
+  <s:decorate id="passwdProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.passwd']}" /></ui:define>
+     <h:inputSecret required="false"
+                    value="#{charmsUserActionBean.passwd}"
+                    styleClass="inputtext" >
+     </h:inputSecret>
+  </s:decorate>
+
+  <s:decorate id="passwdConfirmProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['page.admin.user.passwdValidate']}" /></ui:define>
+     <h:inputSecret required="false"
+                    value="#{charmsUserActionBean.passwdConfirm}"
+                    styleClass="inputtext" >
+     </h:inputSecret>
+  </s:decorate>
+  
+  <br />
+  <!--  <h2><h:outputText value="#{messages['page.admin.user.description']}" /></h2> -->
+
+  <s:decorate id="descriptionField"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['charmsuser.description']}" /></ui:define>
+    <div style="display: table;">
+    <rich:editor value="#{charmsUser.description}"
+                 configuration="mcePropertyConfig"
+                 customPlugins="mcePlugins">
+       <f:param name="htmlcharcount_maxchars" value="2024" />
+       <f:param name="readonly" value="#{readonly?'true':'false'}" />
+       <!-- autoresize to show the full content on the page, htmlcharcount doesn't work with readonly  -->
+       <f:param name="plugins" value="#{readonly?'autoresize':'htmlcharcount, paste'}" />
+    </rich:editor>
+    </div>
+  </s:decorate>
+  
+  <br />
+  <br />
+  <br />
+  
+    </rich:tab>
+
+    <rich:tab id="tab2" label="Einstellungen">
+  
+  
+  
+  <!--
+
+     second section the users view settings
+
+   -->
+  <br /> 
+  <!--  <h2><h:outputText value="#{messages['page.admin.user.userview']}" /></h2> -->
+
+  <s:decorate id="localeProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.localeId']}" /></ui:define>
+     <h:selectOneMenu value="#{charmsUser.localeId}" >
+        <f:selectItem itemLabel="#{messages['locale.noSelection']}"/>
+        <f:selectItems value="#{localeSelector.supportedLocales}" />
+     </h:selectOneMenu>
+  </s:decorate>
+
+  <s:decorate id="timezoneProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.timezoneId']}" /></ui:define>
+     <h:selectOneMenu value="#{charmsUser.timezoneId}" >
+        <f:selectItem itemLabel="#{messages['timezone.noSelection']}"/>
+        <f:selectItems value="#{timeZoneSelector.supportedTimezones}" />
+     </h:selectOneMenu>
+  </s:decorate>
+
+  <s:decorate id="themeProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.themeId']}" /></ui:define>
+     <h:selectOneMenu value="#{charmsUser.themeId}" >
+        <f:selectItem itemLabel="#{messages['org.jboss.seam.theme.noSelection']}"/>
+        <f:selectItems value="#{themeSelector.themes}" />
+     </h:selectOneMenu>
+  </s:decorate>
+  <!--
+
+     third section the users account settings
+
+   -->
+  <br />
+  <!--  <h2><h:outputText value="#{messages['page.admin.user.accountdata']}" /></h2> -->
+
+  <s:decorate id="accountExpireProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.accountExpire']}" /></ui:define>
+     <rich:calendar value="#{charmsUser.accountExpire}" datePattern="dd.MM.yyyy" />
+  </s:decorate>
+
+  <s:decorate id="credentialsExpireProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.credentialsExpire']}" /></ui:define>
+     <rich:calendar value="#{charmsUser.credentialsExpire}" datePattern="dd.MM.yyyy" />
+  </s:decorate>
+
+  <s:decorate id="enabledProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.enabled']}" /></ui:define>
+     <h:selectBooleanCheckbox value="#{charmsUser.enabled}" styleClass="checkbox" />
+  </s:decorate>
+
+  <s:decorate id="unlockedProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.unlocked']}" /></ui:define>
+     <h:selectBooleanCheckbox value="#{charmsUser.unlocked}" styleClass="checkbox" />
+  </s:decorate>
+
+  <br /> 
+  <br /> 
+  <br /> 
+  
+    </rich:tab>
+
+    <rich:tab id="tab3" label="Rollen">
+
+
+  <!--
+
+     forth section the users roles
+
+
+   -->
+  <br /> 
+  <!--  <h2><h:outputText value="#{messages['page.admin.user.roledata']}" /></h2> -->
+
+  <s:decorate id="rolesProperty"
+              template="/layout/fragments/editshuttle.xhtml" >
+     <ui:define name="label"><h:outputText value="#{messages['charmsuser.roles']}" /></ui:define>
+     <rich:listShuttle sourceValue="#{charmsUserActionBean.availableRoleItems}"
+                       targetValue="#{charmsUserActionBean.selectedRoleItems}"
+                       converter="#{charmsUserActionBean.charmsRoleItemConverter}"
+                       sourceRequired="false"
+                       targetRequired="false"
+                       sourceCaptionLabel="#{messages['page.admin.user.roledata.source']}"
+                       sourceListWidth="210"
+                       targetCaptionLabel="#{messages['page.admin.user.roledata.target']}"
+                       targetListWidth="210"
+                       orderControlsVisible="false"
+                       fastOrderControlsVisible="false"
+                       required="false"
+                       var="item">
+        <rich:column >
+           <h:outputText value="#{item.label}" />
+        </rich:column>
+     </rich:listShuttle>
+  </s:decorate>
+  
+  <br/>
+  <br/>
+  <br/>
+ 
+    </rich:tab>
+
+    <rich:tab id="tab4" label="Gruppen">
+    
+    <s:div id="grps">
+
+    <a4j:repeat var="group"
+                value="#{charmsUserActionBean.allCurrentGroupNames}"
+                rowKeyVar="key"><div class="editproperty" style="padding: 1px;"><span class="value">
+      <h:inputText styleClass="readonly inputtext"
+                   readonly="true"
+                   value="#{group}" />
+      <a4j:commandLink title="del"
+                     action="#{charmsUserActionBean.delNewGroupName(group)}"
+                     immediate="false"
+                     ajaxSingle="false"
+                     reRender="grps">
+      <h:graphicImage url="/#{theme['iconset']}/cross.png"
+                      border="0"/></a4j:commandLink></span></div>
+
+    </a4j:repeat>
+    
+     <a4j:region>
+     <div class="editproperty" style="padding: 1px;"><span class="value">
+     <p:autoComplete value="#{charmsUserActionBean.newGroupName}"   
+                     completeMethod="#{charmsUserActionBean.completeNewGroupName}" />  
+        <!-- this is richfaces magic:
+             see: http://java.dzone.com/news/richfaces-region-partial-jsf
+         -->             
+        <a4j:commandLink title="add"
+                     action="#{charmsUserActionBean.addNewGroupName()}"
+                     immediate="false"
+                     ajaxSingle="false"
+                     reRender="grps">
+      <h:graphicImage url="/#{theme['iconset']}/seam_add.png"
+                      border="0"/></a4j:commandLink>
+      </span></div>
+      </a4j:region>
+        </s:div>
+ 
+  <br/>
+  <br/>
+  <br/>
+                     
+   </rich:tab>
+
+    <rich:tab id="tab5" label="Properties">
+    <!--  
+         <p:spreadsheet widgetVar="ss" title="PrimeFaces Spreadsheet" columnWidth="162">  
+         <p:sheet var="item" value="#{charmsUserActionBean.charmsPropertyList}" title="items">  
+             <p:column>  
+                 <h:inputText value="#{item.name}" />  
+             </p:column>  
+   
+             <p:column>  
+                 <h:inputText value="#{item.type}" />  
+             </p:column>  
+   
+             <p:column>  
+                 <h:inputText value="#{item.value}" />  
+             </p:column>   
+         </p:sheet>  
+     </p:spreadsheet>  
+    -->
+    
+      <a4j:repeat var="item"
+                  value="#{charmsUserActionBean.charmsPropertyList}"
+                  rowKeyVar="key">
+                  
+          <h:outputText value="&#160;" escape="false" />
+          <h:outputText value="#{item.name}" />
+          <h:outputText value="&#160;" escape="false" />
+          <h:outputText value="#{item.type}" />  
+          <h:outputText value="&#160;" escape="false" />
+          <h:outputText value="#{item.value}" />          
+          <h:outputText value="&#160;" escape="false" />
+                                
+      </a4j:repeat>
+
+    </rich:tab>   
+    
+   </rich:tabPanel>
+
+
+  <h:outputText value="#{messages['form.mandatory']}"
+                escape="false" />
+
+  <br/>
+  <br/>
+  <br/>
+
+
+
+        <div class="actionButtons">
+
+            <h:commandButton styleClass="button"
+                             id="persist"
+                             value="#{messages['action.persist']}"
+                             action="#{charmsUserActionBean.persist()}"
+                             rendered="#{not charmsUserActionBean.managed}">
+              <f:param name="charmsUserId" /> <!-- suppress propagation of the user id -->
+            </h:commandButton>
+
+            <h:commandButton styleClass="button"
+                             id="update"
+                             value="#{messages['action.update']}"
+                             action="#{charmsUserActionBean.update()}"
+                             rendered="#{charmsUserActionBean.managed}">
+              <f:param name="charmsUserId" /> <!-- suppress propagation of the user id -->
+            </h:commandButton>
+
+            <h:commandButton styleClass="button"
+                             id="remove"
+                             value="#{messages['action.remove']}"
+                             onclick="if (!confirm('#{messages['messages.areYouSure']}')) { return false; } else { jQuery.throbberUI(); return true; }"
+                             action="#{charmsUserActionBean.remove()}"
+                             immediate="true"
+                             rendered="#{charmsUserActionBean.managed}">
+              <f:param name="charmsUserId" /> <!-- suppress propagation of the user id -->
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="cancel"
+                             value="#{messages['action.cancel']}"
+                             action="#{charmsUserActionBean.cancel()}"
+                             immediate="true">
+              <f:param name="charmsUserId" /> <!-- suppress propagation of the user id -->
+            </h:commandButton>
+
+        </div>
+
+
+    </h:form>
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

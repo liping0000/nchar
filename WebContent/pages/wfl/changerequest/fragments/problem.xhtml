@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:a4j="http://richfaces.org/a4j">
+
+<tr>
+  <td colspan="2">
+    <s:decorate id="titleProperty"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.title']}" /></ui:define>
+      <h:inputText id="i"
+                   required="true"
+                   readonly="#{readonly?'true':'false'}"
+                   value="#{changeRequestData.title}"
+                   style="width: 500px; font-weight: bold;"
+                   styleClass="#{readonly?'inputtext readonly':'inputtext'}"
+                   requiredMessage="#{messages['changeRequestDataBean.title.requiredMessage']}">
+        <a4j:support event="onblur"
+                     ajaxSingle="true"
+                     reRender="titleProperty" />
+      </h:inputText>
+    </s:decorate>
+  </td>
+</tr>
+
+
+<tr>
+  <td colspan="2">
+    <s:decorate id="problemDescriptionProperty"
+                template="/layout/fragments/editproperty.xhtml">   <!-- rendered="#{not readonly}" -->
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestMessageBean.problemDescription']}" /></ui:define>
+          <div style="display: table;">
+          <rich:editor id="i"
+                       value="#{changeRequestData.problemDescription}"
+                       configuration="mcePropertyConfig"
+                       required="true"
+                       requiredMessage="#{messages['changeRequestMessageBean.problemDescription.requiredMessage']}"
+                       customPlugins="mcePlugins">
+              <f:param name="htmlcharcount_maxchars" value="2024" />
+              <f:param name="readonly" value="#{readonly?'true':'false'}" />
+              <!-- autoresize to show the full content on the page, htmlcharcount doesn't work with readonly  -->
+              <f:param name="plugins" value="#{readonly?'autoresize':'htmlcharcount, paste'}" />
+          </rich:editor>
+          </div>
+    </s:decorate>
+  </td>
+</tr>
+
+</ui:composition>

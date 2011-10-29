@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping package="net.wohlfart.auditing">
+
+  <class name="CharmsRevisionEntity" table="CHARMS_REVISION">
+    <id name="id" column="ID_" >
+      <generator class="org.hibernate.id.enhanced.TableGenerator">
+         <param name="segment_value">CHARMS_REVISION</param>
+      </generator>
+    </id>
+    <property name="timestamp" column="TIMESTAMP_"/>
+    <property name="username" column="USER_NAME_"/>
+  </class>
+
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"><!--
+
+
+    this is the general header for all pages including logo, name and a horizontal line separator
+
+--><a href="#{request.contextPath}/pages/user/home.html"><h:graphicImage
+              value="/#{theme['logo']}"
+              alt="charms"
+              styleClass="logo"/></a><span class="userfullname"> <!-- show name if the user is logged in -->
+  <h:outputText value="#{messages['messages.welcome']}"
+    rendered="#{identity.loggedIn}" /> <!-- show link to login page if the user is not logged in or we are not on the login page-->
+  <s:link view="/pages/login.xhtml" value="Login"
+    rendered="#{(not identity.loggedIn) and (facesContext.viewRoot.viewId != '/pages/login.xhtml' )}" />
+  <!-- show link for logout action if the user is  logged in  <s:link
+    view="/pages/logout.xhtml" action="  { identity.logout}" value="Logout"
+    rendered="#{identity.loggedIn}" />-
+     expression for the view id like used in the pages.xml files: <h:outputText value="#{facesContext.viewRoot.viewId}" />
+
+     --> </span>
+
+     <!--  no fadeline in charms layout -->
+  <div class="fadeline-header"><h:graphicImage value="/img/pixel.gif"
+    alt="" /></div>
+
+</ui:composition>

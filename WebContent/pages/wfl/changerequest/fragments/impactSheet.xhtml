@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:ui="http://java.sun.com/jsf/facelets"><!--
+
+
+   impact sheet
+
+
+-->
+
+
+<script type="text/javascript">
+<h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+jQuery(document).ready(function() {
+   // jQuery('#changeRequest\\:impactSheet').sheet();
+});
+<h:outputText value="/* ]]> */" escape="false"/>
+</script>
+
+<h:inputTextarea id="impactSheet"
+                 style="width: 700px; height: 500px"
+                 value="#{changeRequestImpactSheet.content}"
+                 readonly="false"
+                 rendered="#{not empty changeRequestImpactSheet.content}" />
+
+
+</ui:composition>
+

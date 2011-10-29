@@ -1,0 +1,246 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.roles.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.roles.title']}" />
+
+<ui:define name="body">
+
+
+<h:form>
+
+
+  <rich:tabPanel switchType="client" >
+
+    <rich:tab id="tab1" label="Rollendaten">
+
+  <!--
+
+     so far there is only the role name to edit
+
+   -->
+  <br />
+  <!--  <h2><h:outputText value="#{messages['page.admin.role.name']}" /></h2> -->
+
+  <s:decorate id="nameProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsrole.name']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{charmsRole.name}"
+                  styleClass="inputtext">
+        <a4j:support event="onblur"
+                     ajaxSingle="true"
+                     reRender="nameProperty" />
+     </h:inputText>
+  </s:decorate>
+
+<!--  
+  <s:decorate id="organizationProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsrole.organizational']}" /></ui:define>
+     <h:selectBooleanCheckbox value="#{charmsRole.organizational}" styleClass="checkbox" />
+  </s:decorate>
+-->  
+    <s:decorate id="classificationProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['charmsrole.classification']}" /></ui:define>
+     <h:selectOneMenu value="#{charmsRole.classification}">
+              <s:selectItems var="classification"
+                             value="#{classificationSelects}"
+                             noSelectionLabel="#{messages['role.classification.noSelection']}"
+                             label="#{messages[classification.msgCode]}" />
+              <s:convertEnum/>
+     </h:selectOneMenu>
+  </s:decorate>
+  
+
+  <br />
+
+  <s:decorate id="descriptionField"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['charmsrole.description']}" /></ui:define>
+    <div style="display: table;">
+    <rich:editor value="#{charmsRole.description}"
+                 configuration="mcePropertyConfig"
+                 customPlugins="mcePlugins">
+       <f:param name="htmlcharcount_maxchars" value="2024" />
+       <f:param name="readonly" value="#{readonly?'true':'false'}" />
+       <!-- autoresize to show the full content on the page, htmlcharcount doesn't work with readonly  -->
+       <f:param name="plugins" value="#{readonly?'autoresize':'htmlcharcount, paste'}" />
+    </rich:editor>
+    </div>
+  </s:decorate>
+  
+  <br />
+  <br />
+  <br />
+  
+    </rich:tab>
+
+    <rich:tab id="tab2" label="Mitglieder">
+  
+
+  <br /> 
+  <!--  <h2><h:outputText value="#{messages['page.admin.role.roledata']}" /></h2> -->
+
+
+  <s:decorate id="usersProperty"
+              template="/layout/fragments/editshuttle.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['page.admin.role.members']}" /></ui:define>
+     <rich:listShuttle sourceValue="#{charmsRoleActionBean.availableUserItems}"
+                       targetValue="#{charmsRoleActionBean.selectedUserItems}"
+                       converter="#{charmsRoleActionBean.charmsUserIdItemConverter}"
+                       sourceRequired="false"
+                       targetRequired="false"
+                       sourceCaptionLabel="#{messages['page.admin.role.userdata.source']}"
+                       sourceListWidth="210"
+                       targetCaptionLabel="#{messages['page.admin.role.userdata.target']}"
+                       targetListWidth="210"
+                       orderControlsVisible="false"
+                       fastOrderControlsVisible="false"
+                       required="false"
+                       var="item">
+        <rich:column ><!--
+           <f:facet name="header">
+               <h:outputText value="Name" />
+           </f:facet> -->
+           <h:outputText value="#{item.label}" />
+        </rich:column>
+     </rich:listShuttle>
+  </s:decorate>
+  <br />
+
+  <!-- 
+  <br />
+    <div id="tree">
+    <ul>
+        <li id="node-identificator" rel="node-type">
+            <a href="#">Root node</a>
+            <ul>
+                <li id="node-identificator" rel="node-type"><a href="#">Child node1</a></li>
+                <li id="node-identificator" rel="node-type"><a href="#">Child node2</a></li>
+                <li id="node-identificator" rel="node-type"><a href="#">Child node3</a></li>
+                <li id="node-identificator" rel="node-type"><a href="#">Child node4</a></li>
+                <li id="node-identificator" rel="node-type"><a href="#">Child node5</a></li>
+                <li id="node-identificator" rel="node-type"><a href="#">Child node6</a></li>
+            </ul>
+        </li>
+    </ul>
+    </div>
+  <br />
+  -->
+
+    <script type="text/javascript">
+    <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+       jQuery(document).ready(function() {
+    	   jQuery("#tree").tree({
+    		// Data settings omitted
+    		      rules : {
+    		        multitree : true,
+    		        draggable : "all"
+    		      }
+
+    	   })
+       });
+    <h:outputText value="/* ]]> */" escape="false"/>
+    </script>
+
+ 
+  <br/>
+  <br/>
+  <br/>
+                     
+   </rich:tab>
+
+    <rich:tab id="tab3" label="enthaltene Rollen">
+        
+          <s:decorate id="rolesProperty"
+              template="/layout/fragments/editshuttle.xhtml" >
+     <ui:define name="label"><h:outputText value="#{messages['charmsrole.roles']}" /></ui:define>
+     <rich:listShuttle sourceValue="#{charmsRoleActionBean.availableRoleItems}"
+                       targetValue="#{charmsRoleActionBean.selectedRoleItems}"
+                       converter="#{charmsRoleActionBean.charmsRoleItemConverter}"
+                       sourceRequired="false"
+                       targetRequired="false"
+                       sourceCaptionLabel="#{messages['page.admin.role.roledata.source']}"
+                       sourceListWidth="210"
+                       targetCaptionLabel="#{messages['page.admin.role.roledata.target']}"
+                       targetListWidth="210"
+                       orderControlsVisible="false"
+                       fastOrderControlsVisible="false"
+                       required="false"
+                       var="item">
+        <rich:column >
+           <h:outputText value="#{item.label}" />
+        </rich:column>
+     </rich:listShuttle>
+  </s:decorate>
+        
+    </rich:tab>
+    
+   </rich:tabPanel>
+
+
+  <h:outputText value="#{messages['form.mandatory']}"
+                escape="false" />
+
+  <br/>
+  <br/>
+  <br/>
+
+
+
+        <div class="actionButtons">
+
+            <!-- persist for unmanaged bean -->
+            <h:commandButton styleClass="button"
+                             id="persist"
+                             value="#{messages['action.persist']}"
+                             action="#{charmsRoleActionBean.persist()}"
+                             rendered="#{not charmsRoleActionBean.managed}">
+               <f:param name="charmsRoleId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- update for managed bean -->
+            <h:commandButton styleClass="button"
+                             id="update"
+                             value="#{messages['action.update']}"
+                             action="#{charmsRoleActionBean.update()}"
+                             rendered="#{charmsRoleActionBean.managed}" >
+               <f:param name="charmsRoleId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- update for managed bean -->
+            <h:commandButton styleClass="button"
+                             id="remove"
+                             value="#{messages['action.remove']}"
+                             action="#{charmsRoleActionBean.remove()}"
+                             immediate="true"
+                             rendered="#{charmsRoleActionBean.managed}">
+              <f:param name="charmsRoleId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="cancel"
+                             value="#{messages['action.cancel']}"
+                             action="#{charmsRoleActionBean.cancel()}"
+                             immediate="true" >
+              <f:param name="charmsRoleId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+        </div>
+
+
+    </h:form>
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

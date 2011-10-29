@@ -1,0 +1,154 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
+
+   <h:form id="roleDlgForm">
+   
+       <h:inputText value="#{jbpmTransitionRoleTable.transitionName}"
+                    id="transitionName" 
+                    style="display: none;">
+          <a4j:support event="onchange"
+                       reRender="roleDlgTbl"
+                       ajaxSingle="true" />
+       </h:inputText>
+
+  <p:dialog header="Select Role"
+            widgetVar="roleDlg"
+            id="roleDlg"
+            width="250"
+            style="margin: 0px"
+            fixedCenter="true" >
+            
+    <rich:dataTable var="row"
+                    value="#{jbpmTransitionRoleTable.resultList}"
+                    width="100%"
+                    rowKeyVar="rowKey"
+                    columnsWidth="0*"
+                    id="roleDlgTbl">
+                    
+      <rich:column style="display: none;">
+        <span> 
+        <h:outputText value=" #{row.id} " escape="true" /> 
+        </span>
+      </rich:column>
+
+      <rich:column style="display: none;">
+        <span> <!--
+         <h:outputText value="&#160;" escape="false" /> -->
+         <h:outputText value=" #{row.actorId} " escape="true" /> <!--
+         <h:outputText value="&#160;" escape="false" /> -->
+        </span>
+      </rich:column>
+
+      <rich:column>
+        <span>
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{row.name} (#{row.userCount} Mitglieder)" escape="true" />
+         <h:outputText value="&#160;" escape="false" />
+        </span>
+      </rich:column>
+
+    <f:facet name="header">
+      <rich:columnGroup>
+        <rich:column  colspan="2">
+
+    <h:selectOneMenu value="#{jbpmTransitionRoleTable.maxResults}">
+      <a4j:support event="onchange"
+                   reRender="roleDlgTbl"
+                   ajaxSingle="true" />
+      <f:selectItems value="#{jbpmTransitionRoleTable.selectItems}"/>
+    </h:selectOneMenu>
+
+    <a4j:commandLink reRender="roleDlgTbl"
+                     ajaxSingle="true"
+                     rendered="#{jbpmTransitionRoleTable.previousExists}"
+                     action="#{jbpmTransitionRoleTable.first()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_first.png" title="First Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="roleDlgTbl"
+                     ajaxSingle="true"
+                     rendered="#{jbpmTransitionRoleTable.previousExists}"
+                     action="#{jbpmTransitionRoleTable.previous()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_previous.png" title="Previous Page" />
+    </a4j:commandLink>
+
+
+    <script type="text/javascript">
+    <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+       jQuery(document).ready(function() {
+         var id = "#" + roleDlg.id.replace(/:/g,"\\:") ;
+         jQuery(id + " table .filter").hint();
+         jQuery(id + " table").zebra("Update");
+         jQuery(id + " table tbody tr").mouseover(function() {
+             jQuery("tr.selected").removeClass("selected"); // Deselect currently selected rows
+             jQuery(this).addClass("selected");
+         });
+         jQuery(id + " table tbody tr").mouseout(function() {
+             jQuery(this).removeClass("selected"); // Deselect currently selected rows
+         });
+         jQuery(id + " table tbody tr").mouseup(function() {
+             // the (invisible) first column contains the id of the selected entity
+             var tds = jQuery(this).find("td");
+             var id = jQuery.trim(jQuery(tds[0]).text());
+             var actorId = jQuery.trim(jQuery(tds[1]).text());
+             var label = jQuery.trim(jQuery(tds[2]).text());
+             roleDlg.hide();
+             // do the callback
+             //eval (<h:outputText value="#{callback}" />)([id, label]);
+             eval (roleDlg.callback)(id, label, actorId);
+         });
+       });
+    <h:outputText value="/* ]]> */" escape="false"/>
+    </script>
+
+    <h:inputText size="10"
+                 value="#{jbpmTransitionRoleTable.fragment}"
+                 id="fr"
+                 styleClass="filter"
+                 title="#{messages['table.filter']}" >
+       <a4j:support event="onkeyup"
+                    reRender="roleDlgTbl"
+                    ajaxSingle="true"
+                    requestDelay="700"
+                    oncomplete="var id = '#' + roleDlg.id.replace(/:/g,'\\:') + ' table .filter';jQuery(id).caret(jQuery(id).val().length);" />
+    </h:inputText>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="roleDlgTbl"
+                     ajaxSingle="true"
+                     rendered="#{jbpmTransitionRoleTable.nextExists}"
+                     action="#{jbpmTransitionRoleTable.next()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_next.png" title="Next Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="roleDlgTbl"
+                     ajaxSingle="true"
+                     rendered="#{jbpmTransitionRoleTable.nextExists}"
+                     action="#{jbpmTransitionRoleTable.last()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_last.png" title="Last Page" />
+    </a4j:commandLink>
+
+      </rich:column>
+
+      </rich:columnGroup>
+
+      </f:facet>
+
+
+    </rich:dataTable>
+  </p:dialog>
+   </h:form>
+
+</ui:composition>

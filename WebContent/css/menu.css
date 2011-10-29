@@ -1,0 +1,101 @@
+/*
+    --------------------------------------------------------
+    this file contains the layout definition
+    for the menu
+    --------------------------------------------------------
+
+*/
+
+div.rich-page-sidebar {
+  overflow: hidden; /* prevent menuitems to overlap the main content pane in all browsers */
+}
+
+/*    ----==  common to all menu items ==----  */
+ul.menu0,
+ul.menu1,
+ul.menu2 {
+    margin: 0;
+    padding: 0;
+}
+
+ul.menu0 li,
+ul.menu1 li,
+ul.menu2 li {
+    list-style: none;
+    list-style-position: outside;
+}
+
+ul.menu0 li a,
+ul.menu0 li a:visited,
+ul.menu1 li a,
+ul.menu1 li a:visited,
+ul.menu2 li a,
+ul.menu2 li a:visited {
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    /* no linebreak, long text will be truncated */
+    white-space: nowrap;
+    border-bottom: 1px solid #ffffff;
+    color: #ffffff;
+    /* remove doted line on focus */
+    outline-color: -moz-use-text-color;
+    outline-style: none;
+    outline-decoration: none;
+}
+
+
+/*    ----==  menu level 0 ==----  */
+ul.menu0 li a,
+ul.menu0 li a.closed,
+ul.menu0 li a.open {
+    padding-left: 1em;
+    background-color: #1a3563;
+    line-height: 2em;
+}
+
+/*  focus sticks to the item, even if the mouse moves out:
+ul.menu0 li a:focus, */
+ul.menu0 li a:hover,
+ul.menu0 li a:active {
+    color: #1327b6;
+    background-color: #bbbbee;
+    outline: none;  /* this removes the doted line for clicked links in menu */
+}
+
+
+/*    ----==  menu level 1 ==----  */
+ul.menu1 li a,
+ul.menu1 li a.closed,
+ul.menu1 li a.open {
+    padding-left: 2em;
+    background-color: #5a75a3;
+    line-height: 2em;
+}
+
+/* ul.menu1 li a:focus */
+ul.menu1 li a:hover,
+ul.menu1 li a:active{
+    color: #1327b6;
+    background-color: #bbbbee;
+    outline: none;
+}
+
+
+/*    ----==  menu level 2 ==----  */
+ul.menu2 li a,
+ul.menu2 li a.closed,
+ul.menu2 li a.open {
+    padding-left: 3em;
+    background-color: #7a95c3;
+    line-height: 1.5em;  /* reduced line height */
+}
+
+/* ul.menu2 li a:focus */
+ul.menu2 li a:hover,
+ul.menu2 li a:active {
+    color: #1327b6;
+    background-color: #bbbbee;
+    outline: none;
+}
+

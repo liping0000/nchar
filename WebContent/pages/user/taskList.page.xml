@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+                        
+	login-required="true">
+
+	<description>page for viewing open tasks</description>
+
+    <!--  we need conversation for the table bean  -->
+	<begin-conversation join="true" flush-mode="manual" />
+    
+
+	<navigation>
+
+		<rule if-outcome="doTask">
+			<redirect view-id="#{jbpmDispatcher.doTask(param.taskDbid)}" 
+			          include-page-params="true" >
+			    <param name="taskDbid" value="#{param.taskDbid}" />			       
+			</redirect>  
+		</rule>
+		
+		<!--  implemented by the doTask method now
+        <rule if-outcome="takeAndDoTask">
+            <redirect view-id="#{jbpmDispatcher.takeAndDoTask(param.taskDbid)}" 
+                      include-page-params="true" >
+                <param name="taskDbid" value="#{param.taskDbid}" />      
+            </redirect>    
+        </rule>
+        -->
+
+		<rule if-outcome="viewTask">
+			<redirect view-id="#{jbpmDispatcher.viewTask(param.taskDbid)}" 
+			          include-page-params="true" >
+                <param name="taskDbid" value="#{param.taskDbid}" />      
+            </redirect>   
+		</rule>
+
+        <rule if-outcome="viewProcess">
+            <redirect view-id="#{jbpmDispatcher.viewProcess(param.procDbid)}" 
+                      include-page-params="true" >
+                <param name="procDbid" value="#{param.procDbid}" />      
+            </redirect>   
+        </rule>
+
+	</navigation>
+
+
+</page>

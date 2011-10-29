@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+
+  <!-- conversation for the form bean -->
+  <begin-conversation join="true" />
+
+  <description>page for editing permission properties</description>
+
+
+  <navigation>
+
+  <rule if-outcome="saved">
+     <end-conversation before-redirect="false"/> 
+     <!-- stay on the page  
+     <redirect view-id="/pages/user/home.xhtml"/> -->
+     <redirect view-id="/pages/user/preferences.xhtml"/>
+  </rule>
+
+  <rule if-outcome="canceled">
+     <end-conversation before-redirect="false"/>
+     <redirect view-id="/pages/user/home.xhtml" />
+  </rule>
+
+  <rule if-outcome="invalid">
+     <!-- stay on page, continue conversation -->
+     <redirect view-id="/pages/user/preferences.xhtml"/>
+  </rule>
+
+  </navigation>
+
+
+</page>

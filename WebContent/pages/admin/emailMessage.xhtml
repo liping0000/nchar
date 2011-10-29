@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.emailMessage.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.emailMessage.title']}" />
+
+<ui:define name="body">
+
+<table>
+
+ <tr>
+   <td>Sender:</td>
+   <td><h:outputText value="#{charmsEmailMessage.sender}" /></td>
+ </tr>
+
+ <tr>
+   <td>Receiver:</td>
+   <td><h:outputText value="#{charmsEmailMessage.receiver}" /></td>
+ </tr>
+
+
+ <tr>
+   <td>Subject:</td>
+   <td><h:outputText value="#{charmsEmailMessage.subject}" /></td>
+ </tr>
+
+ <tr>
+   <td>Created:</td>
+   <td><h:outputText value="#{charmsEmailMessage.create}" /></td>
+ </tr>
+
+ <tr>
+   <td>Sent:</td>
+   <td><h:outputText value="#{charmsEmailMessage.sent}" /></td>
+ </tr>
+
+ <tr>
+   <td>Body:</td>
+   <td></td>
+ </tr>
+
+ <tr>
+   <td colspan="2">
+     <pre>
+       <h:outputText value="#{charmsEmailMessage.content}" />
+     </pre>
+     <br/>
+     <br/>
+   </td>
+ </tr>
+</table>
+
+
+
+
+</ui:define>
+</ui:composition>

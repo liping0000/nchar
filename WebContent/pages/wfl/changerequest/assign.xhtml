@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.workflow.changerequest.assign.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.workflow.changerequest.assign.title']}" />
+
+<ui:define name="body">
+<h:form id="changeRequest"
+        enctype="multipart/form-data" >
+
+<ui:decorate template="fragments/tabpanel.xhtml">
+
+  <ui:decorate template="fragments/simpleLayout.xhtml">
+    <ui:include src="fragments/businessKey.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/project.xhtml" />
+    <ui:include src="fragments/componentIds.xhtml" />
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/references.xhtml" />
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/standard.xhtml" />
+    <ui:include src="fragments/goodwill.xhtml" />
+    <ui:include src="fragments/trackSelection.xhtml">
+      <ui:param name="readonly" value="false" />
+    </ui:include>
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/problem.xhtml" />
+    <ui:include src="fragments/proposal.xhtml" />
+  </ui:decorate>
+
+</ui:decorate>
+
+<br />
+
+  <div class="actionButtons">
+    <h:commandButton id="save"
+              styleClass="button"
+              value="#{messages['action.save']}"
+              onclick="jQuery.blockUI(); return true;"
+              action="#{changeRequestAction.save()}" /><!--
+              by default forward loops into the current task node which is a group assign here -->
+    <s:button styleClass="#{(processTaskTable.childCount > 0)?'buttonDisabled':'button'}"
+              value="#{messages['action.assign']}..."
+              action="return false;"
+              onclick="jQuery('.tabpanel').openFormPanel('toProcess'); return false;"
+              disabled="#{processTaskTable.childCount > 0}"
+              rendered="#{s:hasPermission('changerequest.assign','do')}" />
+    <s:button styleClass="button"
+              value="#{messages['action.forward']}..."
+              action="return false;"
+              onclick="jQuery('.tabpanel').openFormPanel('forward'); return false;" />
+    <s:button styleClass="button"
+              value="#{messages['action.review']}..."
+              action="return false;"
+              onclick="jQuery('.tabpanel').openFormPanel('review'); return false;"
+              rendered="#{s:hasPermission('changerequest.assign','review')}" />
+    <s:button styleClass="#{(processTaskTable.childCount > 0)?'buttonDisabled':'button'}"
+              value="#{messages['action.deny']}..."
+              action="return false;"
+              onclick="jQuery('.tabpanel').openFormPanel('toCancel1'); return false;"
+              disabled="#{processTaskTable.childCount > 0}"
+              rendered="#{s:hasPermission('changerequest.assign','toCancel1')}" />
+    <h:commandButton id="cancel"
+              styleClass="button"
+              value="#{messages['action.cancel']}"
+              onclick="jQuery.blockUI(); return true;"
+              action="#{changeRequestAction.cancel()}"
+              immediate="true" />
+  </div>
+
+
+<br />
+  <div class="tabpanel" id="tPanelId">
+  <h:inputText class="selectedPane" style="display: none;" value="#{transitionChoice.selected}" />
+
+   <ui:decorate template="fragments/transitionData.xhtml">
+     <!-- unique value used to trigger visibility of this facet, 
+          this must be also the name of the transition and of the hashKey for the transitionData variable -->
+     <ui:param name="transition" value="forward" /> 
+     <!--  text labels -->
+     <ui:param name="titleLabel" value="#{messages['page.workflow.changerequest.assign.forward.title']}" />
+     <ui:param name="selectLabel" value="#{messages['page.workflow.changerequest.assign.forward.select']}" />
+     <ui:param name="remarkLabel" value="#{messages['page.workflow.changerequest.assign.forward.remark']}" />
+     <!-- backend data obejcts and actions -->
+     <ui:param name="transitionData" value="#{transitionChoice.transitions['forward']}" />
+     <ui:param name="transitionAction" value="#{changeRequestAction}" />
+   </ui:decorate>
+
+   <ui:decorate template="fragments/transitionData.xhtml">
+     <!-- unique value used to trigger visibility of this facet, 
+          this must be also the name of the transition and of the hashKey for the transitionData variable -->
+     <ui:param name="transition" value="review" /> 
+     <!--  text labels -->
+     <ui:param name="titleLabel" value="#{messages['page.workflow.changerequest.assign.review.title']}" />
+     <ui:param name="selectLabel" value="#{messages['page.workflow.changerequest.assign.review.select']}" />
+     <ui:param name="remarkLabel" value="#{messages['page.workflow.changerequest.assign.review.remark']}" />
+     <ui:param name="dueDateLabel" value="#{messages['page.workflow.changerequest.assign.review.due']}" />
+     <ui:param name="remindDateLabel" value="#{messages['page.workflow.changerequest.assign.review.remind']}" />
+     <ui:param name="repeatLabel" value="#{messages['page.workflow.changerequest.assign.review.repeat']}" />
+     <!-- backend data obejcts and actions -->
+     <ui:param name="transitionData" value="#{transitionChoice.transitions['review']}" />
+     <ui:param name="transitionAction" value="#{changeRequestAction}" />
+   </ui:decorate>
+
+   <ui:decorate template="fragments/transitionData.xhtml">
+     <!-- unique value used to trigger visibility of this facet, 
+          this must be also the name of the transition and of the hashKey for the transitionData variable -->
+     <ui:param name="transition" value="toProcess" /> 
+     <!--  text labels -->
+     <ui:param name="titleLabel" value="#{messages['page.workflow.changerequest.assign.process.title']}" />
+     <ui:param name="selectLabel" value="#{messages['page.workflow.changerequest.assign.process.select']}" />
+     <ui:param name="remarkLabel" value="#{messages['page.workflow.changerequest.assign.process.remark']}" />
+     <!-- backend data obejcts and actions -->
+     <ui:param name="transitionData" value="#{transitionChoice.transitions['toProcess']}" />
+     <ui:param name="transitionAction" value="#{changeRequestAction}" />
+   </ui:decorate>
+
+   <ui:decorate template="fragments/transitionData.xhtml">
+     <!-- unique value used to trigger visibility of this facet, 
+          this must be also the name of the transition and of the hashKey for the transitionData variable -->
+     <ui:param name="transition" value="toCancel1" /> 
+     <!--  text labels -->
+     <ui:param name="titleLabel" value="#{messages['page.workflow.changerequest.assign.deny.title']}" />
+     <ui:param name="remarkLabel" value="#{messages['page.workflow.changerequest.assign.deny.remark']}" />
+     <!-- backend data obejcts and actions -->
+     <ui:param name="transitionData" value="#{transitionChoice.transitions['toCancel1']}" />
+     <ui:param name="transitionAction" value="#{changeRequestAction}" />
+   </ui:decorate>
+
+  </div>
+
+</h:form>
+
+<ui:decorate template="fragments/transitionSelectDialogs.xhtml" >
+   <ui:param name="transitionAction" value="#{changeRequestAction}" />
+</ui:decorate>
+<ui:include src="fragments/taskEditDialog.xhtml" />
+
+</ui:define>
+</ui:composition>

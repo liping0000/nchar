@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+
+  <description>assign a change request (TQM role)</description>
+  
+  <!-- FIXME: we need to get rid of the all joining conversation semantics... -->
+  <begin-conversation join="true" flush-mode="manual" />
+  
+  <action execute="#{changeRequestAction.setTaskDbid(param.taskDbid)}" 
+          on-postback="false" />
+
+
+  <navigation >
+        
+   <rule if-outcome="reviewDone">
+      <redirect>
+         <param name="taskDbid" value="#{changeRequestAction.taskDbid}"/>
+      </redirect>
+   </rule>
+    
+   <!-- assigning the request to a PE for processing --> 
+   <rule if-outcome="toProcessDone">
+      <end-conversation/>
+      <redirect view-id="/pages/user/taskList.xhtml" />
+   </rule>
+
+   <rule if-outcome="toCancel1Done">
+      <end-conversation/>
+      <redirect view-id="/pages/user/taskList.xhtml" />
+   </rule>
+
+
+
+       
+   <rule if-outcome="forwardDone">
+      <end-conversation/>
+      <redirect view-id="/pages/user/taskList.xhtml" />
+   </rule>
+
+   <rule if-outcome="canceled">
+      <end-conversation/>
+      <redirect view-id="/pages/user/taskList.xhtml" />
+   </rule>
+<!--  
+   <rule if-outcome="saved">
+      <end-conversation/>
+      <redirect view-id="/pages/user/taskList.xhtml" />
+   </rule>
+-->   
+   <rule if-outcome="saved">
+      <end-conversation />
+      <redirect view-id="/pages/user/taskList.xhtml" />
+   </rule>
+   
+   <rule if-outcome="invalid">
+      <redirect>
+         <param name="taskDbid" value="#{changeRequestAction.taskDbid}"/>
+      </redirect>
+   </rule>
+   
+   <rule if-outcome="unavailableTask">
+      <end-conversation/>
+      <redirect view-id="/pages/user/taskList.xhtml" />
+   </rule>
+
+  </navigation>
+
+
+
+</page>

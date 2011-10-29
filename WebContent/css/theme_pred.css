@@ -1,0 +1,71 @@
+/* ------------------  header section  ------------------- */
+div.rich-page-header {
+  background: #da1f48 url("img/pred_animation.gif") no-repeat;
+}
+
+span.userfullname {
+  position: absolute;
+  top: 40px;
+  left: 628px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+/* ----- fadeline is a header and footer separator ------- */
+div.fadeline {
+  font-size: 1px;
+  line-height: 1px;
+  clear: both;
+  height: 4px;
+  border: none;
+  background: #ffffff url("img/fadeline_pred.jpg") repeat-y;
+}
+
+/* ------------------  center section  ------------------- */
+div.rich-page-main {
+  background-color: #ffffff;
+  vertical-align: top;
+}
+/* the floating container with the menu */
+div.rich-page-sidebar {
+  background-color: #ffffff;
+  float: left;
+}
+/* the most tricky part of the layout */
+div.rich-page-main-content {
+  background-color: #dee2f2; /* needed for alignment in IE */
+  /* height:100%; gives us an additional 1px border on the left side */
+  padding-top: 1px;
+}
+div.rich-page-main-body {
+  padding-bottom: 0px;
+  padding-top: 1px;  /* needed for h1 content */
+  padding-left: 20px;
+  padding-right: 10px;
+  min-height: 400px;    /* hack for IE6, see: http://www.dustindiaz.com/min-height-fast-hack/ */
+  height: auto !important;
+  height: 400px;
+}
+
+/* ------------------  footer section  ------------------- */
+div.rich-page-footer {
+  /* position: absolute; */
+  /* bottom: 0; */
+  background-color: #ffffff; /* needed for alignment in IE */
+  width: 100%;
+  /* height: 30px;   height of the footer */
+  vertical-align: top;
+}
+div.rich-page-footer form img {
+  vertical-align: top;   /* align the flags and theme icons to the top */
+}
+div.rich-page-footer form {
+  vertical-align: top;
+  background-color: #ffffff; /* needed for alignment in IE */
+  padding: 0px;
+  border: 0px;
+  margin: 0px;
+}
+

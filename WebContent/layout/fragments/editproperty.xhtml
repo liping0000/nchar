@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:a4j="http://richfaces.org/a4j"><!--
+
+
+    using a label and some kind of input for property editing
+
+  --><div class="editproperty"><!--
+
+
+
+     the label
+
+     --><s:label styleClass="name #{invalid?'error':''}" ><!--
+         --><ui:insert name="label" /><s:span styleClass="required"
+                                              rendered="#{required}">*</s:span>:<!--
+     --></s:label><!--
+
+
+
+     the content
+
+     --><span class="value #{invalid?'error':''}"><!--
+         --><s:validateAll><!--
+            --><ui:insert /><!--
+         --></s:validateAll><!--
+     --></span><!--
+
+
+
+      some message when invalid...
+
+     --><s:span styleClass="error validationMsg"
+                rendered="#{invalid}"><!--
+         --><h:graphicImage value="/#{theme['iconset']}/error.png"
+                            styleClass="error" /><!--
+         --><s:message styleClass="error" /><!--
+      --></s:span><!--
+     -->
+    </div><!--
+
+
+--></ui:composition>

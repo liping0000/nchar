@@ -1,0 +1,346 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:rich="http://richfaces.org/rich" template="/#{theme['template']}">
+  <!--
+
+    see: http://docs.jboss.org/seam/1.1GA/reference/en/html/jbpm.html
+    for build in seam components for task handling
+
+     -->
+
+  <ui:param name="pageTitle" value="#{messages['page.user.tasks.title']}" />
+  <ui:param name="pageHeadline" value="#{messages['page.user.tasks.title']}" />
+
+  <ui:define name="body">
+
+
+
+    <a4j:form id="frm">
+
+      <!-- no rows are available -->
+      <h:outputText value="#{messages['page.user.tasks.noElementsFound']}"
+                    rendered="#{empty userTaskTable.resultList}" />
+
+      <!-- searchstring might be to specific -->
+      <h:outputText value="#{messages['page.user.tasks.checkFilterString']}"
+                    rendered="#{(not empty userTaskTable.fragment) &amp;&amp; (empty userTaskTable.resultList)}" />
+
+
+      <rich:dataTable id="tbl"
+                      var="row"
+                      value="#{userTaskTable.resultList}"
+                      width="90%"
+                      rowKeyVar="rowKey"
+                      columnsWidth="1%,20%,34%,5%,15%,15%,0*"
+                      columns="7">
+<!--
+FIXME:
+ - we can use the rowclick trigger for sorting:
+   onRowClick="return rowclick(this, event, #{row.dbid});"
+ - an empty table is not rendered correctly, the
+   borders are messed up
+
+  -->
+
+        <rich:column styleClass="indexcolumn">
+          <f:facet name="header">
+            <h:outputText value="#{messages['table.index']}" />
+          </f:facet>
+          <s:span>
+            <h:outputText value="&#160;" escape="false" />
+            <h:outputText value="#{userTaskTable.firstResult + rowKey + 1}" escape="true" />
+            <h:outputText value="&#160;" escape="false" />
+          </s:span>
+        </rich:column>
+
+        <rich:column headerClass="#{userTaskTable.getOrderForColumn('t.execution.key')}">
+          <f:facet name="header">
+            <a4j:commandLink reRender="frm"
+                             ajaxSingle="true"
+                             action="#{userTaskTable.toggleOrder('t.execution.key')}">
+              <h:outputText value="#{messages['processInstance.key']}" />
+            </a4j:commandLink>
+          </f:facet>
+          <span>
+            <h:outputText value="&#160;" escape="false" />
+            <h:outputText value="#{row.executionKey}" />
+            <h:outputText value="&#160;" escape="false" />
+          </span>
+        </rich:column>
+
+        <rich:column headerClass="#{userTaskTable.getOrderForColumn('d.title')}">
+          <f:facet name="header">
+            <a4j:commandLink reRender="frm"
+                             ajaxSingle="true"
+                             action="#{userTaskTable.toggleOrder('d.title')}">
+              <h:outputText value="#{messages['changeRequestDataBean.title']}" />
+            </a4j:commandLink>
+          </f:facet>
+          <span>
+            <h:outputText value="&#160;" escape="false" />
+            <h:outputText value="#{row.requestTitle}" />
+            <h:outputText value="&#160;" escape="false" /> </span>
+        </rich:column>
+
+
+        <rich:column headerClass="#{userTaskTable.getOrderForColumn('d.priority')}">
+          <f:facet name="header">
+            <a4j:commandLink reRender="frm"
+                             ajaxSingle="true"
+                             action="#{userTaskTable.toggleOrder('d.priority')}">
+              <h:outputText value="#{messages['changeRequestDataBean.priority']}" />
+            </a4j:commandLink>
+          </f:facet>
+          <span>
+            <h:outputText value="&#160;" escape="false" />
+            <h:outputText value="#{messages[row.priority.msgCode]}" rendered="#{not empty row.priority}" />
+            <h:outputText value="&#160;" escape="false" />
+          </span>
+        </rich:column>
+
+
+        <rich:column headerClass="#{userTaskTable.getOrderForColumn('t.createTime')}">
+          <f:facet name="header">
+            <a4j:commandLink reRender="frm"
+                             ajaxSingle="true"
+                             action="#{userTaskTable.toggleOrder('t.createTime')}">
+              <h:outputText value="#{messages['page.user.tasks.startDate']}" />
+            </a4j:commandLink>
+          </f:facet>
+          <span>
+            <h:outputText value="&#160;" escape="false" />
+            <h:outputText value="#{row.createTime}">
+              <s:convertDateTime type="both" timeStyle="short" />
+            </h:outputText>
+            <h:outputText value="&#160;" escape="false" />
+          </span>
+        </rich:column>
+
+        <rich:column>
+          <f:facet name="header">
+            <h:outputText value="#{messages['page.user.tasks.type']}" />
+          </f:facet>
+          <span>
+            <h:outputText value="&#160;" escape="false" />
+            <h:outputText value="#{messages[row.taskName]}" />
+            <h:outputText value="(#{row.count})" />
+            <h:outputText value="&#160;" escape="false" />
+          </span>
+        </rich:column>
+
+
+        <rich:column styleClass="actions">
+          <f:facet name="header">
+            <h:outputText value="#{messages['table.actions']}" />
+          </f:facet>
+          <!-- task already taken by the current actor, just continue working on it -->
+          <s:link rendered="#{not empty row.assignee}"
+                  action="doTask"
+                  title="#{messages['table.actions.do']}"
+                  propagation="none">
+            <!-- need "none" here since we start a new conversation for the task -->
+            <f:param name="taskDbid" value="#{row.dbid}" />
+            <h:graphicImage url="/#{theme['iconset']}/pencil_minus.png" border="0" rendered="#{row.count > 0}"/>
+            <h:graphicImage url="/#{theme['iconset']}/pencil_plus.png" border="0" rendered="#{row.count == 0}"/>
+          </s:link>
+          <!-- task not yet taken by the current actor, but the actor must be in
+               the group list task will be assigned to the current actor
+               changed from takeAndDoTask to doTask to simplify API -->
+          <s:link rendered="#{empty row.assignee}"
+                  action="doTask"
+                  title="#{messages['table.actions.takeAndDo']}"
+                  propagation="none">
+            <f:param name="taskDbid" value="#{row.dbid}" />
+            <h:graphicImage url="/#{theme['iconset']}/pencil.png" border="0" />
+          </s:link>
+          <!-- open a view for the process without taking/starting the task
+               rendered="#{row.assignee != actor.id}" -->
+          <s:link action="viewProcess"
+                  title="#{messages['table.actions.view']}"
+                  propagation="none">
+            <f:param name="procDbid" value="#{row.procDbid}" />
+            <h:graphicImage url="/#{theme['iconset']}/zoom.png" border="0" />
+          </s:link>
+        </rich:column>
+
+        <!--
+
+     footer row starts here
+
+    -->
+
+        <f:facet name="footer">
+          <rich:columnGroup>
+            <rich:column colspan="7">
+
+              <h:selectOneMenu value="#{userTaskTable.maxResults}">
+                <a4j:support event="onchange" reRender="frm" ajaxSingle="true" />
+                <f:selectItems value="#{userTaskTable.selectItems}" />
+              </h:selectOneMenu>
+
+              <a4j:commandLink reRender="frm"
+                               ajaxSingle="true"
+                               rendered="#{userTaskTable.previousExists}"
+                               action="#{userTaskTable.first()}">
+                <h:graphicImage value="/#{theme['iconset']}/resultset_first.png"
+                                title="First Page" />
+              </a4j:commandLink>
+
+              <span> </span>
+
+              <a4j:commandLink reRender="frm"
+                               ajaxSingle="true"
+                               rendered="#{userTaskTable.previousExists}"
+                               action="#{userTaskTable.previous()}">
+                <h:graphicImage value="/#{theme['iconset']}/resultset_previous.png"
+                                title="Previous Page" />
+              </a4j:commandLink>
+
+              <span> </span>
+
+
+ <script type="text/javascript">
+ <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+       jQuery(document).ready(function() {
+         jQuery('#frm\\:tbl\\:fr').hint();
+         jQuery('#frm\\:tbl').zebra("Update");
+       });
+ <h:outputText value="/* ]]> */" escape="false"/>
+ </script>
+
+              <h:inputText size="10"
+                           value="#{userTaskTable.fragment}"
+                           id="fr"
+                           styleClass="filter"
+                           title="#{messages['table.filter']}">
+                <a4j:support event="onkeyup"
+                             reRender="frm"
+                             ajaxSingle="true"
+                             requestDelay="700"
+                             oncomplete="jQuery('#frm\\:tbl\\:fr').caret(jQuery('#frm\\:tbl\\:fr').val().length);" />
+              </h:inputText>
+
+              <span> </span>
+
+              <a4j:commandLink reRender="frm"
+                               ajaxSingle="true"
+                               rendered="#{userTaskTable.nextExists}"
+                               action="#{userTaskTable.next()}">
+                <h:graphicImage value="/#{theme['iconset']}/resultset_next.png"
+                                title="Next Page" />
+              </a4j:commandLink>
+
+              <span> </span>
+
+              <a4j:commandLink reRender="frm"
+                               ajaxSingle="true"
+                               rendered="#{userTaskTable.nextExists}"
+                               action="#{userTaskTable.last()}">
+                <h:graphicImage value="/#{theme['iconset']}/resultset_last.png"
+                                title="Last Page" />
+              </a4j:commandLink>
+
+              <!-- a checkboxes for filtering -->
+
+              <h:selectBooleanCheckbox value="#{userTaskTable.showDraft}"
+                                       styleClass="checkbox">
+                <a4j:support event="onclick"
+                             reRender="frm"
+                             ajaxSingle="true" />
+              </h:selectBooleanCheckbox>
+              <h:outputText value="#{messages['changeRequestDataBean.draft']}" />
+
+              <span> </span>|<span> </span>
+
+              <h:outputText value="#{messages['changeRequestDataBean.awaitingFeedback']}: " />
+
+              <h:selectBooleanCheckbox value="#{userTaskTable.showBlocked}"
+                                       styleClass="checkbox">
+                <a4j:support event="onclick"
+                             reRender="frm"
+                             ajaxSingle="true" />
+              </h:selectBooleanCheckbox>
+              <h:outputText value="#{messages['changeRequestDataBean.blocked']}" />
+
+              <span> </span>
+
+              <h:selectBooleanCheckbox value="#{userTaskTable.showUnblocked}"
+                                       styleClass="checkbox">
+                <a4j:support event="onclick"
+                             reRender="frm"
+                             ajaxSingle="true" />
+              </h:selectBooleanCheckbox>
+              <h:outputText value="#{messages['changeRequestDataBean.unblocked']}" />
+
+            </rich:column>
+          </rich:columnGroup>
+        </f:facet>
+
+        <span> </span>
+
+      </rich:dataTable>
+
+
+    </a4j:form>
+
+
+    <br />
+    <br />
+
+       <script type="text/javascript">
+ <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+
+       function rowclick(that, event, itemId) {
+
+           var evt = jQuery(event);
+           var target = jQuery(event.target);
+           var td = target.closest("td");
+           var text = jQuery(td).text();
+           //var that = jQuery(this).html();
+
+           alert(" target: " + target + " event: " + event + " text: " + text + " that: " + that);
+
+
+           /*
+
+         alert("itemId: " + itemId
+                 + " event: " + jQuery(event)
+                 + " this: " + jQuery(this)
+                 + " event.target: " + jQuery(event.target));
+           */
+
+
+         return false;
+
+      /*
+           // check if we clicked inside a link, if so
+           // we return true and let the browser do its job
+           if (jQuery(event.target).parent("a").length) {
+               // do nothing let the signal bubble up
+               // alert("clicked inside a link");
+               return true;
+           } else {
+             jQuery(event.target)
+               .parent('tr')
+               .after('<tr><td>new row</td></tr>');
+
+               alert('clicked inside a row');
+
+               return false;
+           }
+           */
+       }
+
+   <h:outputText value="/* ]]> */" escape="false"/>
+   </script>
+
+
+  </ui:define>
+
+
+
+</ui:composition>

@@ -1,0 +1,394 @@
+
+
+/* table layout for forms, basically for the login form so far... */
+table.formlayout tbody td,
+table.formlayout tfoot td {
+  padding: 2px;
+}
+
+/* make the primefaces message box look better */
+.pf-messages-info,
+.pf-messages-warn,
+.pf-messages-error,
+.pf-messages-fatal {
+  padding-bottom: 20px;
+}
+
+/* turn the blockUI message into a throbber */
+div.throbber {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	background-image: url("../img/throbber03.gif");
+	height: 55px;
+	width: 55px;
+}
+
+/* FIXME: show the dateselector inside the dialog even if we have a overflow */
+.ui-dialog {
+    overflow: show !important;
+}
+
+/* reset the padding for the tinymce editor */
+table.mceToolbar tbody td {
+  padding: 0px;
+}
+
+/* table based form (login), there is also a style definition in the xcss file */
+input.inputtext,
+input.ui-autocomplete-input,
+input.rich-calendar-input {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  /* font-size: 11px; */
+  width: 180px;
+  float: left;  /* needed for the top/bottom margin removal */
+  /* clear: both; */
+  border: 1px solid #666666;
+  padding: 1px 2px 1px 2px;  /* inset for the containing text */
+}
+
+label {
+  float: left;
+  /* font-size: 11px; */
+  padding: 2px 8px 0px 0px;
+}
+// hiding table id columns for the user
+.hidden {
+  display: none;
+}
+
+
+
+/* ----- facets and tabs 
+  fixme: remove the *Facet stuff we use a second class now
+
+div.reviewFacet,
+div.reviewedFacet,
+div.handleFacet,
+div.handledFacet,
+div.processFacet,
+div.implementFacet,
+div.implementedFacet,
+div.denyFacet,
+div.finishFacet,
+div.forwardFacet,
+div.emailFacet,
+--- */
+
+div.tFacet {
+  display: none;
+  border: #ecf4fe 2px solid;
+  padding: 8px;
+}
+
+div.tab-container {
+  display: none;
+}
+
+
+/* ---------  jsf table properties ------------- */
+
+
+
+/* td for action buttons */
+td.actions {
+    background: #e0e0f0;
+    width: 80px;
+    white-space: nowrap; /* all icons in one line */
+}
+
+td.actions img {
+    vertical-align: top; /* no extra space on top of any a */
+}
+
+/* td for the index column */
+td.indexcolumn {
+    text-align: right;
+}
+
+
+/* richfaces tds */
+td.rich-table-cell {
+    padding: 1px;
+    border: 1px solid #a2a2a2;
+}
+
+/* richfaces table footer */
+th.rich-table-headercell,
+td.rich-table-footercell {
+    background: #e0e0f0;
+    padding: 1px;
+    border: 1px solid #a2a2a2;
+}
+
+/* richfaces table header */
+th.rich-table-subheadercell {
+    background: #e0e0f0;
+    padding: 1px;
+    border: 1px solid #a2a2a2;
+    color: #525252;
+    /*
+    border-collapse: separate;
+    border-bottom: 1px solid #c0c0c0;
+    border-right: 1px solid #c0c0c0;
+    */
+}
+
+/* richfaces table footer paging images */
+th.rich-table-headercell img,
+td.rich-table-footercell img {
+    vertical-align: top;
+}
+
+/* desc sorting table header */
+th.desc div {
+    background-image: url("img/sort_asc.png");
+    background-repeat: no-repeat;
+    color: #111111;
+}
+th.desc div a {
+    padding-left: 10px;
+    text-decoration: none;
+    color: #111111;
+}
+
+/* asc sorting table header */
+th.asc div {
+    background-image: url("img/sort_desc.png");
+    background-repeat: no-repeat;
+}
+th.asc div a {
+    padding-left: 10px;
+    text-decoration: none;
+    color: #111111;
+}
+
+/* sortable table header */
+th.srt div {
+    background-image: url("img/sort_both.png");
+    background-repeat: no-repeat;
+    color: #111111;
+}
+th.srt div a {
+    padding-left: 10px;
+    text-decoration: none;
+    color: #111111;
+}
+
+
+/* sorting table header */
+th.rich-table-subheadercell div a,
+th.rich-table-subheadercell div a:link,
+th.rich-table-subheadercell div a:visited,
+th.rich-table-subheadercell div a:hover,
+th.rich-table-subheadercell div a:active {
+    display: block;
+    text-decoration: none;
+    color: #111111;
+}
+
+table.rich-table {
+   width: 99%;  /* hack for IE6 the table slips under the menu otherwise */
+   border-width: 0 0 1px 1px;
+   /* no inter cell gaps */
+   border-spacing: 0;
+   border-collapse: collapse;
+   border-color: #600;
+   border-style: solid;
+}
+
+
+table.rich-table tbody tr.even {
+   background-color: #fefeff;
+}
+
+table.rich-table tbody tr.odd {
+   background-color: #eeeeef;
+}
+/* this color will take precedence,
+// see: http://www.evolt.org/ten-css-tricks-you-may-not-know  */
+table.rich-table tbody tr.selected {
+   background-color: #dddddd;
+}
+
+
+
+/* used for the login form */
+table.rsPanel td {
+  padding: 1px;
+  padding-bottom: 2px;
+}
+
+
+/* --- override the styles for the file upload rich component --- */
+
+/* to remove the scrollbar, the fileupload component uses harcoded styles
+   so we can't customize all here...  */
+.rich-fileupload-list-overflow {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* to remove the clear button */
+.rich-fileupload-ico-clear {
+  display: none;
+}
+
+
+
+
+/* error messages look like this
+<ul class="messages">
+  <li class="error"> Please provide a Username </li>
+  <li class="error"> Please provide a Password </li>
+</ul>
+*/
+ul.messages {
+  padding-left: 0px;
+  padding-bottom: 6px;
+  padding-top: 6px;
+}
+
+ul.messages li {
+  background: no-repeat left center;
+  padding-top: 1px;
+  padding-left: 20px;
+  margin-left: 3px;
+  list-style: none;
+  font-size: 108%;
+}
+
+ul.messages li {
+  font-weight: bold;
+}
+
+ul.messages li.fatal {
+  background-image: url(img/fatal.png);
+  color: #ff0000;
+}
+
+ul.messages li.error {
+  background-image: url(img/error.png);
+  color: #ff0000;
+}
+
+ul.messages li.warn {
+  background-image: url(img/warn.png);
+  color: #992222;
+}
+
+ul.messages li.info {
+  background-image: url(img/info.png);
+  color: #222222;
+}
+
+
+
+.validationMsg {
+   position: absolute;
+   padding: 5px 6px;
+   z-index: 2;
+   color: #303030;
+   background-color: #f5f5b5;
+   border: 1px solid #DECA7E;
+   opacity:0.8;    /* see: http://www.unintentionallyblank.co.uk/2007/05/07/cross-browser-background-transparency-with-css/ */
+   filter:alpha(opacity=80);
+   text-align: center;
+   color: #000000;
+   font-weight: bold;
+}
+.validationMsg img {
+   opacity: 1;
+   filter:alpha(opacity=100);
+}
+
+
+/* Basic Terminal CSS */
+.wterm_terminal {  background: #000; color: #fff; font-size: 1em; font-family: monospace; padding: 3px; width: 100%; height: 100%; display: block; overflow-x: none; overflow-y: auto;  }
+
+/* TODO: Input Box Width is faulty */
+.wterm_terminal input { background: transparent; border: 0; color: #fff; width: 100%; font-size: 1em; font-family: monospace; outline: none;   }
+.wterm_terminal div:first { margin-bottom: 1em; }
+.wterm_terminal .wterm_prompt { float: left; clear: left;  }
+.wterm_terminal  form { float: left; margin: 0px; width: 75%; }
+
+/* Themes */
+.wterm_theme_green_on_black { font-family: monospace; background: #000; color: #0f0; }
+.wterm_theme_green_on_black div { font-family: monospace; background: #000; color: #0f0; }
+.wterm_theme_green_on_black input { font-family: monospace; background: transparent; border: 0; color: #0f0; }
+
+
+/*
+make the rich-page-main div include all the content even the floated
+menu div, see: http://www.quirksmode.org/css/clearing.html */
+div.rich-page-main {
+  overflow: auto;
+  width: 100%;
+}
+
+
+
+/* TREE LAYOUT */
+.tree ul { margin:0 0 0 5px; padding:0 0 0 0; list-style-type:none; }
+.tree li { display:block; min-height:18px; line-height:18px; padding:0 0 0 15px; margin:0 0 0 0; /* Background fix */ clear:both; _height:18px; #height:auto; }
+.tree li ul { display:none; }
+.tree li a, .tree li span { display:inline-block;line-height:16px;height:16px;color:black;white-space:nowrap;text-decoration:none;padding:1px 4px 1px 1px;margin:0; }
+.tree li a:focus { outline: none; }
+.tree li a input, .tree li span input { margin:0;padding:0 0;display:inline-block;height:12px !important;border:1px solid white;background:white;font-size:10px;font-family:Verdana; }
+.tree li a input:not([class="xxx"]), .tree li span input:not([class="xxx"]) { padding:1px 0; }
+/* FOR DOTS */
+.tree .ltr li.last { float:left; }
+.tree .rtl li.last { float:right; #float:none; _float:right; }
+.tree > ul li.last { overflow:visible; }
+/* OPEN OR CLOSE */
+.tree li.open ul { display:block; }
+.tree li.closed ul { display:none !important; }
+/* FOR DRAGGING */
+#jstree-dragged { position:absolute; top:-10px; left:-10px; margin:0; padding:0; }
+#jstree-dragged .rtl { _width:20px; #width:200px; margin:0; padding:0;}
+#jstree-dragged ul ul ul { display:none; }
+
+/* RTL modification */
+.tree .rtl, .tree .rtl ul { margin:0 5px 0 0; }
+.tree .rtl li { padding:0 15px 0 0; }
+.tree .rtl li a, .tree .rtl li span { padding:1px 1px 1px 4px; }
+
+/* CONTEXT MENU */
+.tree-context { display:none; position:absolute; list-style-type:none; margin:0; padding:0; left:-2000px; top:-2000px; }
+.tree-context .separator { display:none; }
+.tree-context a { display:block; margin:0; padding:0; }
+
+/** FIREFOX2 fix **/
+.tree .ltr li a, x:-moz-any-link { display:inline; float:left; }
+.tree .rtl li a, x:-moz-any-link { display:inline; float:right; }
+.tree li ul, x:-moz-any-link { clear:both; }
+/** FIREFOX3 restore **/
+.tree .ltr li a, .tree .rtl li a, x:-moz-any-link, x:default { display:inline-block; float:none; }
+.tree li ul, x:-moz-any-link, x:default { clear:none; }
+/** IE7 Restore **/
+.tree .ltr li a, .tree .rtl li a { #display:inline-block; #float:none; }
+.tree li ul { #clear:none; }
+
+.tree li { _width:1px; }
+.tree li li { overflow:hidden; #overflow:visible; _overflow:visible; }
+
+.tree > .ltr > li { display:table; }
+.tree > .rtl > li { display:table; }
+
+
+/* EXPLORER 6 and 7 fix for 2px whitespace */
+.tree .ltr li.last { #margin-top: expression( (this.previousSibling && /open/.test(this.previousSibling.className) ) ? "-2px" : "0"); _margin-top: expression( (this.previousSibling && /open/.test(this.previousSibling.className) ) ? "-2px" : "0"); }
+.tree .rtl li.last { _margin-top: expression( (this.previousSibling && /open/.test(this.previousSibling.className) ) ? "-2px" : "0"); }
+
+/* OPERA SCROLLBAR ISSUE */
+@media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0) {
+    head~body .tree > ul > li.last > ul { margin-bottom:36px; }
+    .tree li li { overflow:visible; }
+}
+
+/*
+FIREFOX FIX
+@-moz-document url-prefix() {}
+*/

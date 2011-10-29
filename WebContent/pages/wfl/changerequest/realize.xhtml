@@ -1,0 +1,230 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.workflow.changerequest.realize.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.workflow.changerequest.realize.title']}" />
+
+<ui:define name="body">
+<h:form id="changeRequest"
+        enctype="multipart/form-data" >
+
+<ui:decorate template="fragments/tabpanel.xhtml">
+
+  <ui:decorate template="fragments/simpleLayout.xhtml">
+    <ui:include src="fragments/priority.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/businessKey.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/project.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/componentIds.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/references.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/standard.xhtml">
+      <ui:param name="readonly" value="false" />
+    </ui:include>
+    <ui:include src="fragments/goodwill.xhtml">
+      <ui:param name="readonly" value="false" />
+    </ui:include>
+    <ui:include src="fragments/costCheck.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/trackSelection.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/problem.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/proposal.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/history.xhtml">
+      <ui:param name="readonly" value="false" />
+    </ui:include>
+  </ui:decorate>
+
+</ui:decorate>
+
+
+<br />
+
+  <div class="actionButtons">
+    <h:commandButton id="save"
+              styleClass="button"
+              value="#{messages['action.save']}"
+              onclick="jQuery.blockUI();return true;"
+              action="#{changeRequestAction.save()}" />
+    <p:tooltip for="save" showDelay="1000" value="#{messages['page.workflow.changerequest.realize.save.tooltip']}" />   
+    <s:button id="implement"
+              styleClass="button"
+              value="#{messages['action.implement']}..."
+              onclick="jQuery('.tabpanel').openFormPanel('implement'); return false;"
+              action="return false;"
+              rendered="#{s:hasPermission('changerequest.realize','implement')}" />
+    <p:tooltip for="implement" showDelay="1000" value="#{messages['page.workflow.changerequest.realize.implement.tooltip']}" />   
+    <s:button id="handle"
+              styleClass="button"
+              value="#{messages['action.handle']}..."
+              onclick="jQuery('.tabpanel').openFormPanel('handle'); return false;"
+              action="return false;"
+              rendered="#{s:hasPermission('changerequest.realize','handle')}" /> 
+    <p:tooltip for="handle" showDelay="1000" value="#{messages['page.workflow.changerequest.realize.handle.tooltip']}" />   
+    <s:button id="transfer"
+              styleClass="button"
+              value="#{messages['action.transfer']}..."
+              onclick="jQuery('.tabpanel').openFormPanel('transfer'); return false;"
+              action="return false;"
+              rendered="#{s:hasPermission('changerequest.realize','transfer')}" />
+    <p:tooltip for="transfer" showDelay="1000" value="#{messages['page.workflow.changerequest.realize.transfer.tooltip']}" />   
+    <s:button id="forward"
+              styleClass="button"
+              value="#{messages['action.forward']}..."
+              onclick="jQuery('.tabpanel').openFormPanel('forward'); return false;"
+              action="return false;"
+              rendered="#{s:hasPermission('changerequest.realize','forward')}" />
+    <p:tooltip for="forward" showDelay="1000" value="#{messages['page.workflow.changerequest.realize.forward.tooltip']}" />
+    <s:button id="review"
+              styleClass="button"
+              value="#{messages['action.review']}..."
+              onclick="jQuery('.tabpanel').openFormPanel('review'); return false;"
+              action="return false;"
+              rendered="#{s:hasPermission('changerequest.realize','review')}" />
+    <p:tooltip for="review" showDelay="1000" value="#{messages['page.workflow.changerequest.realize.review.tooltip']}" />
+    <s:button id="finish"
+              styleClass="#{(processTaskTable.childCount > 0)?'buttonDisabled':'button'}"
+              value="#{messages['action.finish']}..."
+              onclick="jQuery('.tabpanel').openFormPanel('toFinish'); return false;"
+              action="return false;"
+              disabled="#{processTaskTable.childCount > 0}"
+              rendered="#{s:hasPermission('changerequest.realize','toFinish')}" />
+    <p:tooltip for="finish" showDelay="1000" value="#{messages['page.workflow.changerequest.realize.finish.tooltip']}" />
+    <h:commandButton id="cancel"
+              styleClass="button"
+              value="#{messages['action.cancel']}"
+              onclick="jQuery.blockUI();return true;"
+              action="#{changeRequestAction.cancel()}"
+              immediate="true" />
+    <p:tooltip for="cancel" showDelay="1000" value="#{messages['page.workflow.changerequest.realize.cancel.tooltip']}" />
+  </div>
+
+<br />
+  <div class="tabpanel" id="tPanelId">
+  <h:inputText class="selectedPane" style="display: none;" value="#{transitionChoice.selected}" />
+
+   <ui:decorate template="fragments/transitionData.xhtml">
+     <!-- unique value used to trigger visibility of this facet, 
+          this must be also the name of the transition and of the hashKey for the transitionData variable -->
+     <ui:param name="transition" value="forward" /> 
+     <!--  text labels -->
+     <ui:param name="titleLabel" value="#{messages['page.workflow.changerequest.realize.forward.title']}" />
+     <ui:param name="selectLabel" value="#{messages['page.workflow.changerequest.realize.forward.select']}" />
+     <ui:param name="remarkLabel" value="#{messages['page.workflow.changerequest.realize.forward.remark']}" />
+     <!-- backend data obejcts and actions -->
+     <ui:param name="transitionData" value="#{transitionChoice.transitions['forward']}" />
+     <ui:param name="transitionAction" value="#{changeRequestAction}" />
+   </ui:decorate>
+
+   <ui:decorate template="fragments/transitionData.xhtml">
+     <!-- unique value used to trigger visibility of this facet, 
+          this must be also the name of the transition and of the hashKey for the transitionData variable -->
+     <ui:param name="transition" value="transfer" /> 
+     <!--  text labels -->
+     <ui:param name="titleLabel" value="#{messages['page.workflow.changerequest.realize.transfer.title']}" />
+     <ui:param name="selectLabel" value="#{messages['page.workflow.changerequest.realize.transfer.select']}" />
+     <ui:param name="remarkLabel" value="#{messages['page.workflow.changerequest.realize.transfer.remark']}" />
+     <!-- backend data obejcts and actions -->
+     <ui:param name="transitionData" value="#{transitionChoice.transitions['transfer']}" />
+     <ui:param name="transitionAction" value="#{changeRequestAction}" />
+   </ui:decorate>
+
+   <ui:decorate template="fragments/transitionData.xhtml">
+     <!-- unique value used to trigger visibility of this facet, 
+          this must be also the name of the transition and of the hashKey for the transitionData variable -->
+     <ui:param name="transition" value="implement" /> 
+     <!--  text labels -->
+     <ui:param name="titleLabel" value="#{messages['page.workflow.changerequest.realize.implement.title']}" />
+     <ui:param name="selectLabel" value="#{messages['page.workflow.changerequest.realize.implement.select']}" />
+     <ui:param name="remarkLabel" value="#{messages['page.workflow.changerequest.realize.implement.remark']}" />
+     <ui:param name="dueDateLabel" value="#{messages['page.workflow.changerequest.realize.implement.due']}" />
+     <ui:param name="remindDateLabel" value="#{messages['page.workflow.changerequest.realize.implement.remind']}" />
+     <ui:param name="repeatLabel" value="#{messages['page.workflow.changerequest.realize.implement.repeat']}" />
+     <!-- backend data obejcts and actions -->
+     <ui:param name="transitionData" value="#{transitionChoice.transitions['implement']}" />
+     <ui:param name="transitionAction" value="#{changeRequestAction}" />
+   </ui:decorate>
+
+   <ui:decorate template="fragments/transitionData.xhtml">
+     <!-- unique value used to trigger visibility of this facet, 
+          this must be also the name of the transition and of the hashKey for the transitionData variable -->
+     <ui:param name="transition" value="handle" /> 
+     <!--  text labels -->
+     <ui:param name="titleLabel" value="#{messages['page.workflow.changerequest.realize.handle.title']}" />
+     <ui:param name="selectLabel" value="#{messages['page.workflow.changerequest.realize.handle.select']}" />
+     <ui:param name="remarkLabel" value="#{messages['page.workflow.changerequest.realize.handle.remark']}" />
+     <ui:param name="dueDateLabel" value="#{messages['page.workflow.changerequest.realize.handle.due']}" />
+     <ui:param name="remindDateLabel" value="#{messages['page.workflow.changerequest.realize.handle.remind']}" />
+     <ui:param name="repeatLabel" value="#{messages['page.workflow.changerequest.realize.handle.repeat']}" />
+     <!-- backend data obejcts and actions -->
+     <ui:param name="transitionData" value="#{transitionChoice.transitions['handle']}" />
+     <ui:param name="transitionAction" value="#{changeRequestAction}" />
+   </ui:decorate>
+
+   <ui:decorate template="fragments/transitionData.xhtml">
+     <!-- unique value used to trigger visibility of this facet, 
+          this must be also the name of the transition and of the hashKey for the transitionData variable -->
+     <ui:param name="transition" value="toFinish" /> 
+     <!--  text labels -->
+     <ui:param name="titleLabel" value="#{messages['page.workflow.changerequest.realize.finish.title']}" />
+     <ui:param name="remarkLabel" value="#{messages['page.workflow.changerequest.realize.finish.remark']}" />
+     <!-- backend data obejcts and actions -->
+     <ui:param name="transitionData" value="#{transitionChoice.transitions['toFinish']}" />
+     <ui:param name="transitionAction" value="#{changeRequestAction}" />
+   </ui:decorate>
+
+   <ui:decorate template="fragments/transitionData.xhtml">
+     <!-- unique value used to trigger visibility of this facet, 
+          this must be also the name of the transition and of the hashKey for the transitionData variable -->
+     <ui:param name="transition" value="review" /> 
+     <!--  text labels -->
+     <ui:param name="titleLabel" value="#{messages['page.workflow.changerequest.realize.review.title']}" />
+     <ui:param name="selectLabel" value="#{messages['page.workflow.changerequest.realize.review.select']}" />
+     <ui:param name="remarkLabel" value="#{messages['page.workflow.changerequest.realize.review.remark']}" />
+     <ui:param name="dueDateLabel" value="#{messages['page.workflow.changerequest.realize.review.due']}" />
+     <ui:param name="remindDateLabel" value="#{messages['page.workflow.changerequest.realize.review.remind']}" />
+     <ui:param name="repeatLabel" value="#{messages['page.workflow.changerequest.realize.review.repeat']}" />
+     <!-- backend data obejcts and actions -->
+     <ui:param name="transitionData" value="#{transitionChoice.transitions['review']}" />
+     <ui:param name="transitionAction" value="#{changeRequestAction}" />
+   </ui:decorate>
+
+  </div>
+
+</h:form>
+
+<ui:decorate template="fragments/transitionSelectDialogs.xhtml" >
+   <ui:param name="transitionAction" value="#{changeRequestAction}" />
+</ui:decorate>
+<ui:include src="fragments/taskEditDialog.xhtml" />
+
+</ui:define>
+</ui:composition>

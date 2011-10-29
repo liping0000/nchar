@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:p="http://primefaces.prime.com.tr/ui"
+  xmlns:a4j="http://richfaces.org/a4j"><!--
+
+  moduleIdNumber \n itemIdNumber, customerName
+
+   -->
+
+<tr>
+  <td>
+    <s:decorate id="moduleIdNumber"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.moduleIdNumber']}" /></ui:define>
+      <h:inputText id="i"
+                   value="#{changeRequestData.moduleIdNumber}"
+                   readonly="#{readonly?'true':'false'}"
+                   styleClass="#{readonly?'inputtext readonly':'inputtext'}">
+        <a4j:support event="onblur"
+                     ajaxSingle="true"
+                     reRender="moduleIdNumber" />
+      </h:inputText>
+  </s:decorate>
+  </td>
+  <td>
+    <!-- empty space here -->
+  </td>
+</tr>
+<tr>
+  <td>
+    <s:decorate id="itemIdNumberProperty"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.itemIdNumber']}" /></ui:define>
+      <h:inputText id="i"
+                   value="#{changeRequestData.itemIdNumber}"
+                   readonly="#{readonly?'true':'false'}"
+                   styleClass="#{readonly?'inputtext readonly':'inputtext'}"
+                   required="true"
+                   requiredMessage="#{messages['changeRequestDataBean.itemIdNumber.requiredMessage']}" >
+        <a4j:support event="onblur"
+                     ajaxSingle="true"
+                     reRender="itemIdNumberProperty" />
+      </h:inputText>
+    </s:decorate>
+  </td>
+  <td>
+    <s:decorate id="customerNameProperty"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="#{messages['changeRequestDataBean.customerName']}" /></ui:define>
+      <h:inputText id="i"
+                   value="#{changeRequestData.customerName}"
+                   readonly="true"
+                   styleClass="inputtext readonly"
+                   rendered="#{readonly}" >
+        <a4j:support event="onblur"
+                     ajaxSingle="true"
+                     reRender="customerNameProperty" />
+      </h:inputText>
+      <p:autoComplete id="j"
+                      value="#{changeRequestData.customerName}"   
+                      completeMethod="#{changeRequestDataCompleter.completeCustomerName}" 
+                      rendered="#{not readonly}" />        
+    </s:decorate>
+  </td>
+</tr>
+
+</ui:composition>

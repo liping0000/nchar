@@ -1,0 +1,129 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.workflow.changerequest.home.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.workflow.changerequest.home.title']} #{changeRequestData.titleString}" />
+
+<ui:define name="body">
+<h:form id="changeRequest"
+        enctype="multipart/form-data" >
+
+<ui:decorate template="fragments/tabpanel.xhtml">
+
+  <ui:decorate template="fragments/simpleLayout.xhtml">
+    <ui:include src="fragments/priority.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/businessKey.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/project.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/componentIds.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/references.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/standard.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/goodwill.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/costCheck.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/trackSelection.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+
+    <ui:include src="fragments/spacer.xhtml" />
+    <ui:include src="fragments/problem.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/proposal.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+    <ui:include src="fragments/conclusion.xhtml">
+      <ui:param name="readonly" value="true" />
+    </ui:include>
+  </ui:decorate>
+
+</ui:decorate>
+
+<rich:spacer width="1" height="50" />
+
+    <!-- this list only shows tasks that can be performed by the current user... -->
+
+    <rich:dataTable id="ttbl"
+                    var="row"
+                    value="#{processTaskTable.userTaskList}"
+                    width="100%"
+                    rowKeyVar="rowKey"
+                    columnsWidth="40%,60%,0*" 
+                    rendered="#{not empty processTaskTable.userTaskList}">
+
+            <rich:column>
+              <f:facet name="header"><h:outputText value="#{messages['taskInstances.name']}" /></f:facet>
+              <span>
+                 <h:outputText value="&#160;" escape="false" />
+                 <h:outputText value="#{messages[row.taskName]}" />
+                 <h:outputText value="&#160;" escape="false" />
+              </span>
+            </rich:column>
+
+            <rich:column>
+              <f:facet name="header">Bemerkung</f:facet>
+              <span>
+                 <h:outputText value="&#160;" escape="false" />
+                 <h:outputText value=" Beendet am " rendered="#{not empty row.endTime}" />
+                 <h:outputText value="#{row.endTime}" rendered="#{not empty row.endTime}">
+                   <s:convertDateTime type="both" timeStyle="short"/>
+                 </h:outputText>
+                 <h:outputText value="&#160;" escape="false" />
+              </span>
+            </rich:column>
+
+            <!-- the action button for taking/doing the task -->
+            <rich:column styleClass="actions">
+            <f:facet name="header"><h:outputText value="#{messages['table.actions']}"/></f:facet>
+               <s:link action="doTask"
+                       title="#{messages['table.actions.takeAndDo']}"
+                       propagation="none">
+                  <f:param name="taskDbid" value="#{row.dbid}"/>
+                  <h:graphicImage url="/#{theme['iconset']}/pencil.png" border="0"/></s:link>
+            </rich:column>
+
+
+          </rich:dataTable>
+
+  <br/>
+
+  <div class="actionButtons">
+    <h:commandButton id="save"
+              styleClass="button"
+              value="#{messages['action.save']}"
+              onclick="jQuery.blockUI();return true;"
+              action="save" >
+       <f:param name="procDbid" value="#{param.procDbid}"/>
+    </h:commandButton>
+
+  </div>
+
+</h:form>
+
+</ui:define>
+</ui:composition>

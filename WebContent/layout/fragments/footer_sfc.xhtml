@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:s="http://jboss.com/products/seam/taglib"><!--
+
+
+
+for the region see: 
+http://seamframework.org/Community/ValueNotValidError 
+
+-->
+
+
+<div class="fadeline"><h:graphicImage value="/img/pixel.gif"
+                                         alt=""
+                                         height="1" width="1" /></div><!--
+
+
+--><div id="footer"><a4j:region >
+<!--
+
+
+    build string
+--><span id="builddate">
+    <h:outputText value="20101130" />
+   </span> <!--   tooltip offline for now
+   <rich:toolTip for="builddate" showDelay="1000">
+     <b>Änderungen:</b>
+     <ul>
+       <li><h:outputText value="verbesserte Suche" /></li>
+     </ul>
+   </rich:toolTip>  -->
+   <!--
+
+    --><a4j:form id="x" ><!--
+
+          locale select:
+          see: http://www.jboss.com/index.html?module=bb&op=viewtopic&p=4066544 for a discussion
+               https://jira.jboss.org/jira/browse/JBSEAM-1711?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+    --><ui:repeat var="l" value="#{localeSelector.supportedLocaleIds}">
+         <h:commandLink action="#{localeSelector.selectLocaleId(l)}">
+           <h:graphicImage url="/img/locales/locale_#{l}.gif" />
+         </h:commandLink>
+         <span><h:outputText value="&#160;" escape="false" /></span>
+       </ui:repeat><!--
+
+          theme select:
+    --><ui:repeat var="t" value="#{themeSelector.supportedThemeIds}">
+         <h:commandLink action="#{themeSelector.selectThemeId(t)}">
+           <h:graphicImage url="/img/themes/theme_#{t}.gif" />
+         </h:commandLink>
+         <span><h:outputText value="&#160;" escape="false" /></span>
+       </ui:repeat><!--
+
+
+          ajax loader indicator:
+           startText="Progress" stopText="Done" />
+
+    --><a4j:status>
+         <f:facet name="start">
+           <h:graphicImage  value="/img/statusStart.gif" />
+         </f:facet>
+         <f:facet name="stop">
+           <h:graphicImage  value="/img/statusStop.gif" />
+         </f:facet>
+       </a4j:status>
+       <span><h:outputText value="&#160;" escape="false" /></span><!--
+
+         current server time, interval is in ms
+
+see: http://www.jboss.org/index.html?module=bb&op=viewtopic&t=103909
+     http://www.javabeat.net/articles/19-introduction-to-ajax4jsf-2.html
+     EEEE, dd MMMM yyyy, HH:mm, zzzz
+
+      --><h:outputText id="y" value="#{timeBean.date}">
+            <s:convertDateTime pattern="EEEE, dd MMMM yyyy, HH:mm" />
+         </h:outputText><!--
+
+    --></a4j:form><!--
+
+        the poller:
+        FIXME: we redender 90% before the session timeout to stay alive
+        #{(facesContext.externalContext.request.session.maxInactiveInterval * 1000 * 10) / 9}
+
+        we have a less than 4 minutes poll interval here
+        FIXME: try the primefaces poll here
+    --><a4j:form id="z">
+         <a4j:poll interval="100000"
+                   enabled="true"
+                   reRender="y"
+                   eventsQueue="org.richfaces.global_queue"
+                   bypassUpdates="true"
+                   ajaxSingle="true"
+                   limitToList="true" >
+         </a4j:poll>
+       </a4j:form><!--
+
+
+
+
+--></a4j:region></div>
+</ui:composition><!--
+
+
+see: http://docs.jboss.org/seam/latest/reference/en-US/html/conversations.html#d0e6372
+-->

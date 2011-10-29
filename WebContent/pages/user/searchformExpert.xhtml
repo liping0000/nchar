@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+            <a4j:outputPanel ajaxRendered="true"
+                             layout="block"
+                             style="padding: 3px;"
+                             rendered="#{searchActionBean.expertSearch}">
+
+            <h:dataTable var="formField"
+                         value="#{searchActionBean.formFields}"
+                         rowKeyVar="rowKey">
+
+              <h:column>
+                <h:selectOneMenu value="#{formField.selectedQueryId}"
+                                 styleClass="inputselect">
+                  <s:selectItems value="#{searchActionBean.formQueries}"
+                                 var="query"
+                                 label="#{messages[query.msgCode]}"
+                                 itemValue="#{query.id}"
+                                 noSelectionLabel="-- please select --">
+                  </s:selectItems>
+                </h:selectOneMenu>
+              </h:column>
+
+              <h:column>
+                <h:inputText value="#{formField.value1}" styleClass="inputtext" />
+              </h:column>
+
+            </h:dataTable>
+
+            <a4j:commandLink id="add"
+                             action="#{searchActionBean.addField()}"
+                             style="padding-left: 5px;"
+                             ajaxSingle="false"
+                             reRender="searchform"><h:graphicImage url="/#{theme['iconset']}/seam_add.png"
+                                                                   border="0"/></a4j:commandLink>
+            <a4j:commandLink id="sub"
+                             action="#{searchActionBean.subField()}"
+                             ajaxSingle="false"
+                             style="padding-left: 5px;"
+                             reRender="searchform"><h:graphicImage url="/#{theme['iconset']}/cross.png"
+                                                                   border="0"/></a4j:commandLink>
+            </a4j:outputPanel>
+
+
+</ui:composition>

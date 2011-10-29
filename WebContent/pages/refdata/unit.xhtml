@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.refdata.units.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.refdata.units.title']}" />
+
+<ui:define name="body">
+
+
+<h:form>
+
+  <s:decorate id="defaultNameField"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['changeRequestUnit.defaultName']}" /></ui:define>
+     <h:inputText required="true"
+                  value="#{changeRequestUnit.defaultName}"
+                  styleClass="inputtext" >
+     </h:inputText>
+  </s:decorate>
+
+
+  <ui:repeat value="#{changeRequestUnitHome.translations.keySet().toArray()}" var="key">
+    <s:decorate template="/layout/fragments/imageproperty.xhtml">
+       <ui:define name="label"><h:graphicImage url="/img/locales/locale_#{key}.gif" /></ui:define>
+       <h:inputText value="#{changeRequestUnitHome.translations[key]}"
+                    styleClass="inputtext" >
+       </h:inputText>
+    </s:decorate>
+  </ui:repeat>
+  <br />
+
+  <s:decorate id="enabledField"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label"><h:outputText value="#{messages['changeRequestUnit.enabled']}" /></ui:define>
+     <h:selectBooleanCheckbox value="#{changeRequestUnit.enabled}" styleClass="checkbox" />
+  </s:decorate>
+  <br />
+
+  <h:outputText value="#{messages['form.mandatory']}"
+                escape="false" />
+
+  <br/>
+  <br/>
+  <br/>
+
+        <div class="actionButtons">
+
+            <!-- persist for unmanaged bean -->
+            <h:commandButton styleClass="button"
+                             id="persist"
+                             value="Persist"
+                             action="#{changeRequestUnitHome.persist()}"
+                             rendered="#{not changeRequestUnitHome.managed}">
+               <f:param name="unitId" /> <!-- suppress propagation of the unit id -->
+            </h:commandButton>
+
+            <!-- update for managed bean -->
+            <h:commandButton styleClass="button"
+                             id="update"
+                             value="Update"
+                             action="#{changeRequestUnitHome.update()}"
+                             rendered="#{changeRequestUnitHome.managed}">
+               <f:param name="unitId" /> <!-- suppress propagation of the unit id -->
+            </h:commandButton>
+
+            <!-- remove the managed bean -->
+            <h:commandButton styleClass="button"
+                             id="remove"
+                             value="Remove"
+                             action="#{changeRequestUnitHome.remove()}"
+                             immediate="true"
+                             rendered="#{changeRequestUnitHome.managed}">
+              <f:param name="unitId" /> <!-- suppress propagation of the unit id -->
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="cancel"
+                             value="Cancel"
+                             action="#{changeRequestUnitHome.cancel()}"
+                             immediate="true">
+              <f:param name="unitId" /> <!-- suppress propagation of the unit id -->
+            </h:commandButton>
+        </div>
+
+
+
+
+    </h:form>
+
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

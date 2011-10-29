@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+
+       <!-- 
+       see: http://shrubbery.mynetgear.net/wiki/Seam_pages.xml 
+            for some info about this file and a quick ref about the syntax
+            
+       see: http://www.andygibson.net/articles/seam_spring_comparison/html/ch03.html
+            for a CRUD example
+        -->
+        
+        
+  <!-- conversation for the list container component,
+       flush mode needs to be set to 'manual' so the changes don't get persisted on edit
+  
+  -->
+  
+  <!-- this defines where to bind the charmsPermissionId GET parameter, 
+       it goes directly to the setId method of the home instance, value is an an EL expression 
+       that will be set to the value of the request parameter.
+       This happens before any page action is invoked, this is also propagated to any links and buttons if we don't
+       explicitly set this to null   -->
+       
+       <!--   no need for the id on the list page
+  <param name="charmsPermissionId" value="#{charmsPermissionHome.id}" converterId="javax.faces.Long" required="false" />
+-->
+  
+  <!-- action is an EL expression that evaluates to an action method that will be invoked 
+       just before rendering the page, to make sure we have a current list of the permission 
+       entities when entering this page 
+  <action execute="#{charmsPermissionList.refresh}" />
+  -->
+ 
+  <!-- clear the home instance so it can be reused in this conversation and doesn't contain the old
+       entity from the last update/create action 
+       see: http://www.jboss.com/index.html?module=bb&op=viewtopic&p=4095363#4095363  
+       this also calls setId on the home object
+       moved the clearInstance call to the remove/update/persist methods of the home object
+  <action execute="#{charmsPermissionHome.clearInstance}" />
+  -->
+  
+      
+  <description>list of roles</description>
+  
+  <begin-conversation join="true" flush-mode="manual" />
+
+  
+  <!-- needed for the delete/select action 
+  <param name="charmsRoleId" 
+         value="#{charmsRoleActionBean.charmsRoleId}" 
+         converterId="javax.faces.Long" 
+         required="false" /> 
+  --> 
+  <!--  refresh on first sight -->
+  <action execute="#{charmsRoleTable.refresh()}"
+          on-postback="false" />
+  
+  
+  <navigation>
+ 
+    <rule if-outcome="update">
+      <redirect view-id="/pages/admin/role.xhtml">     
+        <param name="charmsRoleId" value="#{param.charmsRoleId}"  
+               converterId="javax.faces.Long" required="true" />
+      </redirect>
+    </rule>
+ 
+<!--  
+    <rule if-outcome="removed">
+      <redirect view-id="/pages/admin/roleList.xhtml" />
+    </rule>
+-->
+   
+    <!-- create button clicked on the page -->
+    <rule if-outcome="create">
+      <redirect view-id="/pages/admin/role.xhtml" />
+    </rule>
+  
+  
+    <rule if-outcome="#{charmsRoleTable.setFragment('')}">
+      <redirect view-id="/pages/admin/roleList.xhtml" /> 
+    </rule>
+  
+  </navigation>
+
+</page>

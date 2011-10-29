@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+
+  <description>serve a resource, just a download page</description>
+
+  <begin-conversation join="true" />
+  
+  <!-- 
+  
+  the documentResource component tries its best to find the resource
+  
+   -->
+
+  <!-- fixme: maybe we can use the on-postback property instead of if... -->
+  <action execute="#{reportResource.findResource()}" 
+          on-postback="false" />
+
+  <navigation />
+
+</page>

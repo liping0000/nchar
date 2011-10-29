@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib">
+  <ul class="menu0">
+    <li><a href="#">#{messages['page.changerequest.title']}</a>
+      <ul class="menu1"><!--
+
+         open tasks for the current user, this includes tasks that has subtasks for other users and drafts to
+         be completed
+     --><li><a href="#{request.contextPath}/pages/user/taskList.html">#{messages['page.user.tasks.title']}</a></li><!--
+
+         start a new change request, this also might mean saving a draft of a request without submitting it
+     --><s:fragment rendered="#{s:hasPermission('changerequest.start', 'do')}">
+          <li><a href="#{request.contextPath}/pages/wfl/start.html?pdName=ChangeRequest">#{messages['page.workflow.changerequest.start.title']}</a></li>
+        </s:fragment><!--
+
+         list of change requests that are submitted by the current user
+     --><li><a href="#{request.contextPath}/pages/wfl/changerequest/userProcList.html">#{messages['page.workflow.changerequest.userList.title']}</a></li><!--
+
+         just some dummy charts so far
+     --><s:fragment rendered="#{s:hasPermission('charms.chart','view')}">
+          <li><a href="#{request.contextPath}/pages/user/charts.html">#{messages['page.user.charts.title']}</a></li>
+        </s:fragment><!--
+
+          jasper reports stuff here -->
+        <s:fragment rendered="#{s:hasPermission('charms.report','view')}">
+          <li><a href="#{request.contextPath}/pages/user/reports.html">#{messages['page.user.reports.title']}</a></li>
+        </s:fragment> 
+        <s:fragment rendered="#{s:hasPermission('charms.workflow','viewAll')}">
+          <li><a href="#{request.contextPath}/pages/wfl/changerequest/adminProcList.html">#{messages['page.workflow.changerequest.adminList.title']}</a></li>
+        </s:fragment>
+        <s:fragment rendered="#{identity.hasAnyPermission('charms.search','submitted,participated,all')}">
+          <li><a href="#{request.contextPath}/pages/user/search.html">#{messages['page.user.search.title']}</a></li>
+        </s:fragment>
+      </ul>
+    </li>
+    <s:fragment rendered="#{s:hasPermission('charms.admin','view')}">
+    <li><a href="#">#{messages['page.admin.title']}</a>
+      <ul class="menu1">
+        <!--  nothing on the security page anyways:
+        <li><a href="#{request.contextPath}/pages/admin/security.html">#{messages['page.admin.security.title']}</a>  -->
+        <li><a href="#">#{messages['page.admin.security.title']}</a>
+          <ul class="menu2">
+            <li><a href="#{request.contextPath}/pages/admin/userList.html">#{messages['page.admin.users.title']}</a></li>
+            <li><a href="#{request.contextPath}/pages/admin/roleList.html">#{messages['page.admin.roles.title']}</a></li>
+            <li><a href="#{request.contextPath}/pages/admin/permissionList.html">#{messages['page.admin.permissions.title']}</a></li>
+          </ul>
+        </li>
+        <!--  message bundle access has to be implemented
+        <li><a href="#{request.contextPath}/pages/admin/messageBundle.html">#{messages['page.admin.messageBundle.title']}</a></li> -->
+        <li><a href="#{request.contextPath}/pages/jbpm/deploymentList.html">#{messages['page.jbpm.processDefinitions.title']}</a></li>
+        <li><a href="#{request.contextPath}/pages/admin/referenceData.html">#{messages['page.admin.referenceData.title']}</a>
+          <ul class="menu2">
+            <li><a href="#{request.contextPath}/pages/refdata/productList.html">#{messages['page.refdata.products.title']}</a></li>
+            <li><a href="#{request.contextPath}/pages/refdata/unitList.html">#{messages['page.refdata.units.title']}</a></li>
+            <li><a href="#{request.contextPath}/pages/refdata/codeList.html">#{messages['page.refdata.codes.title']}</a></li>
+          </ul>
+        </li>  <!--  -->
+        <li><a href="#{request.contextPath}/pages/admin/permissionTargetList.html">#{messages['page.admin.permissionTarget.title']}</a></li> 
+        <li><a href="#{request.contextPath}/pages/admin/emailTemplateList.html">#{messages['page.admin.emailTemplate.title']}</a></li>
+        <li><a href="#{request.contextPath}/pages/admin/emailMessageList.html">#{messages['page.admin.emailMessage.title']}</a></li>
+        <!-- -->
+        <s:fragment rendered="#{s:hasPermission('charms.report','edit')}"> 
+          <li><a href="#{request.contextPath}/pages/admin/reportList.html">#{messages['page.admin.report.title']}</a></li>
+        </s:fragment>  
+        <!--  timer stuff is depricated
+        <li><a href="#{request.contextPath}/pages/jbpm/createTimerActionList.html">#{messages['page.jbpm.createTimerAction.title']}</a></li>
+         -->
+        <li><a href="#{request.contextPath}/pages/jbpm/timerList.html">#{messages['page.jbpm.runningJob.title']}</a></li> 
+        <!--  repository has to be beautified
+        <li><a href="#{request.contextPath}/pages/admin/repository.html">#{messages['page.admin.repository.title']}</a></li>  -->
+        <!--  searchindex not yet implemented
+        <li><a href="#{request.contextPath}/pages/admin/searchindex.html">#{messages['page.admin.searchindex.title']}</a></li>  -->
+        <!--  sysinfo doesn't do anything yet
+        <li><a href="#{request.contextPath}/pages/admin/sysinfo.html">#{messages['page.admin.sysinfo.title']}</a></li> -->
+        <!--  jbpm logging not yet finished
+        <li><a href="#{request.contextPath}/pages/jbpm/jbpmLoglist.html">#{messages['page.jbpm.jbpmLoglist.title']}</a></li>  -->
+        <!--  database stuff
+        <li><a href="#{request.contextPath}/pages/devel/database.html">#{messages['page.devel.database.title']}</a></li> -->
+        <!--  the terminal window -->
+        <li><a href="#{request.contextPath}/pages/admin/terminal.html">#{messages['page.admin.terminal.title']}</a></li>   
+        <li><a href="#{request.contextPath}/pages/admin/charmsLogList.html">#{messages['page.admin.charmsLogList.title']}</a></li>
+      </ul>
+    </li>
+    </s:fragment><!-- 
+    <s:fragment>
+       <li><a href="#{request.contextPath}/pages/user/comet.html" >#{messages['page.user.comet.title']}</a></li>
+       <li><a href="#{request.contextPath}/pages/admin/console.html">#{messages['page.admin.console.title']}</a></li>
+       <li><a href="#{request.contextPath}/pages/devel/draw.html">#{messages['page.devel.draw.title']}</a></li>
+    </s:fragment>   -->
+    <li><a href="#{request.contextPath}/pages/user/preferences.html" >#{messages['page.user.preferences.title']}</a></li>
+    <li><a href="#{request.contextPath}/pages/doLogout.html">#{messages['page.logout.title']}</a></li>
+  </ul>
+
+
+</ui:composition>

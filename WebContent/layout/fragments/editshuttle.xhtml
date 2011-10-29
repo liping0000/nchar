@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:a4j="http://richfaces.org/a4j">
+
+  <!-- this component is for list shuttles since there is a bug showing the error img in 2.1.1.GA -->
+
+    <div class="editproperty">
+
+        <s:label styleClass="name">
+            <ui:insert name="label"/><s:span styleClass="required" rendered="#{required}">*</s:span>:
+        </s:label>
+
+        <span class="value">
+            <s:validateAll>
+                <ui:insert />
+            </s:validateAll>
+        </span>
+
+    </div>
+
+</ui:composition>

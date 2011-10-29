@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<!--
+
+  see: http://docs.jboss.org/hibernate/core/3.3/reference/en/html/session-configuration.html
+  for documentation
+
+ -->
+<hibernate-configuration>
+
+  <session-factory>
+
+     <!-- register the listeners for indexing "true" is default, no performance
+     penalty when the listeners are enabled even though no entities are indexed  -->
+     <property name="hibernate.search.autoregister_listeners">true</property>
+
+     <!-- by default, every time an object is inserted, updated or deleted through
+          Hibernate, Hibernate Search updates the according Lucene index
+          set this to either "event" or "manual", "event" is default
+          we manually trigger indexing since we need to index the workflow document
+          even if no changes happen in the main data object (e.g. when adding an
+          entry while only forwarding to another user, so we need manual here and
+          trigger the indexing manually like described below, note we still need
+          the listeners...  -->
+     <property name="hibernate.search.indexing_strategy">manual</property>
+     <!-- manually indexing is done in the flush method with:
+          FullTextSession fullTextSession = Search.getFullTextSession(hibernateSession);
+          fullTextSession.index(changeRequestData);
+          see: http://docs.jboss.org/hibernate/stable/search/reference/en/html/search-batchindex.html
+      -->
+
+
+     <!-- valid values are "shared" and "not-shared" or any class implementing
+          the org.hibernate.search.reader.ReaderProvider interface -->
+     <property name="hibernate.search.reader.strategy">not-shared</property>
+     <!-- cleanup search index after 100 transactions -->
+     <property name="hibernate.search.default.optimizer.transaction_limit.max">100</property>
+     <!-- our custom directory provider -->
+     <property name="hibernate.search.default.directory_provider">net.wohlfart.framework.search.LuceneDirectoryProvider</property>
+
+     <property name="hibernate.search.default.exclusive_index_use">true</property>
+
+     <!--
+     sessions should be managed by seam don't set the context class
+
+     When you are using hibernate and let spring manage the transaction then the session
+     should be bound to the transaction and not to thread. The hibernate.current_session_context_class
+     property should be SpringSessionContext class. This is done automatically in
+     LocalSessionFactoryBean. So you need not do anything extra.
+
+     Making a session bound to a thread does not make it transaction aware.
+     You can manually start and stop as many transactions as you want in a
+     thread. In an application server you should never use thread session context
+     - that can be dangerous. You should use JTA. And with spring you should let
+     spring set it. We use thread here since this seems to work for all tests.
+
+     <property name="hibernate.current_session_context_class">thread</property>
+     <property name="hibernate.current_session_context_class">managed</property>  -->
+
+      
+
+     <!-- was: true seems to give us fail fast feature instead of random errors -->
+     <property name="hibernate.connection.aggressive_release">true</property>
+     <!--   auto (default), on_close, after_transaction, after_statement (not supported) , was: after_transaction  -->
+     <property name="hibernate.connection.release_mode">after_transaction</property>
+     <property name="useTransactionAwareDataSource">false</property>
+     <!-- set to false for testing: was: true-->
+     <property name="hibernate.transaction.flush_before_completion">true</property>
+  <!--    
+      <property name="hibernate.transaction.manager_lookup_class">org.springframework.orm.hibernate3.LocalTransactionManagerLookup</property>
+      <property name="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</property>
+      <property name="hibernate.transaction.manager_lookup_class">org.springframework.orm.hibernate3.LocalTransactionManagerLookup</property>
+      <property name="hibernate.transaction.manager_lookup_class">net.wohlfart.framework.CustomTransactionManagerLookup</property>
+--> 
+
+	 <!--
+     <property name="hibernate.hbm2ddl.auto">none</property>
+     validate doesn't work on orcale  (double-float conflict)
+     <property name="hibernate.hbm2ddl.auto">validate</property> 
+     <property name="hibernate.hbm2ddl.auto">update</property>
+     <property name="hibernate.hbm2ddl.auto">create</property>
+     <property name="hibernate.hbm2ddl.auto">create-drop</property>
+
+     DB updates are handled by liquibase now, so we don't need validate here
+     since we roll our own update scripts
+     -->
+     <property name="hibernate.hbm2ddl.auto">create-drop</property>
+
+     <property name="hibernate.cache.use_query_cache">true</property>
+     <property name="hibernate.show_sql">false</property>
+     <property name="hibernate.format_sql">false</property>
+
+
+     <property name="hibernate.cache.use_second_level_cache">true</property>
+
+    <!-- hashtable cache is not for production
+    <property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>  -->
+    <!-- ehcache is configured in ehcache.xml in the classpath 
+         hibernate.cache.provider_class set to net.sf.ehcache.hibernate.EhCacheProvider is hibernate 3.0 - 3.2
+         net.sf.ehcache.hibernate.EhCacheRegionFactory set to 
+            net.sf.ehcache.hibernate.EhCacheRegionFactory 
+            net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory
+            org.springframework.orm.hibernate3.LocalRegionFactoryProxy
+            is hibernate 3.3 and up
+         
+         see: http://ehcache.org/documentation/hibernate.html
+         
+         set the config with net.sf.ehcache.configurationResourceName
+    <property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</property>
+    <property name="net.sf.ehcache.configurationResourceName">/ehcache-1.xml</property>
+    -->
+    <property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</property>
+    <property name="net.sf.ehcache.configurationResourceName">/ehcache-1.xml</property>
+    
+    
+    <property name="hibernate.jdbc.batch_versioned_data">true</property>
+    <property name="hibernate.order_inserts">true</property>
+    <property name="hibernate.order_updates">true</property>
+
+    <!-- enable statistics 
+         do print statistic info: sessionFactory.getStatistics().logSummary();
+    -->
+    <property name="hibernate.generate_statistics">false</property>
+
+
+    <!--  see: http://docs.jboss.org/hibernate/core/3.3/reference/en/html/session-configuration.html
+          for detailson the following settings  -->
+    <!-- this is important for blob streaming in oracle,blobs are still pita
+         for oracle with hibernate it's recommended in the docs -->
+    <property name="hibernate.jdbc.use_streams_for_binary">true</property>
+    <property name="hibernate.connection.SetBigStringTryClob">false</property>
+    <!-- 30 seems to work fine on orcale but not with h2, set to 0 for testing... -->
+    <property name="hibernate.jdbc.batch_size">0</property>
+    <property name="hibernate.jdbc.hibernate.jdbc.batch_versioned_data">true</property>
+    <!-- better don't fiddle with this value: 
+         meaningfull values are     
+             0: TRANSACTION_NONE 
+                A constant indicating that transactions are not supported.               
+             1: TRANSACTION_READ_COMMITTED 
+                A constant indicating that dirty reads are prevented; non-repeatable reads and phantom reads can occur.   
+             2: TRANSACTION_READ_UNCOMMITTED 
+                A constant indicating that dirty reads, non-repeatable reads and phantom reads can occur.             
+             4: TRANSACTION_REPEATABLE_READ 
+                A constant indicating that dirty reads and non-repeatable reads are prevented; phantom reads can occur.             
+             8: TRANSACTION_SERIALIZABLE 
+                A constant indicating that dirty reads, non-repeatable reads and phantom reads are prevented.             
+    <property name="hibernate.connection.isolation">8</property>  --> 
+    
+    <!--  see: http://opensource.atlassian.com/projects/hibernate/browse/HHH-3892
+               for changes in hibernate 3.5.0 regarding text to clob mapping -->
+                             
+    <!-- we are working with pojos not maps... --> 
+    <property name="hibernate.default_entity_mode">pojo</property>           
+
+ 
+    <!--  XXX: envers attributes  -->
+    <property name="org.hibernate.envers.auditTableSuffix">_AUD</property>  <!-- table suffix for audi tables default: _AUD -->
+    <property name="org.hibernate.envers.revisionFieldName">REV</property>  <!-- field for revision number default: REV -->
+    <property name="org.hibernate.envers.revisionTypeFieldName">RV_TYPE</property> <!-- field for revision type default: REVTYPE -->
+    
+
+    <!--
+    <property name="javax.persistence.validation.group.pre-persist">javax.validation.Default</property>
+    <property name="javax.persistence.validation.group.pre-update">javax.validation.Default</property>
+    <property name="javax.persistence.validation.group.pre-remove"></property>
+    -->
+
+    <!-- ######################################################### -->
+    <!--                     hibernate mapping                     -->
+    <!-- ######################################################### -->
+
+
+    <!-- we need this in the config before the class definitions:  -->
+    <mapping resource="jbpm4.repository.hbm.xml" />
+    <mapping resource="jbpm4.execution.hbm.xml" />
+    <mapping resource="jbpm4.history.hbm.xml" />
+    <mapping resource="jbpm4.task.hbm.xml" />
+    <!-- we have our own identity store, so we don't need this:
+    <mapping resource="jbpm4.identity.hbm.xml" /> -->
+
+
+    <!-- XXX: revisioning,note: enable the annotation in the classfile for this entity!  -->
+    <mapping resource="charmsRevisionEntity.hbm.xml" />  
+
+    <!--
+    maybe envers needs a hbm file and doesn't work with anotations in out config
+    <mapping resource="jbpm4.identity.hbm.xml" />  -->
+
+    <!-- auditing  FIXME: doesn't work yet 
+    <mapping class="net.wohlfart.auditing.CharmsRevisionEntity" /> 
+-->
+
+    <!-- i18n support -->
+    <mapping class="net.wohlfart.framework.i18n.DatabaseMessageMap" />
+    <!-- generic uid -->
+    <mapping class="net.wohlfart.framework.entities.CharmsUid" />
+    <!-- generic folder and documents -->
+    <mapping class="net.wohlfart.framework.entities.CharmsDocument" />
+    <mapping class="net.wohlfart.framework.entities.CharmsDocumentBlob" />
+    <mapping class="net.wohlfart.framework.entities.CharmsFolder" />
+
+    <!-- workflow specific data hat are common to all workflows  -->
+    <mapping class="net.wohlfart.framework.entities.CharmsWorkflowData" />
+
+    <!-- authentication and identity management -->
+    <mapping class="net.wohlfart.authentication.entities.CharmsUser" />
+    <mapping class="net.wohlfart.authentication.entities.CharmsRole" />
+    <mapping class="net.wohlfart.authentication.entities.CharmsMembership" />
+    <!-- authorization, actual permissions -->
+    <mapping class="net.wohlfart.authorization.entities.CharmsPermission" />
+    <!-- available permissions: -->
+    <mapping class="net.wohlfart.authorization.entities.CharmsPermissionTarget" />  
+    <!--  
+    <mapping class="net.wohlfart.authorization.entities.CharmsPermissionGroupTarget" />
+    <mapping class="net.wohlfart.authorization.entities.CharmsPermissionUserTarget" /> 
+    -->
+    <mapping class="net.wohlfart.authorization.entities.CharmsTargetAction" />
+
+    <!-- business data -->
+    <mapping class="net.wohlfart.refdata.entities.ChangeRequestCode" />
+    <mapping class="net.wohlfart.refdata.entities.ChangeRequestProduct" />
+    <mapping class="net.wohlfart.refdata.entities.ChangeRequestUnit" />
+
+    <!-- business key -->
+    <mapping class="net.wohlfart.changerequest.entities.ChangeRequestBusinessKey" />
+
+    <!-- ui status of the current task -->
+    <mapping class="net.wohlfart.changerequest.entities.ChangeRequestFacetState" />
+    <!-- better ui status -->
+    <mapping class="net.wohlfart.jbpm4.entities.TransitionChoice" />
+    <mapping class="net.wohlfart.jbpm4.entities.TransitionData" />
+
+    <!--  main data bean of the changerequest  -->
+    <mapping class="net.wohlfart.changerequest.entities.ChangeRequestData" />
+    <mapping class="net.wohlfart.changerequest.entities.ChangeRequestFolder" />
+
+    <mapping class="net.wohlfart.changerequest.entities.ChangeRequestMessageEntry" />
+
+    <mapping class="net.wohlfart.changerequest.entities.ChangeRequestCostSheet" />
+    <mapping class="net.wohlfart.changerequest.entities.ChangeRequestImpactSheet" />
+
+
+    <!--  main data bean of the todolist  -->
+    <mapping class="net.wohlfart.todolist.entities.ToDoListData" />
+
+
+    <!-- email data -->
+    <mapping class="net.wohlfart.email.entities.CharmsEmailTemplate" />
+    <mapping class="net.wohlfart.email.entities.CharmsEmailTemplateReceiver" />
+    <mapping class="net.wohlfart.email.entities.CharmsEmailTemplateTranslation" />
+    <!-- any outgoing email -->
+    <mapping class="net.wohlfart.email.entities.CharmsEmailMessage" />
+
+
+    <!-- logging -->
+    <mapping class="net.wohlfart.framework.logging.CharmsLogEntry" />
+
+
+    <!-- reports -->
+    <mapping class="net.wohlfart.report.entities.CharmsReport" />
+    <mapping class="net.wohlfart.report.entities.CharmsReportBlob" />
+
+    <mapping class="net.wohlfart.framework.properties.CharmsPropertySet" />
+    <mapping class="net.wohlfart.framework.properties.CharmsProperty" />
+
+
+
+
+   <!--
+     event listeners for hibernate search,
+     no need to register in the latest hibernate search release
+
+       <event type="post-update">
+           <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+       </event>
+       <event type="post-insert">
+           <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+       </event>
+       <event type="post-delete">
+           <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+       </event>
+       <event type="post-collection-recreate">
+           <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+       </event>
+       <event type="post-collection-remove">
+           <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+       </event>
+       <event type="post-collection-update">
+           <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+       </event>
+       <event type="flush">
+           <listener class="org.hibernate.event.def.DefaultFlushEventListener"/>
+           <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+       </event>
+
+       -->
+
+
+    <!-- envers version history
+    <property name="hibernate.ejb.event.post-insert">org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener</property>
+    <property name="hibernate.ejb.event.post-update">org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener</property>
+    <property name="hibernate.ejb.event.post-delete">org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener</property>
+    <property name="hibernate.ejb.event.pre-collection-update">org.hibernate.envers.event.AuditEventListener</property>
+    <property name="hibernate.ejb.event.pre-collection-remove">org.hibernate.envers.event.AuditEventListener</property>
+    <property name="hibernate.ejb.event.post-collection-recreate">org.hibernate.envers.event.AuditEventListener</property>
+    -->
+
+<!--
+    <listener class="org.hibernate.ejb.event.EJB3PersistEventListener" type="pre-insert"/>
+    <listener class="org.hibernate.ejb.event.EJB3FlushEntityEventListener" type="pre-update"/>
+-->
+
+<!--
+    <event type="pre-update">
+        <listener class="org.hibernate.secure.JACCPreUpdateEventListener"/>
+    </event>
+
+    <event type="pre-insert">
+        <listener class="org.hibernate.secure.JACCPreUpdateEventListener"/>
+    </event>
+
+    <event type="pre-load">
+        <listener class="org.hibernate.secure.JACCPreUpdateEventListener"/>
+    </event>
+-->
+
+    <!-- see: https://forum.hibernate.org/viewtopic.php?f=1&t=998844&p=2419305#p2419305,
+              http://www.jboss.org/files/envers/docs/index.html#d0e221
+              http://opensource.atlassian.com/projects/hibernate/browse/HHH-3879 -->
+
+    <!--  XXX: auditing offline      -->
+    <event type="post-insert">
+       <listener class="org.hibernate.envers.event.AuditEventListener"/>
+    </event>
+    
+    <event type="pre-update">
+       <!-- custom listener to call the preUpdate method on entities like CharmsUser or CharmsRole -->
+       <listener class="net.wohlfart.framework.entities.PreUpdateListener"/>
+    </event>
+
+    <event type="post-update">
+       <listener class="org.hibernate.envers.event.AuditEventListener"/>
+    </event>
+
+    <event type="post-delete">
+       <listener class="org.hibernate.envers.event.AuditEventListener"/>
+    </event>
+
+    <event type="pre-collection-update">
+       <listener class="org.hibernate.envers.event.AuditEventListener"/>
+    </event>
+
+    <event type="pre-collection-remove">
+       <listener class="org.hibernate.envers.event.AuditEventListener"/>
+    </event>
+
+    <event type="post-collection-recreate">
+       <listener class="org.hibernate.envers.event.AuditEventListener"/>
+    </event>
+
+
+  </session-factory>
+
+
+</hibernate-configuration>
+

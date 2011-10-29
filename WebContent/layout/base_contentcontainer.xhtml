@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:s="http://jboss.com/products/seam/taglib"><!--
+
+  this is the content container used to wrap the main part of the page,
+  maybe we can use this for printing later...
+
+
+  make sure the contentcontainer has a width less than 100% otherwise we get
+  scrollbars in IE, it also needs a top padding set to 1px otherwise FF gives
+  us a top padding according to the first h1 included in the div
+
+  -->
+
+  <!--
+
+  <br />
+  <a href="javascript: void(0)"
+     onclick="popup('#{request.contextPath}/pages/admin/helpEditor.html')">#{messages['page.admin.helpEditor.title']}</a>
+  <br />
+
+
+ <p:idleMonitor timeout="10000"   
+                onidle="idleDialog.show();" 
+                onactive="idleDialog.hide();"/>  
+    -->
+     <!--            
+ <p:dialog header="What's happening?" resizable="false"  
+             widgetVar="idleDialog" modal="true" width="400">  
+     <h:outputText value="Dude, are you there?" />  
+ </p:dialog> 
+    -->
+  
+
+  <h:outputText value="&lt;!-- start main content with decorations -->" escape="false"/>
+
+  <!-- render only if we have a title -->
+  <s:fragment rendered="#{not empty pageHeadline}" >
+    <h1 class="first" ><h:outputText value="#{pageHeadline}" /></h1>
+  </s:fragment>
+
+
+      <script type="text/javascript">
+        <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+          // tinyMCE.init({ mode:"none" });
+
+          // the menu height is too large since it add the invisible menu items
+          // to the total height...
+          //jQuery(".rich-page-main > div").equalHeight();
+        <h:outputText value="/* ]]> */" escape="false"/>
+      </script>
+
+
+
+  <!-- this is the general message note for the whole app,
+       no ajaxRendered updates since we want this to stay even during ajax
+       rerenders of parts of the page, use reRender="msgs" if this needs to be updated -->
+  <a4j:outputPanel id="msgsXXX" ajaxRendered="false">
+
+  <!--  fancy message popup,
+        see: http://www.seamframework.org/Community/RichmessagesOrHmessagesAndJavascriptCall
+
+      <script type="text/javascript">
+        <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+           jQuery(document).ready(function() {
+             // change the message properties
+             jQuery('#msgs .messages').css({
+                   position: "absolute",
+                   top: 0, left: 0, border: 0, padding: 0, margin: 0,
+                   width: "100%", background: "#ffff00"  }).show();
+             // hide message after timeout
+             window.setTimeout(function() {
+                jQuery('#msgs .messages').hide();
+             }, 5000);
+           });
+        <h:outputText value="/* ]]> */" escape="false"/>
+      </script>
+
+
+      style="display: none;" for the following fragment:
+  -->
+  <!--
+      <h:messages layout="list" styleClass="messages"
+                  infoClass="info" warnClass="warn" errorClass="error" fatalClass="fatal"
+                  escape="false">
+      </h:messages>
+   -->
+
+        <p:messages id="msgs" />
+  </a4j:outputPanel>
+
+  <h:outputText value="&lt;!-- start body part -->" escape="false"/>
+  <ui:insert name="body" />
+  <h:outputText value="&lt;!-- end body part -->" escape="false"/>
+
+  <h:outputText value="&lt;!-- end main content with decorations -->" escape="false"/>
+
+
+
+  <!--
+
+   ui debug :  use crtl-shift-D to start the debug view in the browser, remove for production
+<ui:debug hotkey="D" />  -->
+
+  <!--
+
+   ajax debug :  use crtl-shift-M to start the debug view in the browser
+<a4j:log hotkey="M" />  -->
+
+
+<rich:spacer width="100" height="40" />
+
+</ui:composition>

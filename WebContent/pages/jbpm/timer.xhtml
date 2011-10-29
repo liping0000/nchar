@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.jbpm.runningJob.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.jbpm.runningJob.title']}" />
+
+<ui:define name="body">
+
+  <a4j:form id="frm">
+
+  <s:decorate id="duedateField"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['createtimeraction.triggerduration']}" /></ui:define>
+    <rich:calendar required="true"
+                   value="#{timerAction.duedate}"
+                   datePattern="dd.MM.yyyy HH:mm">
+    </rich:calendar>
+  </s:decorate>
+
+
+  <s:decorate id="repeatField"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['createtimeraction.repeatduration']}" /></ui:define>
+    <h:inputText value="#{timerAction.repeat}"
+                 styleClass="inputtext" >
+    </h:inputText>
+  </s:decorate>
+
+
+  <s:decorate id="retriesField"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['createtimeraction.retries']}" /></ui:define>
+    <h:inputText value="#{timerAction.retries}"
+                 styleClass="inputtext" >
+    </h:inputText>
+  </s:decorate>
+
+
+  <s:decorate id="signalField"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['createtimeraction.signal']}" /></ui:define>
+    <h:inputText value="#{timerAction.signalName}"
+                 styleClass="inputtext" >
+    </h:inputText>
+  </s:decorate>
+
+  <s:decorate id="eventField"
+              template="/layout/fragments/editproperty.xhtml">
+    <ui:define name="label"><h:outputText value="#{messages['createtimeraction.event']}" /></ui:define>
+    <h:inputText value="#{timerAction.eventName}"
+                 styleClass="inputtext" >
+    </h:inputText>
+  </s:decorate>
+
+  <br />
+
+  <h:outputText value="#{messages['form.mandatory']}"
+                escape="false" />
+
+  <br/>
+  <br/>
+  <br/>
+
+
+<div class="actionButtons">
+  <h:commandButton styleClass="button"
+                   id="update"
+                   value="#{messages['action.update']}"
+                   action="#{timerAction.update()}">
+    <f:param name="timerId" />
+  </h:commandButton>
+
+  <h:commandButton styleClass="button"
+                   id="cancel"
+                   value="#{messages['action.cancel']}"
+                   action="#{timerAction.cancel()}"
+                   immediate="true">
+    <f:param name="timerId" />
+  </h:commandButton>
+
+  <h:commandButton styleClass="button"
+                   id="delete"
+                   value="#{messages['action.remove']}"
+                   action="#{timerAction.remove()}"
+                   immediate="true">
+    <f:param name="timerId" />
+  </h:commandButton>
+
+</div>
+
+
+</a4j:form>
+
+</ui:define>
+</ui:composition>

@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:seam="http://jboss.com/products/seam/spring-seam"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://jboss.com/products/seam/spring-seam http://jboss.com/products/seam/spring-seam-2.2.xsd">
+
+  <!--
+
+
+     make seam scopes available to spring,
+     needed for the mail sender scope definition  -->
+  <seam:configure-scopes default-auto-create="true" />
+
+
+  <!--
+
+  <seam:instance id="authenticatedUser"
+                 name="authenticatedUser"
+                 proxy="true" />
+
+              type="net.wohlfart.authentication.entities.CharmsUser"
+
+  <seam:instance name="identity" id="identity" type="" />
+
+  org.jboss.seam.security.identity
+
+  <bean id="authenticatedUserProxy"
+        name="authenticatedUserProxy"
+        class="net.wohlfart.jbpm4.CustomSpringHelper" >
+
+  -->
+
+
+  <!-- enable the configuration of transactional behavior based on annotations
+       see: http://static.springsource.org/spring/docs/3.0.x/reference/html/transaction.html#transaction-declarative-annotations
+
+       proxy-target-class="true" means we want a proxy class created for invokation of transactional methods
+       otherwise we had to define interfaces for the transactional beans creating class proxies is done
+       by the cglib library...
+
+       note that the transaction annotation doesn't work on property setters invoked by the application context
+       or lifecycle events also from the beans or aplication context,
+       it is mainly used for invocation of method by the http session request....
+        -->
+  <tx:annotation-driven transaction-manager="localTransactionManager" mode="proxy" proxy-target-class="true" />
+
+
+  <!-- this bean is looked up in the groovy execution!! 
+       moved to the jbpm4 definition since we don't need any injection no more...
+  <bean id="entryFactory"
+        name="entryFactory" 
+        class="net.wohlfart.jbpm4.entities.MessageEntryFactory">
+      <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+  -->
+  
+  <!--
+     the jbpm provided setup tool, make sure liquibase is
+     set up at first if you want to provide the db structure on startup
+     depends-on="liquibase"
+           -->
+  <bean id="springHelper"
+        name="springHelper"
+        
+        class="net.wohlfart.jbpm4.CharmsJbpmSpringHelper" >
+     <property name="jbpmCfg" value="jbpm4.cfg.xml" />
+  </bean> 
+
+
+  <!--
+     this becomes a stateless seam component
+     org.jbpm.pvm.internal.processengine.ProcessEngineImpl;
+     extends: org.jbpm.pvm.internal.processengine.SpringProcessEngine;
+     implements: org.jbpm.api.ProcessEngine
+
+     from the user doc:
+     A ProcessEngine is thread safe and can be stored in a static member field
+     or even better in JNDI or some other central location. One ProcessEngine
+     object can be used by all requests and threads in an application.
+
+
+     we use scope="prototype" for the spring bean
+            scope="APPLICATION" for seam
+     or:
+            scope="STATELESS" for seam
+     or:
+            scope="seam.APPLICATION" for spring
+            -->
+  <bean id="processEngine"
+        name="processEngine"
+        factory-bean="springHelper"
+        factory-method="createProcessEngine"
+        class="org.jbpm.pvm.internal.processengine.ProcessEngineImpl"
+        scope="seam.APPLICATION"
+        destroy-method="close"
+        depends-on="localTransactionManager"
+        >
+        <!-- destroy-method="close": this is not yet tested, seems neccessary so we don't lose any jobs on shutdown -->
+        <!-- depends-on="localTransactionManager": implemented to make sure the schema exists before starting the process engine -->
+        <!--
+
+
+  <bean id="springLifecycleBean"
+        class="net.wohlfart.framework.SpringLifecycleBean" >
+        <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+
+     <seam:component auto-create="true"
+                     intercept="false"
+                     name="processEngine"
+                     scope="STATELESS"
+                     spring-name="processEngine" />  -->
+  </bean>
+
+
+
+
+  <!-- defining the jbpm4 job executor, which will be picked up by the jbpmJobExecutionLoader
+       from the process engine, idle interval in ms  -->
+  <bean id="jobExecutor"
+        name="jobExecutor"
+        class="org.jbpm.pvm.internal.jobexecutor.JobExecutor"
+        scope="singleton">
+     <property name="commandExecutor" ref="jobCommandService" />
+     <!-- production value: 30000, testing with: 100 -->
+     <property name="idleInterval" value="30000" /> 
+  </bean>
+
+
+  <!-- for starting the jbpm4 job executor, the job executor is
+       taking the jobs from the JBPM4_JOB table -->
+  <bean id="jbpmJobExecutorLoader"
+        class="net.wohlfart.jbpm4.JbpmJobExecutorLoader" >
+     <property name="processEngine" ref="processEngine" />
+  </bean>
+
+
+<!--
+  <bean id="jobCommandService"
+        class="org.jbpm.pvm.internal.svc.EnvironmentInterceptor" >
+     <property name="environmentFactory" ref="processEngine" />
+     <seam:component/>        
+  </bean>      
+-->
+
+  <bean id="jobCommandService"
+        class="net.wohlfart.jbpm4.JobExecutionCommandService" >
+     <property name="environmentFactory" ref="processEngine" />
+     <seam:component/>
+  </bean>
+
+
+  <!--
+    spring provided transaction manager, we use a wrapper for
+    class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+    to monitor the transaction begin/end/commits
+   -->
+  <bean id="localTransactionManager"
+        scope="seam.APPLICATION"
+        class="net.wohlfart.framework.CustomTransactionManager">
+     <!-- don't use the session factory from hibernate directly here since it
+          doesn't sync seam's session with the transaction manager  -->
+     <!--  sessionFactory is not needed for a jta transaction manager -->
+     <property name="sessionFactory" ref="sessionFactory" />  
+     <!--  dataSource is not needed for a jta transaction manager -->
+     <property name="dataSource" ref="p6spyDataSource"/>  
+  </bean>
+
+
+
+  <!--
+    seam managed session fab wrapping the hibernateSession object
+    and performing conversation sync of the session 
+        -->
+  <bean id="sessionFactory"
+        class="org.jboss.seam.ioc.spring.SeamManagedSessionFactoryBean">
+     <property name="sessionName" value="hibernateSession" />
+  </bean>
+
+
+  <!--
+    this is the hibernate provided session fab which is picked up by
+    seam, don't use this for anything other than configuring the seam managed
+    session factory in components.xml
+
+    see: http://opensource.atlassian.com/projects/hibernate/browse/HSEARCH-380
+         there is a probem with older version of solr
+     -->
+  <bean id="hibernateSessionFactory"
+        name="hibernateSessionFactory"
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <!-- FIXME: we can do some fancy stuff be subclassing this!
+             see: http://static.springsource.org/spring/docs/2.0.x/api/org/springframework/orm/hibernate3/LocalSessionFactoryBean.html-->
+     <property name="configLocation" value="classpath:hibernate3.cfg.xml" />
+     <property name="dataSource" ref="p6spyDataSource"/>
+     <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
+     <!--  
+     <property name="cacheRegionFactory" ref="cacheRegionFactory" />
+     -->
+     <!-- any transaction manager we inject here must implement 
+          javax.transaction.TransactionManager so the following doesn't work
+          since the local transaction manager doesn't impement javax.transaction.TransactionManager
+     <property name="jtaTransactionManager">
+       <ref bean="localTransactionManager"/>
+     </property>  -->
+  </bean>
+
+<!--  
+  <bean id="cacheRegionFactory" class="net.sf.ehcache.hibernate.EhCacheRegionFactory">
+     <constructor-arg>
+        <props>
+            <prop key="net.sf.ehcache.configurationResourceName">/ehcache-1.xml</prop>
+        </props>
+    </constructor-arg>
+  </bean>
+-->
+<!-- 
+  <bean id="cacheRegionFactory" class="org.hibernate.cache.impl.bridge.RegionFactoryCacheProviderBridge">
+    <constructor-arg>
+        <props>
+            <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProviderr</prop>
+            <prop key="net.sf.ehcache.configurationResourceName">/ehcache-1.xml</prop>
+        </props>
+    </constructor-arg>
+  </bean>
+-->
+
+  <!--
+     the liquibase database versioning tool, make the springHelper depend on
+     this if we do an update of the database structure   
+  <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+      <property name="dataSource" ref="p6spyDataSource" />
+      <property name="changeLog" value="/WEB-INF/db/master.xml" />
+  </bean>
+
+ -->
+
+  <!--
+    p6spy is for logging datasource access sql statements -->
+  <bean id="p6spyDataSource"
+        class="com.p6spy.engine.spy.P6DataSource">
+     <!-- no close method, so we don't need: destroy-method="close"  -->
+     <constructor-arg>
+        <ref local="c3p0DataSource"/>
+     </constructor-arg>
+  </bean>
+
+
+
+  <!--
+  this implements a pooled datasource, we need a bigger number of datasources
+  in the pool since a number of conversations may be running at the same time
+  and we have to make sure we can provide a datasource for each of them
+
+  see:
+  http://www.mchange.com/projects/c3p0/apidocs/com/mchange/v2/c3p0/ComboPooledDataSource.html#getCheckoutTimeout%28%29
+  http://www.mchange.com/projects/c3p0/index.html
+  http://www.mchange.com/projects/c3p0/index.html#hibernate-specific
+   -->
+  <bean id="c3p0DataSource"
+        class="com.mchange.v2.c3p0.ComboPooledDataSource"
+        destroy-method="close">
+
+     <!-- database access properties: driver, urls, username -->
+
+
+
+     <!--
+     deleting all tables in oracle:
+        SELECT 'DROP TABLE ' || table_name || ' CASCADE CONSTRAINTS;' FROM user_tables;
+        purge recyclebin;
+
+     importing data in oracle:
+        imp CAMS/s3cr37 file=expdat-20100328.dmp
+
+     exporting database in MySQL:
+        mysqldump -uCHARMS -ps3cr37 CHARMS > dumpfile
+     importing database in MySQL:
+        mysql -uCHARMS -ps3cr37 < dumpfile
+
+      -->
+
+     <!--  MySQL Server on unison: CHARMS 
+     <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+     <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/CHARMS"/>
+     <property name="user" value="CHARMS"/>  -->
+
+     <!--  oracle woodstock: CAMS    
+     <property name="driverClass" value="oracle.jdbc.OracleDriver"/>
+     <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+     <property name="user" value="CAMS" />    -->
+
+    <!--  MySQL Server on localhost: CHARMS  
+     <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+     <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/CHARMS"/>
+     <property name="user" value="CHARMS"/>  -->
+
+     <!--  oracle on pegasus: CAMS 
+     <property name="driverClass" value="oracle.jdbc.OracleDriver"/>
+     <property name="jdbcUrl" value="jdbc:oracle:thin:@pegasus.sfc-intra.net:1521:sfcweb"/>
+     <property name="user" value="CAMS" />  -->
+
+     <!--  derby on localhost: CHARMS
+           us jdbc:derby://localhost:1527/charms;create=true to set up an initial Database
+     <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
+     <property name="jdbcUrl" value="jdbc:derby://localhost:1527/charms"/>
+     <property name="user" value="CHARMS"/>  -->
+
+     <!--  oracle on localhost: CHARMS 
+     <property name="driverClass" value="oracle.jdbc.OracleDriver"/>
+     <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+     <property name="user" value="CHARMS" />   -->
+
+     <!--  MS-SQL Server on localhost with jdbc driver:
+     <property name="driverClass" value="net.sourceforge.jtds.jdbc.Driver"/>
+     <property name="jdbcUrl" value="jdbc:jtds:sqlserver://localhost:1433/charms"/>
+     <property name="user" value="CHARMS"/> -->
+
+     <!--  MS-SQL Server with Microsoft driver on localhost: CHARMS
+     <property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+     <property name="jdbcUrl" value="jdbc:sqlserver://localhost:1433;database=charms"/>
+     <property name="user" value="CHARMS"/> -->
+
+     <!--  MySQL Server on localhost: charms
+     <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+     <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/charms"/>
+     <property name="user" value="charms"/>  -->
+
+     <!--  HyperSQL in memory database, needs empty password otherwise it will
+      throw: - SQL Error: -33, SQLState: S1000 - Access is denied - Could not obtain connection to query metadata   
+     <property name="driverClass" value="org.hsqldb.jdbcDriver"/> 
+     <property name="jdbcUrl" value="jdbc:hsqldb:mem:testdb" />
+     <property name="user" value="sa"/>   -->
+
+     <!--  HyperSQL stored in the filesystem
+           see: hsqldb-2.0.0-rc8/hsqldb/doc/guide/running-chapt.html
+           this creates the files: database.lck, database.log, database.properties
+           in the tmp directory  -->
+     <property name="driverClass" value="org.hsqldb.jdbcDriver"/>
+     <property name="jdbcUrl" value="jdbc:hsqldb:file:/tmp/database" />
+     <property name="user" value="sa"/>   
+
+     <!--  HyperSQL stored in a java resource (inside a jar file)
+           not tested yet
+           see: http://coding.derkeiler.com/Archive/Java/comp.lang.java.databases/2003-11/0096.html
+     <property name="driverClass" value="org.hsqldb.jdbcDriver"/>
+     <property name="jdbcUrl" value="jdbc:hsqldb:res:..." />
+     <property name="user" value="charms"/>  -->
+
+     <!--  H2 in-memory database with transaction isolation, needs no empty password
+           see: http://www.h2database.com/html/cheatSheet.html
+           some issues with table locking:
+                https://forums.hibernate.org/viewtopic.php?f=1&t=993453&view=previous  
+
+     <property name="driverClass" value="org.h2.Driver"/>
+     <property name="jdbcUrl" value="jdbc:h2:mem;MVCC=TRUE" />
+     <property name="user" value="SA"/>    -->
+
+
+     <!-- database access properties: password -->
+
+     <!--
+     <property name="password" value=""/>
+     <property name="password" value="s3cr37" /> 
+     <property name="password" value="SA" />  -->
+     <property name="password" value=""/>
+
+     <!-- pool properties  -->
+
+     <property name="initialPoolSize" value="7"/>
+     <!-- 100 is fine here, we need more since each conversation needs a
+          hibernate session the conversation keeps the connection in closed
+          state however  -->
+     <property name="maxPoolSize" value="100"/>
+     <property name="minPoolSize" value="10"/>
+     <property name="acquireIncrement" value="5"/>
+
+     <!-- defines how many times c3p0 will try to acquire a new Connection from
+          the database before giving up, if this value is less than or equal to
+          zero, c3p0 will keep trying to fetch a Connection indefinitely,
+          default is 30 -->
+     <property name="acquireRetryAttempts" value="3"/>
+
+     <!-- msec, time c3p0 will wait between acquire attempts, default is
+          1000 -->
+     <property name="acquireRetryDelay" value="5000" />
+     <!-- this gives us exceptions instead of timeouts if we can't get a
+          connection within a timeframe, default is true,
+          if true, a pooled DataSource will declare itself broken and be
+          permanently closed if a Connection cannot be obtained from the database
+          after making acquireRetryAttempts to acquire one.
+          if false, failure to obtain a Connection will cause all Threads waiting
+          for the pool to acquire a Connection to throw an Exception, but the
+          DataSource will remain valid, and will attempt to acquire again following
+          a call to getConnection()  -->
+     <property name="breakAfterAcquireFailure" value="false" /> <!-- use false for production! -->
+
+     <!--  testing connections  -->
+     <!-- testing connections on checking, kinda useless since it is too late
+          to do anything about it, but at least we noticea problem... -->
+     <property name="testConnectionOnCheckin" value="true" />
+     <!-- this feature is very expensive, if set to true, an operation will be
+          performed at every connection checkout to verify that the connection
+          is valid.   -->
+     <property name="testConnectionOnCheckout" value="true" />
+     <!-- testing idle un-checked-out connections any this number of  seconds -->
+     <property name="idleConnectionTestPeriod" value="10" />
+     <property name="connectionTesterClassName" value="net.wohlfart.tools.ConnectionTester" />
+     <property name="automaticTestTable" value="CONN_TEST" />
+     <!-- FIXME: we can use a custom select instead of a test table here
+        <property name="preferredTestQuery" value="select count(*) from HIBERNATE_SEQUENCES" />  -->
+     <!-- FIXME:  for some reason timeout can not be set
+          The seconds a Connection can remain pooled
+          but unused before being discarded. Zero means idle connections never
+          expire.
+        <property name="timeout" value="30000" /> -->
+     <!-- max seconds a client is made to wait for a connection when checking out -->
+     <property name="checkoutTimeout" value="600" />
+
+     <!-- don't do any commits for us please -->
+     <property name="autoCommitOnClose" value="false" />
+     <!-- default value, we might get more performance in heavy used situations
+          when increasing this  -->
+     <property name="numHelperThreads" value="3" />
+  </bean>
+
+
+
+ 
+ <!--
+      Springs MailSender config
+      for session properties see: http://www.websina.com/bugzero/kb/sunmail-properties.html
+                                  http://stackoverflow.com/questions/541846/spring-javamailsenderimpl-where-to-set-the-charset -->
+
+ <!-- mail config lucy at nethosters:
+
+    <bean id="springMailSender"
+          name="springMailSender"
+          class ="org.springframework.mail.javamail.JavaMailSenderImpl"
+          scope="seam.APPLICATION" >
+      <property name="host" value="lucy.nethosters.com"/>
+      <property name="username" value="testuser@wohlfart.net"/>
+      <property name="password" value="test00test12"/>
+      <property name="protocol" value="smtp" />
+      <property name="javaMailProperties">
+          <props>
+             <prop key="mail.smtp.auth">true</prop>
+             <prop key="mail.smtp.connectiontimeout">20000</prop>
+             <prop key="mail.smtp.timeout">20000</prop>
+             <prop key="mail.smtp.quitwait">true</prop>
+          </props>
+       </property>
+    </bean>
+-->
+
+ <!-- dumbster testserver at localhost:
+      we use port 6789 since lower ports need root permissions
+      depends-on="dumbster"  -->
+
+    <bean id="springMailSender"
+          name="springMailSender"
+          class ="org.springframework.mail.javamail.JavaMailSenderImpl"
+          scope="seam.APPLICATION" >
+      <property name="host" value="127.0.0.1"/>
+      <property name="protocol" value="smtp" />
+      <property name="javaMailProperties">
+          <props>
+             <prop key="mail.smtp.auth">false</prop>
+             <prop key="mail.smtp.port">6789</prop>
+             <prop key="mail.smtp.connectiontimeout">20000</prop>
+             <prop key="mail.smtp.timeout">20000</prop>
+             <prop key="mail.smtp.quitwait">true</prop>
+          </props>
+       </property>
+    </bean>
+
+
+
+ <!--  production server at sfc
+  <bean id="springMailSender"
+        class ="org.springframework.mail.javamail.JavaMailSenderImpl"
+        scope="seam.APPLICATION" >
+     <property name="host" value="172.16.26.230"/>
+     <property name="protocol" value="smtp" />
+     <property name="javaMailProperties">
+        <props>
+           <prop key="mail.smtp.auth">false</prop>
+           <prop key="mail.smtp.connectiontimeout">5000</prop>
+           <prop key="mail.smtp.timeout">5000</prop>
+           <prop key="mail.smtp.quitwait">true</prop>
+        </props>
+     </property>
+  </bean>
+ -->
+
+ <!--  test server at webhosters
+  <bean id="springMailSender"
+        class ="org.springframework.mail.javamail.JavaMailSenderImpl"
+        scope="seam.APPLICATION" >
+     <property name="host" value="mail.nethosters.com"/>
+     <property name="username" value="testuser@wohlfart.net"/>
+     <property name="password" value="test00test12"/>
+     <property name="protocol" value="smtp" />
+     <property name="javaMailProperties">
+        <props>
+           <prop key="mail.smtp.host">mail.nethosters.com</prop>
+           <prop key="mail.smtp.sendpartial">true</prop>
+           <prop key="mail.smtp.userset">true</prop>
+           <prop key="mail.mime.charset">ISO-8859-1</prop>
+           <prop key="mail.smtp.starttls.enable">true</prop>
+           <prop key="mail.smtp.auth">false</prop>
+           <prop key="mail.smtp.connectiontimeout">5000</prop>
+           <prop key="mail.smtp.timeout">5000</prop>
+           <prop key="mail.smtp.quitwait">true</prop>
+        </props>
+     </property>
+  </bean>
+-->
+
+    <!-- this is dumbster, we need a port > 1024 since this doesn't run as root
+         we use 6789 for now there is an extra dumpser running for the test-ng
+         project, disable this one when running tests
+
+         replaced by a better implementation
+    <bean id="dumbster"
+          class="com.dumbster.smtp.SimpleSmtpServer"
+          factory-method="start" >
+       <constructor-arg value="6789" type="int" />
+    </bean>
+    -->
+
+
+  <!--
+       a spring lifecyclebean used for startup/shutdown work
+       we use it for generating the lucene index
+       and for unregistering the JDBC driver
+        -->
+  <bean id="springLifecycleBean"
+        class="net.wohlfart.framework.SpringLifecycleBean" >
+        <!-- required stuff -->
+        <property name="sessionFactory" ref="sessionFactory" />
+        <property name="luceneIndexer" ref="luceneIndexer" />
+        <!-- 
+        configgs
+         -->
+        <property name="doLuceneSetup" value="true" />
+  </bean>
+
+  <!-- this beans is transaction annotated -->
+  <bean id="luceneIndexer"
+        class="net.wohlfart.framework.LuceneIndexer" />
+
+
+</beans>
+

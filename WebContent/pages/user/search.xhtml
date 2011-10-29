@@ -1,0 +1,172 @@
+  <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.user.search.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.user.search.title']}" />
+
+<ui:define name="body">
+
+  <h:form id="f">
+
+    <ui:include src="searchform.xhtml" />
+
+    <!--
+    see: http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-fragment.html
+         https://jira.jboss.org/jira/browse/RF-3364
+
+        #{interpolator.interpolate(messages['myMessage'], myParam1, myParam2)}
+        see: http://www.seamframework.org/Community/HowToPutAParameterIntoALocalizedString
+     -->
+
+
+      <h:panelGroup layout="block"
+                    id="frm"
+                    rendered="#{not empty searchActionBean.resultList}">
+      <br />
+
+      <!-- google: "Results 1 - 10 of about 34,800,000 for searchstring" [definition]. (0.34 seconds)   -->
+      <h:panelGroup rendered="#{not empty searchActionBean.resultList}"  >
+      <h2>
+      <h:outputText value="#{interpolator.interpolate(messages['page.user.search.resultsWithExpression'], searchActionBean.firstOnPage, searchActionBean.lastOnPage, searchActionBean.resultSize, searchActionBean.expression, searchActionBean.timeString)}"
+                    rendered="#{not empty searchActionBean.expression}" />
+      <h:outputText value="#{interpolator.interpolate(messages['page.user.search.resultsNoExpression'], searchActionBean.firstOnPage, searchActionBean.lastOnPage, searchActionBean.resultSize, searchActionBean.timeString)}"
+                    rendered="#{empty searchActionBean.expression}" />
+      </h2>
+      </h:panelGroup>
+
+
+    <a4j:commandLink reRender="frm, msgs"
+                     ajaxSingle="true"
+                     rendered="#{searchActionBean.previousExists}"
+                     action="#{searchActionBean.first()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_first.png" title="First Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="frm, msgs"
+                     ajaxSingle="true"
+                     rendered="#{searchActionBean.previousExists}"
+                     action="#{searchActionBean.previous()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_previous.png" title="Previous Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="frm, msgs"
+                     ajaxSingle="true"
+                     rendered="#{searchActionBean.nextExists}"
+                     action="#{searchActionBean.next()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_next.png" title="Next Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="frm, msgs"
+                     ajaxSingle="true"
+                     rendered="#{searchActionBean.nextExists}"
+                     action="#{searchActionBean.last()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_last.png" title="Last Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+         <s:download src="/pages/user/searchListResource.xhtml">
+            <h:outputText value="download" />
+            <s:conversationId/>
+         </s:download>
+
+      <br />
+      <br />
+      <br />
+
+      <ul >
+        <ui:repeat var="row" value="#{searchActionBean.resultList}">
+
+          <!-- render change request data -->
+          <s:fragment rendered="#{row.changeRequestData}" >
+            <li style="list-style-type:none; padding-bottom: 20px;">
+                <s:link action="viewProcess"
+                        styleClass="h2"
+                        title="#{messages['table.actions.view']}"
+                        propagation="none">
+                  <f:param name="procDbid" value="#{row.entity.processInstanceId}"/>
+                  <h:outputText value="#{row.entity.title}" />
+                  <h:outputText value="#{row.entity.titleString}" />
+                </s:link><br /> <!--
+              <h:outputText value="#{row.entity.submitDate} " rendered="#{not empty row.entity.submitDate}"> -->
+
+              <h:outputText value="#{row.submitDate}" rendered="#{not empty row.submitDate}">
+                <f:convertDateTime pattern="dd.MM.yyyy " type="date" />
+              </h:outputText><br />
+
+              <h:outputText value="Einreicher: " />
+              <h:outputText value="#{row.entity.submitUser.fullname}" rendered="#{not empty row.entity.submitUser}" /><br />
+
+              <h:outputText value="PE: " />
+              <h:outputText value="#{row.entity.processUser.fullname}" rendered="#{not empty row.entity.processUser}" /><br />
+
+              <s:div styleClass="dr-table-cell" style="background-color: #f0f0f0;padding: 2px;">
+                <h:outputText value="#{row.entity.problemDescription}" escape="false" />
+              </s:div>
+            </li>
+          </s:fragment>
+
+        </ui:repeat>
+      </ul>
+
+
+
+      <br />
+
+    <a4j:commandLink reRender="frm, msgs"
+                     ajaxSingle="true"
+                     rendered="#{searchActionBean.previousExists}"
+                     action="#{searchActionBean.first()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_first.png" title="First Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="frm, msgs"
+                     ajaxSingle="true"
+                     rendered="#{searchActionBean.previousExists}"
+                     action="#{searchActionBean.previous()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_previous.png" title="Previous Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="frm, msgs"
+                     ajaxSingle="true"
+                     rendered="#{searchActionBean.nextExists}"
+                     action="#{searchActionBean.next()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_next.png" title="Next Page" />
+    </a4j:commandLink>
+
+    <span> </span>
+
+    <a4j:commandLink reRender="frm, msgs"
+                     ajaxSingle="true"
+                     rendered="#{searchActionBean.nextExists}"
+                     action="#{searchActionBean.last()}">
+      <h:graphicImage value="/#{theme['iconset']}/resultset_last.png" title="Last Page" />
+    </a4j:commandLink>
+
+    </h:panelGroup>
+
+  </h:form>
+
+  <br />
+  <br />
+  <br />
+
+</ui:define>
+
+</ui:composition>

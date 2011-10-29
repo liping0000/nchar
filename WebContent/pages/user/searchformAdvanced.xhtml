@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+            <a4j:outputPanel ajaxRendered="true"
+                             layout="block"
+                             style="padding: 3px;"
+                             rendered="#{searchActionBean.advancedSearch}">
+
+            <h:dataTable var="formField"
+                         value="#{searchActionBean.formFields}"
+                         rowKeyVar="rowKey">
+
+              <h:column>
+                <h:outputText value="#{messages[searchActionBean.getFormQuery(formField.selectedQueryId).getMsgCode()]}" />:
+                <h:outputText value="&#160;" escape="false" />
+              </h:column>
+
+              <h:column>
+
+                <h:inputText rendered="#{searchActionBean.getFormQuery(formField.selectedQueryId).getDataType() == 'STRING'}"
+                             value="#{formField.value1}"
+                             styleClass="inputtext" />
+
+                <h:selectOneMenu rendered="#{searchActionBean.getFormQuery(formField.selectedQueryId).getDataType() == 'REFERENCE'}"
+                                 value="#{formField.value1}"
+                                 styleClass="inputselect" >
+                  <s:selectItems value="#{searchActionBean.getFormQuery(formField.selectedQueryId).getRefSelects()}"
+                                 var="ref"
+                                 label="#{messages[ref.label]}"
+                                 itemValue="#{ref.value.toString()}"
+                                 noSelectionLabel="-- please select --">
+                  </s:selectItems>
+                </h:selectOneMenu>
+
+                <h:selectBooleanCheckbox rendered="#{searchActionBean.getFormQuery(formField.selectedQueryId).getDataType() == 'BOOLEAN'}"
+                                         value="#{formField.valueBoolean}" />
+
+              </h:column>
+
+            </h:dataTable>
+
+            </a4j:outputPanel>
+
+
+</ui:composition>

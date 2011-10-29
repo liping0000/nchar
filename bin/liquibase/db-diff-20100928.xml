@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+
+  <!-- new flattened role hirarchie: -->
+
+    <!-- table 1 -->
+    <changeSet author="michael (generated)" id="1285664343104-1">
+        <createTable tableName="CHARMS_INCL_ROLES">
+            <column name="MAIN_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INCL_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-80">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C00756847" tableName="CHARMS_INCL_ROLES" tablespace="CHARMS" unique="false">
+            <column name="MAIN_ID_"/>
+            <column name="INCL_ID_"/>
+        </createIndex>
+    </changeSet>
+    
+
+
+    <!-- table 2 -->
+    <changeSet author="michael (generated)" id="1285664343104-5">
+        <createTable tableName="CHARMS_UPSTRM_ROLES">
+            <column name="DOWN_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UP_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+
+    <!-- deprecated: -->
+    <changeSet author="michael (generated)" id="1285664343104-91">
+        <dropTable tableName="CHARMS_CHILDROLES"/>
+    </changeSet>
+
+  <!-- changes in the role table -->
+    <changeSet author="michael (generated)" id="1285664343104-90">
+        <dropColumn columnName="ORGANIZATIONAL_" tableName="CHARMS_ROLE"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-10">
+        <addColumn tableName="CHARMS_ROLE">
+            <column name="CLASSIFICATION_" type="VARCHAR2(20 CHAR)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-20">
+        <modifyDataType columnName="GRP_ACTOR_ID_" newDataType="VARCHAR2(15 CHAR)" tableName="CHARMS_ROLE"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-34">
+        <addUniqueConstraint columnNames="GRP_ACTOR_ID_" constraintName="SYS_C00756903" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_ROLE" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-35">
+        <addUniqueConstraint columnNames="NAME_" constraintName="SYS_C00756904" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_ROLE" tablespace="CHARMS"/>
+    </changeSet>
+
+
+
+  <!-- revision stuff:-->
+    <changeSet author="michael (generated)" id="1285664343104-2">
+        <createTable tableName="CHARMS_REVISION">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00756898" primaryKeyTablespace="CHARMS"/>
+            </column>
+            <column name="TIMESTAMP_" type="NUMBER(19,0)"/>
+            <column name="USER_NAME_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+
+
+
+  <!-- new transition feature -->
+    <changeSet author="michael (generated)" id="1285664343104-3">
+        <createTable tableName="CHARMS_TRNS_CHOICE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00756914" primaryKeyTablespace="CHARMS"/>
+            </column>
+            <column name="SELECTED_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TASK_DBID_" type="NUMBER(19,0)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-4">
+        <createTable tableName="CHARMS_TRNS_DATA">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_C00756916" primaryKeyTablespace="CHARMS"/>
+            </column>
+            <column name="DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="MESSAGE_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="RECEIVER_LABEL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="REMIND_DATE_" type="TIMESTAMP(6)"/>
+            <column name="REMIND_INTERVAL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TRANSITION_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="RCVR_GRP_ID_" type="NUMBER(19,0)"/>
+            <column name="RCVR_USR_ID_" type="NUMBER(19,0)"/>
+            <column name="SWIMLANE_ID_" type="NUMBER(19,0)"/>
+            <column name="CHOICE_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+
+
+<!-- properties update (set) -->
+
+    <!-- renaming column PROP_TYPE_ to SET_TYPE_ -->
+    <changeSet author="michael (generated)" id="1285664343104-89">
+        <dropColumn columnName="PROP_TYPE_" tableName="CHARMS_PROP_SET"/>
+    </changeSet>
+
+    <changeSet author="michael (generated)" id="1285664343104-8">
+        <addColumn tableName="CHARMS_PROP_SET">
+            <column name="SET_TYPE_" type="VARCHAR2(5 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="michael (generated)" id="1285664343104-82">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C00756882" tableName="CHARMS_PROP_SET" tablespace="CHARMS" unique="false">
+            <column name="NAME_"/>
+            <column name="SET_TYPE_"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="michael (generated)" id="1285664343104-29">
+        <addUniqueConstraint columnNames="NAME_, SET_TYPE_" constraintName="SYS_C00756882" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PROP_SET" tablespace="CHARMS"/>
+    </changeSet>
+
+    <!-- probably the former unique index on PROP_TYPE, NAME_ -->
+    <changeSet author="michael (generated)" id="1285664343104-54">
+        <dropUniqueConstraint constraintName="SYS_C0042802" tableName="CHARMS_PROP_SET"/>
+    </changeSet>
+
+
+
+<!-- properties update (value) -->
+
+    <changeSet author="michael (generated)" id="1285664343104-9">
+        <addColumn tableName="CHARMS_PROP_VAL">
+            <column name="PROP_TYPE_" type="VARCHAR2(20 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- a property name is unique within the set -->
+    <changeSet author="michael (generated)" id="1285664343104-30">
+        <addUniqueConstraint columnNames="NAME_, SET_ID_" constraintName="SYS_C00756888" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PROP_VAL" tablespace="CHARMS"/>
+    </changeSet>
+
+
+
+
+<!-- -->
+
+    <changeSet author="michael (generated)" id="1285664343104-6">
+        <addColumn tableName="CHARMS_PERM_TARGET">
+            <column name="TARGET_TYPE_" type="VARCHAR2(31 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-7">
+        <addColumn tableName="CHARMS_PERMISSION">
+            <column name="TARGET_ID_" type="NUMBER(19,0)"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet author="michael (generated)" id="1285664343104-11">
+        <addColumn tableName="CHREQ_MSG_ENTRY">
+            <column name="RECEIVER_GRPNAME_" type="VARCHAR2(121 CHAR)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-12">
+        <addColumn tableName="CHREQ_MSG_ENTRY">
+            <column name="RECEIVER_GRP_ID_" type="NUMBER(19,0)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-13">
+        <addColumn tableName="JBPM4_EXECUTION">
+            <column name="INITIATOR_" type="VARCHAR2(255 CHAR)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-14">
+        <addColumn tableName="JBPM4_HIST_PROCINST">
+            <column name="INITIATOR_" type="VARCHAR2(255 CHAR)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-15">
+        <addColumn tableName="JBPM4_HIST_PROCINST">
+            <column name="SUPERPROCID_" type="VARCHAR2(255 CHAR)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-16">
+        <modifyDataType columnName="KEY_" newDataType="VARCHAR2(255 CHAR)" tableName="CHARMS_EMSG"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-17">
+        <modifyDataType columnName="DISCRIMINATOR_" newDataType="VARCHAR2(5 CHAR)" tableName="CHARMS_PERMISSION"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-18">
+        <modifyDataType columnName="RECIPIENT_" newDataType="VARCHAR2(15 CHAR)" tableName="CHARMS_PERMISSION"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-19">
+        <modifyDataType columnName="TARGET_" newDataType="VARCHAR2(120 CHAR)" tableName="CHARMS_PERMISSION"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-21">
+        <addNotNullConstraint columnDataType="VARCHAR2(255 CHAR)" columnName="NAME_" tableName="CHARMS_TRGT_ACT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-22">
+        <modifyDataType columnName="ACTOR_ID_" newDataType="VARCHAR2(15 CHAR)" tableName="CHARMS_USER"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-23">
+        <modifyDataType columnName="DESCR_" newDataType="VARCHAR2(4000 BYTE)" tableName="JBPM4_TASK"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-24">
+        <addPrimaryKey columnNames="MAIN_ID_, INCL_ID_" constraintName="SYS_C00756847" tableName="CHARMS_INCL_ROLES" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-25">
+        <addUniqueConstraint columnNames="DOC_BLOB_ID_" constraintName="SYS_C00756822" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_DOCUMENT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-26">
+        <addUniqueConstraint columnNames="NAME_, LOCALE_ID_" constraintName="SYS_C00756865" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_MSGBUNDLE" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-27">
+        <addUniqueConstraint columnNames="RECIPIENT_, DISCRIMINATOR_, TARGET_, TARGET_ID_" constraintName="SYS_C00756872" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PERMISSION" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-28">
+        <addUniqueConstraint columnNames="TARGET_STRING_" constraintName="SYS_C00756877" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_PERM_TARGET" tablespace="CHARMS"/>
+    </changeSet>
+
+    <changeSet author="michael (generated)" id="1285664343104-31">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C00756894" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-32">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C00756895" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-33">
+        <addUniqueConstraint columnNames="REPORT_BLOB_ID_" constraintName="SYS_C00756896" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_REPORT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-36">
+        <addUniqueConstraint columnNames="NAME_, TARGET_ID_" constraintName="SYS_C00756912" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_TRGT_ACT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-37">
+        <addUniqueConstraint columnNames="SEQUENCE_TYPE_, VALUE_" constraintName="SYS_C00756922" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_UID" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-38">
+        <addUniqueConstraint columnNames="ACTOR_ID_" constraintName="SYS_C00756929" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_USER" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-39">
+        <addUniqueConstraint columnNames="NAME_" constraintName="SYS_C00756930" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHARMS_USER" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-40">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C00756937" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_CODE" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-41">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C00756938" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_CODE" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-42">
+        <addUniqueConstraint columnNames="TID_" constraintName="SYS_C00756948" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_FACET_DATA" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-43">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C00756959" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-44">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C00756960" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-45">
+        <addUniqueConstraint columnNames="PRODUCT_ID_, CODE_ID_" constraintName="SYS_C00756965" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD_CODES" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-46">
+        <addUniqueConstraint columnNames="PRODUCT_ID_, UNIT_ID_" constraintName="SYS_C00756970" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_PROD_UNITS" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-47">
+        <addUniqueConstraint columnNames="DEFAULT_NAME_" constraintName="SYS_C00756975" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_UNIT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-48">
+        <addUniqueConstraint columnNames="SORT_INDEX_" constraintName="SYS_C00756976" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CHREQ_UNIT" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-49">
+        <addUniqueConstraint columnNames="ID_" constraintName="SYS_C00756985" deferrable="false" disabled="false" initiallyDeferred="false" tableName="JBPM4_EXECUTION" tablespace="CHARMS"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-50">
+        <dropUniqueConstraint constraintName="SYS_C0042749" tableName="CHARMS_DOCUMENT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-51">
+        <dropUniqueConstraint constraintName="SYS_C0042786" tableName="CHARMS_MSGBUNDLE"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-52">
+        <dropUniqueConstraint constraintName="SYS_C0042793" tableName="CHARMS_PERMISSION"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-53">
+        <dropUniqueConstraint constraintName="SYS_C0042797" tableName="CHARMS_PERM_TARGET"/>
+    </changeSet>
+
+    <changeSet author="michael (generated)" id="1285664343104-55">
+        <dropUniqueConstraint constraintName="SYS_C0042812" tableName="CHARMS_REPORT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-56">
+        <dropUniqueConstraint constraintName="SYS_C0042813" tableName="CHARMS_REPORT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-57">
+        <dropUniqueConstraint constraintName="SYS_C0042814" tableName="CHARMS_REPORT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-58">
+        <dropUniqueConstraint constraintName="SYS_C0042819" tableName="CHARMS_ROLE"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-59">
+        <dropUniqueConstraint constraintName="SYS_C0042820" tableName="CHARMS_ROLE"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-60">
+        <dropUniqueConstraint constraintName="SYS_C0042827" tableName="CHARMS_TRGT_ACT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-61">
+        <dropUniqueConstraint constraintName="SYS_C0042833" tableName="CHARMS_UID"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-62">
+        <dropUniqueConstraint constraintName="SYS_C0042838" tableName="CHARMS_USER"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-63">
+        <dropUniqueConstraint constraintName="SYS_C0042839" tableName="CHARMS_USER"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-64">
+        <dropUniqueConstraint constraintName="SYS_C0042855" tableName="CHREQ_FACET_DATA"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-65">
+        <dropUniqueConstraint constraintName="SYS_C0042866" tableName="CHREQ_PROD"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-66">
+        <dropUniqueConstraint constraintName="SYS_C0042867" tableName="CHREQ_PROD"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-67">
+        <dropUniqueConstraint constraintName="SYS_C0042880" tableName="CHREQ_UNIT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-68">
+        <dropUniqueConstraint constraintName="SYS_C0042881" tableName="CHREQ_UNIT"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-69">
+        <dropUniqueConstraint constraintName="SYS_C0042903" tableName="JBPM4_EXECUTION"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-70">
+        <addForeignKeyConstraint baseColumnNames="INCL_ID_" baseTableName="CHARMS_INCL_ROLES" baseTableSchemaName="CHARMS" constraintName="FK94F45C0FC808D060" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencedTableSchemaName="CHARMS" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-71">
+        <addForeignKeyConstraint baseColumnNames="MAIN_ID_" baseTableName="CHARMS_INCL_ROLES" baseTableSchemaName="CHARMS" constraintName="FK94F45C0FC235C44B" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencedTableSchemaName="CHARMS" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-72">
+        <addForeignKeyConstraint baseColumnNames="CHOICE_ID_" baseTableName="CHARMS_TRNS_DATA" baseTableSchemaName="CHARMS" constraintName="FKE9B89CA32E3744D6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_TRNS_CHOICE" referencedTableSchemaName="CHARMS" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-73">
+        <addForeignKeyConstraint baseColumnNames="RCVR_GRP_ID_" baseTableName="CHARMS_TRNS_DATA" baseTableSchemaName="CHARMS" constraintName="FKE9B89CA32A2D7E5" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencedTableSchemaName="CHARMS" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-74">
+        <addForeignKeyConstraint baseColumnNames="RCVR_USR_ID_" baseTableName="CHARMS_TRNS_DATA" baseTableSchemaName="CHARMS" constraintName="FKE9B89CA3E90C8869" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_USER" referencedTableSchemaName="CHARMS" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-75">
+        <addForeignKeyConstraint baseColumnNames="SWIMLANE_ID_" baseTableName="CHARMS_TRNS_DATA" baseTableSchemaName="CHARMS" constraintName="FKE9B89CA35B710AFB" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="DBID_" referencedTableName="JBPM4_SWIMLANE" referencedTableSchemaName="CHARMS" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-76">
+        <addForeignKeyConstraint baseColumnNames="DOWNSTREAM_ID_" baseTableName="CHARMS_UPSTRM_ROLES" baseTableSchemaName="CHARMS" constraintName="FK62DD65B8AECB14B4" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencedTableSchemaName="CHARMS" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-77">
+        <addForeignKeyConstraint baseColumnNames="UPSTREAM_ID_" baseTableName="CHARMS_UPSTRM_ROLES" baseTableSchemaName="CHARMS" constraintName="FK62DD65B823BE9B6D" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID_" referencedTableName="CHARMS_ROLE" referencedTableSchemaName="CHARMS" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-78">
+        <dropForeignKeyConstraint baseTableName="CHARMS_CHILDROLES" baseTableSchemaName="CAMS" constraintName="FKA2D54FC4BD0A4A2E"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-79">
+        <dropForeignKeyConstraint baseTableName="CHARMS_CHILDROLES" baseTableSchemaName="CAMS" constraintName="FKA2D54FC4B420E6BC"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-81">
+        <createIndex associatedWith="uniqueConstraint" indexName="SYS_C00756872" tableName="CHARMS_PERMISSION" tablespace="CHARMS" unique="false">
+            <column name="RECIPIENT_"/>
+            <column name="DISCRIMINATOR_"/>
+            <column name="TARGET_"/>
+            <column name="TARGET_ID_"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="michael (generated)" id="1285664343104-83">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C00756898" tableName="CHARMS_REVISION" tablespace="CHARMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-84">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C00756914" tableName="CHARMS_TRNS_CHOICE" tablespace="CHARMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-85">
+        <createIndex associatedWith="primaryKey" indexName="SYS_C00756916" tableName="CHARMS_TRNS_DATA" tablespace="CHARMS" unique="false">
+            <column name="ID_"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-86">
+        <dropIndex associatedWith="primaryKey" indexName="SYS_C0042739" tableName="CHARMS_CHILDROLES"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-87">
+        <dropIndex associatedWith="uniqueConstraint" indexName="SYS_C0042793" tableName="CHARMS_PERMISSION"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1285664343104-88">
+        <dropIndex associatedWith="uniqueConstraint" indexName="SYS_C0042802" tableName="CHARMS_PROP_SET"/>
+    </changeSet>
+
+
+</databaseChangeLog>

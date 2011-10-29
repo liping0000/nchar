@@ -1,0 +1,1373 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+
+    <changeSet author="Michael Wohlfart" id="1288190585258-1">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_DOC_BLB" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_DOC_BLB">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_DOC_BLB" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="CONTENT_" type="BLOB">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-1c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_DOC_BLB"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_DOC_BLB" tableName="CHARMS_DOC_BLB" />
+    </changeSet>
+
+    <changeSet author="Michael Wohlfart" id="1288190585258-2">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_DOCUMENT" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_DOCUMENT">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_DOCUMENT" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DOCUMENT_TYPE_" type="VARCHAR2(31 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COMMENT_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="EDITOR_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LAST_MODIFIED_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MIME_TYPE_" type="VARCHAR2(250 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(250 CHAR)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DOC_BLOB_ID_" type="NUMBER(19,0)"/>
+            <column name="EDITOR_ID_" type="NUMBER(19,0)"/>
+            <column name="FOLDER_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-2c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_DOCUMENT"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_DOCUMENT" tableName="CHARMS_DOCUMENT" />
+    </changeSet>
+
+
+    <changeSet author="Michael Wohlfart" id="1288190585258-3">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_EMSG" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_EMSG">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_EMSG" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="CONTENT_" type="CLOB"/>
+            <column name="CREATE_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="RECEIVER_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SENDER_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SENT_" type="TIMESTAMP(6)"/>
+            <column name="SUBJECT_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-3c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_EMSG"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_EMSG" tableName="CHARMS_EMSG" />
+    </changeSet>
+    
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-4">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_ETMPL" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_ETMPL">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_ETMPL" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="BODY_" type="CLOB"/>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="LAST_MODIFIED_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SENDER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SUBJECT_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-4c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_ETMPL"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_ETMPL" tableName="CHARMS_ETMPL" />
+    </changeSet>
+    
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-5">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_ETMPL_RCVR" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_ETMPL_RCVR">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_ETMPL_RCVR" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="ADDRESS_EXPR_" type="VARCHAR2(500 CHAR)"/>
+            <column name="TEMPLATE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-5c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_ETMPL_RCVR"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_ETMPL_RCVR" tableName="CHARMS_ETMPL_RCVR" />
+    </changeSet>
+
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-6">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_ETMPL_TRANS" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_ETMPL_TRANS">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_ETMPL_TRANS" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="BODY_" type="CLOB"/>
+            <column name="LOCALE_ID_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SUBJECT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TEMPLATE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-6c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_ETMPL_TRANS"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_ETMPL_TRANS" tableName="CHARMS_ETMPL_TRANS" />
+    </changeSet>
+
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-7">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_FOLDER" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_FOLDER">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_FOLDER" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="FOLDER_TYPE_" type="VARCHAR2(31 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COMMENT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="PARENT_ID_" type="NUMBER(19,0)"/>
+            <column name="ROOT_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-7c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_FOLDER"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_FOLDER" tableName="CHARMS_FOLDER" />
+    </changeSet>
+
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-8">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_INCL_ROLES" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_INCL_ROLES">
+            <column name="MAIN_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INCL_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+   
+    <changeSet author="Michael Wohlfart" id="1288190585258-9">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_LOG" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_LOG">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_LOG" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DATE_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LEVEL_" type="VARCHAR2(10 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOGGER_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MESSSAGE_" type="VARCHAR2(1024 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-9c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_LOG"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_LOG" tableName="CHARMS_LOG" />
+    </changeSet>
+    
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-10">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_MEMBERSHIP" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_MEMBERSHIP">
+            <column name="ROLE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+   
+   
+    <changeSet author="Michael Wohlfart" id="1288190585258-11">
+        <preConditions onFail="MARK_RAN" >
+            <not><tableExists tableName="CHARMS_MESSAGES" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_MESSAGES">
+            <column name="MSG_BUNDLE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(2500 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MSG_CODE_" type="VARCHAR2(250 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-12">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_MSGBUNDLE" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_MSGBUNDLE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_MSGBUNDLE" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="LOCALE_ID_" type="VARCHAR2(20 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-12c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_MSGBUNDLE"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_MSGBUNDLE" tableName="CHARMS_MSGBUNDLE" />
+    </changeSet>
+       
+       
+    <changeSet author="Michael Wohlfart" id="1288190585258-13">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_PERM_TARGET" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_PERM_TARGET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_PERM_TARGET" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="TARGET_STRING_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-13c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_PERM_TARGET"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_PERM_TARGET" tableName="CHARMS_PERM_TARGET" />
+    </changeSet>
+ 
+     
+    <changeSet author="Michael Wohlfart" id="1288190585258-14">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_PERMISSION" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_PERMISSION">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_PERMISSION" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="ACTION_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="DISCRIMINATOR_" type="VARCHAR2(5 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RECIPIENT_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_" type="VARCHAR2(120 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-14c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_PERMISSION"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_PERMISSION" tableName="CHARMS_PERMISSION" />
+    </changeSet>
+ 
+     
+    <changeSet author="Michael Wohlfart" id="1288190585258-15">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_PROP_SET" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_PROP_SET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_PROP_SET" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="NAME_" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SET_TYPE_" type="VARCHAR2(20 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-15c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_PROP_SET"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_PROP_SET" tableName="CHARMS_PROP_SET" />
+    </changeSet>
+ 
+        
+    <changeSet author="Michael Wohlfart" id="1288190585258-16">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_PROP_VAL" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_PROP_VAL">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_PROP_VAL" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="NAME_" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROP_TYPE_" type="VARCHAR2(20 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(2048 CHAR)"/>
+            <column name="SET_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-16c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_PROP_VAL"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_PROP_VAL" tableName="CHARMS_PROP_VAL" />
+    </changeSet>
+         
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-17">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_REPORT" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_REPORT">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_REPORT" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="UPDATE_" type="TIMESTAMP(6)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REPORT_BLOB_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-17c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_REPORT"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_REPORT" tableName="CHARMS_REPORT" />
+    </changeSet>
+ 
+     
+    <changeSet author="Michael Wohlfart" id="1288190585258-18">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_REVISION" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_REVISION">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_REVISION" />
+            </column>
+            <column name="TIMESTAMP_" type="NUMBER(19,0)"/>
+            <column name="USER_NAME_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-18c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_REVISION"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_REVISION" tableName="CHARMS_REVISION" />
+    </changeSet>
+     
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-19">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_ROLE" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_ROLE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_ROLE" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="GRP_ACTOR_ID_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CLASSIFICATION_" type="VARCHAR2(20 CHAR)"/>
+            <column name="CONDITIONAL_" type="CHAR(1)"/>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="LABEL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-19c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_ROLE"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_ROLE" tableName="CHARMS_ROLE" />
+    </changeSet>
+ 
+     
+    <changeSet author="Michael Wohlfart" id="1288190585258-20">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_RPT_BLB" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_RPT_BLB">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_RPT_BLB" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="CONTENT_" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-20c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_RPT_BLB"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_RPT_BLB" tableName="CHARMS_RPT_BLB" />
+    </changeSet>
+ 
+     
+    <changeSet author="Michael Wohlfart" id="1288190585258-21">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_TRGT_ACT" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_TRGT_ACT">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_TRGT_ACT" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-21c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_TRGT_ACT"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_TRGT_ACT" tableName="CHARMS_TRGT_ACT" />
+    </changeSet>
+ 
+        
+    <changeSet author="Michael Wohlfart" id="1288190585258-22">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_TRNS_CHOICE" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_TRNS_CHOICE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_TRNS_CHOICE" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="SELECTED_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TASK_DBID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-22c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_TRNS_CHOICE"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_TRNS_CHOICE" tableName="CHARMS_TRNS_CHOICE" />
+    </changeSet>
+ 
+     
+    <changeSet author="Michael Wohlfart" id="1288190585258-23">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_TRNS_DATA" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_TRNS_DATA">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_TRNS_DATA" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DUE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="MESSAGE_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="RECEIVER_LABEL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="REMIND_DATE_" type="TIMESTAMP(6)"/>
+            <column name="REMIND_INTERVAL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TRANSITION_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="RCVR_GRP_ID_" type="NUMBER(19,0)"/>
+            <column name="RCVR_USR_ID_" type="NUMBER(19,0)"/>
+            <column name="SWIMLANE_ID_" type="NUMBER(19,0)"/>
+            <column name="CHOICE_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-23c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_TRNS_DATA"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_TRNS_DATA" tableName="CHARMS_TRNS_DATA" />
+    </changeSet>
+ 
+     
+    <changeSet author="Michael Wohlfart" id="1288190585258-24">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_UID" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_UID">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_UID" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="SEQUENCE_TYPE_" type="VARCHAR2(31 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(250 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOCATION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PREFIX_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="VARCHAR2(255 CHAR)"/>
+            <column name="YEAR_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-24c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_UID"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_UID" tableName="CHARMS_UID" />
+    </changeSet>
+ 
+         
+    <changeSet author="Michael Wohlfart" id="1288190585258-25">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_UPSTRM_ROLES" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_UPSTRM_ROLES">
+            <column name="DOWN_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UP_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+   
+   
+    <changeSet author="Michael Wohlfart" id="1288190585258-26">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_USER" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_USER">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_USER" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="ACCOUNT_EXPIRE_" type="TIMESTAMP(6)"/>
+            <column name="ACTOR_ID_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREDENTIALS_EXPIRE_" type="TIMESTAMP(6)"/>
+            <column name="DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="EMAIL_" type="VARCHAR2(100 CHAR)"/>
+            <column name="IS_ENABLED_" type="CHAR(1)"/>
+            <column name="EXTERNAL_ID1_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXTERNAL_ID2_" type="VARCHAR2(255 CHAR)"/>
+            <column name="FIRSTNAME_" type="VARCHAR2(60 CHAR)"/>
+            <column name="GENDER_" type="VARCHAR2(10 CHAR)"/>
+            <column name="LABEL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LASTNAME_" type="VARCHAR2(60 CHAR)"/>
+            <column name="LOCALE_ID_" type="VARCHAR2(100 CHAR)"/>
+            <column name="NAME_" type="VARCHAR2(20 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWD_" type="VARCHAR2(100 CHAR)"/>
+            <column name="THEME_ID_" type="VARCHAR2(100 CHAR)"/>
+            <column name="TIMEZONE_ID_" type="VARCHAR2(100 CHAR)"/>
+            <column name="IS_UNLOCKED_" type="CHAR(1)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-26c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_USER"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_USER" tableName="CHARMS_USER" />
+    </changeSet>
+ 
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-27">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHARMS_WFL_DATA" /></not>
+        </preConditions>
+        <createTable tableName="CHARMS_WFL_DATA">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHARMS_WFL_DATA" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="FINISH_DATE_" type="TIMESTAMP(6)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="SUBMIT_DATE_" type="TIMESTAMP(6)"/>
+            <column name="TITLE_" type="VARCHAR2(250 CHAR)"/>
+            <column name="FINISH_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="SUBMIT_USER_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-27c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHARMS_WFL_DATA"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHARMS_WFL_DATA" tableName="CHARMS_WFL_DATA" />
+    </changeSet>
+ 
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-28">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_CODE" /></not>
+        </preConditions>
+        <createTable tableName="CHREQ_CODE">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHREQ_CODE" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-28c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHREQ_CODE"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHREQ_CODE" tableName="CHREQ_CODE" />
+    </changeSet>
+ 
+     
+    <changeSet author="Michael Wohlfart" id="1288190585258-29">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_COSTSHEET" /></not>
+        </preConditions>
+        <createTable tableName="CHREQ_COSTSHEET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHREQ_COSTSHEET" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="COMMENT_" type="VARCHAR2(512 CHAR)"/>
+            <column name="CONTENT_" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(250 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-29c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHREQ_COSTSHEET"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHREQ_COSTSHEET" tableName="CHREQ_COSTSHEET" />
+    </changeSet>
+     
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-30">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_DATA" /></not>
+        </preConditions>
+        <createTable tableName="CHREQ_DATA">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHREQ_DATA" />
+            </column>
+            <column name="ASSIGN_DATE_" type="TIMESTAMP(6)"/>
+            <column name="CONCLUSION_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="COST_A_" type="CHAR(1)"/>
+            <column name="COST_AMOUNT_" type="NUMBER(10,0)"/>
+            <column name="COST_B_" type="CHAR(1)"/>
+            <column name="CUSTOMER_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="FAST_TRACK_" type="CHAR(1)"/>
+            <column name="IS_GOODWILL_" type="CHAR(1)"/>
+            <column name="GOODWILL_TEXT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HISTORY_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="IMPLEMENT_DATE_" type="TIMESTAMP(6)"/>
+            <column name="INITIATE_DATE_" type="TIMESTAMP(6)"/>
+            <column name="ITEM_ID_NUMBER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="MANAGER_NAME_" type="VARCHAR2(100 CHAR)"/>
+            <column name="MODULE_ID_NUMBER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PROBLEM_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="PROCESS_DATE_" type="TIMESTAMP(6)"/>
+            <column name="PROJECT_ID_NUMBER_" type="VARCHAR2(50 CHAR)"/>
+            <column name="PROPOSAL_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="REGULAR_TRACK_" type="CHAR(1)"/>
+            <column name="IS_STANDARD_" type="CHAR(1)"/>
+            <column name="STANDARD_TEXT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ASSIGN_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="CODE_ID_" type="NUMBER(19,0)"/>
+            <column name="PRODUCT_ID_" type="NUMBER(19,0)"/>
+            <column name="UNIT_ID_" type="NUMBER(19,0)"/>
+            <column name="IMPLEMENT_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="INITIATE_USER_ID_" type="NUMBER(19,0)"/>
+            <column name="PROCESS_USER_ID_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-30c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHREQ_DATA"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHREQ_DATA" tableName="CHREQ_DATA" />
+    </changeSet>
+ 
+     
+    <changeSet author="Michael Wohlfart" id="1288190585258-31">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_IMPACTSHEET" /></not>
+        </preConditions>
+        <createTable tableName="CHREQ_IMPACTSHEET">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHREQ_IMPACTSHEET" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="COMMENT_" type="VARCHAR2(512 CHAR)"/>
+            <column name="CONTENT_" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(250 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="SIZE_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-31c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHREQ_IMPACTSHEET"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHREQ_IMPACTSHEET" tableName="CHREQ_IMPACTSHEET" />
+    </changeSet>
+     
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-32">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_MSG_ENTRY" /></not>
+        </preConditions>
+        <createTable tableName="CHREQ_MSG_ENTRY">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHREQ_MSG_ENTRY" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="AUTHOR_FULLNAME_" type="VARCHAR2(121 CHAR)"/>
+            <column name="AUTHOR_ID_" type="NUMBER(19,0)"/>
+            <column name="BUSINESS_KEY_" type="VARCHAR2(250 CHAR)"/>
+            <column name="CONTENT_" type="VARCHAR2(2024 CHAR)"/>
+            <column name="PROC_INST_ID_" type="NUMBER(19,0)"/>
+            <column name="RECEIVER_FULLNAME_" type="VARCHAR2(121 CHAR)"/>
+            <column name="RECEIVER_GRP_ID_" type="NUMBER(19,0)"/>
+            <column name="RECEIVER_GRPNAME_" type="VARCHAR2(121 CHAR)"/>
+            <column name="RECEIVER_ID_" type="NUMBER(19,0)"/>
+            <column name="TIMESTAMP_" type="TIMESTAMP(6)"/>
+            <column name="TITLE_" type="VARCHAR2(250 CHAR)"/>
+            <column name="MSG_TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PARENT_ID_" type="NUMBER(19,0)"/>
+            <column name="IDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-32c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHREQ_MSG_ENTRY"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHREQ_MSG_ENTRY" tableName="CHREQ_MSG_ENTRY" />
+    </changeSet>
+ 
+     
+    <changeSet author="Michael Wohlfart" id="1288190585258-33">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_PROD" /></not>
+        </preConditions>
+        <createTable tableName="CHREQ_PROD">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHREQ_PROD" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-33c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHREQ_PROD"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHREQ_PROD" tableName="CHREQ_PROD" />
+    </changeSet>    
+            
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-34">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_PROD_CODES" /></not>
+        </preConditions>
+        <createTable tableName="CHREQ_PROD_CODES">
+            <column name="PRODUCT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODE_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSITION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-35">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_PROD_UNITS" /></not>
+        </preConditions>
+        <createTable tableName="CHREQ_PROD_UNITS">
+            <column name="PRODUCT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UNIT_ID_" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSITION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-36">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="CHREQ_UNIT" /></not>
+        </preConditions>
+        <createTable tableName="CHREQ_UNIT">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CHREQ_UNIT" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)"/>
+            <column name="DEFAULT_NAME_" type="VARCHAR2(50 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED_" type="CHAR(1)"/>
+            <column name="MSG_CODE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SORT_INDEX_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-36c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_CHREQ_UNIT"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_CHREQ_UNIT" tableName="CHREQ_UNIT" />
+    </changeSet>
+     
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-39">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_DEPLOYMENT" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_DEPLOYMENT">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_DEPLOYMENT" />
+            </column>
+            <column name="TIMESTAMP_" type="NUMBER(19,0)"/>
+            <column name="NAME_" type="CLOB"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-39c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_DEPLOYMENT"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_DEPLOYMENT" tableName="JBPM4_DEPLOYMENT" />
+    </changeSet>   
+    
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-40">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_DEPLOYPROP" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_DEPLOYPROP">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_DEPLOYPROP" />
+            </column>
+            <column name="DEPLOYMENT_" type="NUMBER(19,0)"/>
+            <column name="OBJNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="STRINGVAL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LONGVAL_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-40c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_DEPLOYPROP"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_DEPLOYPROP" tableName="JBPM4_DEPLOYPROP" />
+    </changeSet>   
+    
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-41">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_EXECUTION" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_EXECUTION">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_EXECUTION" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACTIVITYNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PROCDEFID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HASVARS_" type="NUMBER(1,0)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SUSPHISTSTATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="HISACTINST_" type="NUMBER(19,0)"/>
+            <column name="INITIATOR_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PARENT_" type="NUMBER(19,0)"/>
+            <column name="INSTANCE_" type="NUMBER(19,0)"/>
+            <column name="SUPEREXEC_" type="NUMBER(19,0)"/>
+            <column name="SUBPROCINST_" type="NUMBER(19,0)"/>
+            <column name="PARENT_IDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-41c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_EXECUTION"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_EXECUTION" tableName="JBPM4_EXECUTION" />
+    </changeSet>
+  
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-42">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_HIST_ACTINST" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_HIST_ACTINST">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_HIST_ACTINST" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HPROCI_" type="NUMBER(19,0)"/>
+            <column name="TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXECUTION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ACTIVITY_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="START_" type="TIMESTAMP(6)"/>
+            <column name="END_" type="TIMESTAMP(6)"/>
+            <column name="DURATION_" type="NUMBER(19,0)"/>
+            <column name="TRANSITION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NEXTIDX_" type="NUMBER(10,0)"/>
+            <column name="HTASK_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-42c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_HIST_ACTINST"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_HIST_ACTINST" tableName="JBPM4_HIST_ACTINST" />
+    </changeSet>
+         
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-43">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_HIST_DETAIL" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_HIST_DETAIL">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_HIST_DETAIL" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TIME_" type="TIMESTAMP(6)"/>
+            <column name="HPROCI_" type="NUMBER(19,0)"/>
+            <column name="HPROCIIDX_" type="NUMBER(10,0)"/>
+            <column name="HACTI_" type="NUMBER(19,0)"/>
+            <column name="HACTIIDX_" type="NUMBER(10,0)"/>
+            <column name="HTASK_" type="NUMBER(19,0)"/>
+            <column name="HTASKIDX_" type="NUMBER(10,0)"/>
+            <column name="HVAR_" type="NUMBER(19,0)"/>
+            <column name="HVARIDX_" type="NUMBER(10,0)"/>
+            <column name="MESSAGE_" type="CLOB"/>
+            <column name="OLD_STR_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NEW_STR_" type="VARCHAR2(255 CHAR)"/>
+            <column name="OLD_INT_" type="NUMBER(10,0)"/>
+            <column name="NEW_INT_" type="NUMBER(10,0)"/>
+            <column name="OLD_TIME_" type="TIMESTAMP(6)"/>
+            <column name="NEW_TIME_" type="TIMESTAMP(6)"/>
+            <column name="PARENT_" type="NUMBER(19,0)"/>
+            <column name="PARENT_IDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-43c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_HIST_DETAIL"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_HIST_DETAIL" tableName="JBPM4_HIST_DETAIL" />
+    </changeSet>
+       
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-44">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_HIST_PROCINST" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_HIST_PROCINST">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_HIST_PROCINST" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PROCDEFID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="START_" type="TIMESTAMP(6)"/>
+            <column name="END_" type="TIMESTAMP(6)"/>
+            <column name="DURATION_" type="NUMBER(19,0)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ENDACTIVITY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SUPERPROCID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="INITIATOR_" type="VARCHAR2(255 CHAR)"/>
+            <column name="NEXTIDX_" type="NUMBER(10,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-44c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_HIST_PROCINST"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_HIST_PROCINST" tableName="JBPM4_HIST_PROCINST" />
+    </changeSet>
+     
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-45">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_HIST_TASK" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_HIST_TASK">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_HIST_TASK" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXECUTION_" type="VARCHAR2(255 CHAR)"/>
+            <column name="OUTCOME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ASSIGNEE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="CREATE_" type="TIMESTAMP(6)"/>
+            <column name="END_" type="TIMESTAMP(6)"/>
+            <column name="DURATION_" type="NUMBER(19,0)"/>
+            <column name="DUEDATE_" type="TIMESTAMP(6)"/>
+            <column name="NEXTIDX_" type="NUMBER(10,0)"/>
+            <column name="PROCINST_" type="NUMBER(19,0)"/>
+            <column name="SUPERTASK_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-45c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_HIST_TASK"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_HIST_TASK" tableName="JBPM4_HIST_TASK" />
+    </changeSet>
+ 
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-46">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_HIST_VAR" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_HIST_VAR">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_HIST_VAR" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROCINSTID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXECUTIONID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VARNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="VALUE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HPROCI_" type="NUMBER(19,0)"/>
+            <column name="HTASK_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-46c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_HIST_VAR"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_HIST_VAR" tableName="JBPM4_HIST_VAR" />
+    </changeSet>
+ 
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-47">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_JOB" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_JOB">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_JOB" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DUEDATE_" type="TIMESTAMP(6)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ISEXCLUSIVE_" type="NUMBER(1,0)"/>
+            <column name="LOCKOWNER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LOCKEXPTIME_" type="TIMESTAMP(6)"/>
+            <column name="EXCEPTION_" type="CLOB"/>
+            <column name="RETRIES_" type="NUMBER(10,0)"/>
+            <column name="PROCESSINSTANCE_" type="NUMBER(19,0)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+            <column name="CFG_" type="NUMBER(19,0)"/>
+            <column name="SIGNAL_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EVENT_" type="VARCHAR2(255 CHAR)"/>
+            <column name="REPEAT_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-47c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_JOB"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_JOB" tableName="JBPM4_JOB" />
+    </changeSet>
+        
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-48">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_LOB" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_LOB">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_LOB" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BLOB_VALUE_" type="BLOB"/>
+            <column name="DEPLOYMENT_" type="NUMBER(19,0)"/>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-48c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_LOB"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_LOB" tableName="JBPM4_LOB" />
+    </changeSet>
+     
+        
+    <changeSet author="Michael Wohlfart" id="1288190585258-49">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_PARTICIPATION" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_PARTICIPATION">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_PARTICIPAT" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GROUPID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="USERID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TYPE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TASK_" type="NUMBER(19,0)"/>
+            <column name="SWIMLANE_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-49c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_PARTICIPAT"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_PARTICIPAT" tableName="JBPM4_PARTICIPATION" />
+    </changeSet>
+ 
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-50">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_PROPERTY" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_PROPERTY">
+            <column name="KEY_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_PROPERTY" />
+            </column>
+            <column name="VERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-50c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_PROPERTY"/></not></preConditions>     
+        <addPrimaryKey columnNames="KEY_" constraintName="PK_JBPM4_PROPERTY" tableName="JBPM4_PROPERTY" />
+    </changeSet>
+ 
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-51">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_SWIMLANE" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_SWIMLANE">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_SWIMLANE" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ASSIGNEE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-51c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_SWIMLANE"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_SWIMLANE" tableName="JBPM4_SWIMLANE" />
+    </changeSet>
+     
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-52">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_TASK" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_TASK">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_TASK" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CLASS_" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="DESCR_" type="VARCHAR2(255 CHAR)"/>
+            <column name="STATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="SUSPHISTSTATE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ASSIGNEE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="FORM_" type="VARCHAR2(255 CHAR)"/>
+            <column name="PRIORITY_" type="NUMBER(10,0)"/>
+            <column name="CREATE_" type="TIMESTAMP(6)"/>
+            <column name="DUEDATE_" type="TIMESTAMP(6)"/>
+            <column name="PROGRESS_" type="NUMBER(10,0)"/>
+            <column name="SIGNALLING_" type="NUMBER(1,0)"/>
+            <column name="EXECUTION_ID_" type="VARCHAR2(255 CHAR)"/>
+            <column name="ACTIVITY_NAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HASVARS_" type="NUMBER(1,0)"/>
+            <column name="SUPERTASK_" type="NUMBER(19,0)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+            <column name="PROCINST_" type="NUMBER(19,0)"/>
+            <column name="SWIMLANE_" type="NUMBER(19,0)"/>
+            <column name="TASKDEFNAME_" type="VARCHAR2(255 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-52c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_TASK"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_TASK" tableName="JBPM4_TASK" />
+    </changeSet>
+    
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-53">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="JBPM4_VARIABLE" /></not>
+        </preConditions>
+        <createTable tableName="JBPM4_VARIABLE">
+            <column name="DBID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JBPM4_VARIABLE" />
+            </column>
+            <column name="DBVERSION_" type="NUMBER(10,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CLASS_" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KEY_" type="VARCHAR2(255 CHAR)"/>
+            <column name="CONVERTER_" type="VARCHAR2(255 CHAR)"/>
+            <column name="HIST_" type="NUMBER(1,0)"/>
+            <column name="EXECUTION_" type="NUMBER(19,0)"/>
+            <column name="TASK_" type="NUMBER(19,0)"/>
+            <column name="LOB_" type="NUMBER(19,0)"/>
+            <column name="DATE_VALUE_" type="TIMESTAMP(6)"/>
+            <column name="DOUBLE_VALUE_" type="DOUBLE PRECISION"/>
+            <column name="CLASSNAME_" type="VARCHAR2(255 CHAR)"/>
+            <column name="LONG_VALUE_" type="NUMBER(19,0)"/>
+            <column name="STRING_VALUE_" type="VARCHAR2(255 CHAR)"/>
+            <column name="TEXT_VALUE_" type="CLOB"/>
+            <column name="EXESYS_" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-53c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_JBPM4_VARIABLE"/></not></preConditions>     
+        <addPrimaryKey columnNames="DBID_" constraintName="PK_JBPM4_VARIABLE" tableName="JBPM4_VARIABLE" />
+    </changeSet>
+    
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-54">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="TODOL_DATA" /></not>
+        </preConditions>
+        <createTable tableName="TODOL_DATA">
+            <column name="ID_" type="NUMBER(19,0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TODOL_DATA" />
+            </column>
+            <column name="TASK_DESCRIPTION_" type="VARCHAR2(2024 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Michael Wohlfart" id="1288190585258-54c">
+        <preConditions onFail="MARK_RAN"><not><primaryKeyExists primaryKeyName="PK_TODOL_DATA"/></not></preConditions>     
+        <addPrimaryKey columnNames="ID_" constraintName="PK_TODOL_DATA" tableName="TODOL_DATA" />
+    </changeSet>    
+
+    
+    <changeSet author="Michael Wohlfart" id="1288190585258-38">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="HIBERNATE_SEQUENCES" /></not>
+        </preConditions>
+        <createTable tableName="HIBERNATE_SEQUENCES">
+            <column name="SEQUENCE_NAME" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_HIBERNATE_SEQ" />
+            </column>
+            <column name="NEXT_VAL" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+        
+</databaseChangeLog>

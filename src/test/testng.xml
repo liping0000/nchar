@@ -1,0 +1,136 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd">
+
+<suite name="Charms Test Suite" ><!--
+
+  * in order to run this tests you need the WEB-INF folder added your classpath
+    since the boot context is looking for /WEB-INF/conf/spring-beans.xml
+    in eclipse you can set this in the run config for this file/TestNG
+
+  * any request with parameters is considered a postback actions that are not
+    configured to run, so postbacks will not trigger page actions!!
+
+  * for postbacks you have to call the page actions manually
+
+  see: http://seamframework.org/Community/PostbackDetectionInIntegrationTestsProblemForJSF12
+       for a fix
+
+  fixed in custom build in class
+  ./src/main/org/jboss/seam/mock/MockResponseStateManager.java
+  /opt/components/jboss-seam-2.2.1-SNAPSHOT:
+
+
+   @Override
+   public boolean isPostback(FacesContext context) {
+    return context.getExternalContext().getRequestParameterMap().
+           containsKey(ResponseStateManager.VIEW_STATE_PARAM);
+   }
+   this fix has been integrated in seam 2.2.1 RC2
+
+
+  * for postback you have to set
+  ResponseStateManager.VIEW_STATE_PARAM
+
+
+   -->
+  
+  <test name="JSF jBPM ChangeRequest Tests" enabled="true">
+    <classes> 
+      <class name="net.wohlfart.charms.test.changerequest.faces.LoginTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.StartCompleteRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.StartBusinessKeyTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.CompleteRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.CompleteReviewRequest1Test" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.CompleteReviewRequest2Test" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.CompleteReviewRequest3Test" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.CompleteForwardRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.DiscardRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.AssignRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.ProcessRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.RealizeRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.ImplementRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.HandleRequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.Cancel1RequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.Cancel2RequestTest" />
+      <class name="net.wohlfart.charms.test.changerequest.faces.BulkStartBusinessKeyTest" />
+    </classes>
+  </test>
+  
+  <test name="JSF Admin Views Tests" enabled="true">
+    <classes>
+      <class name="net.wohlfart.charms.test.admin.faces.DeploymentListTest" />
+    </classes>
+  </test>
+
+  <test name="Properties Tests" enabled="true">
+    <classes>
+      <class name="net.wohlfart.charms.test.components.CharmsPropertiesTest" />
+    </classes>
+  </test>
+
+  <test name="Action Tests" enabled="true">
+    <classes>
+      <class name="net.wohlfart.charms.test.action.CharmsPermissionActionBeanTest" />
+      <class name="net.wohlfart.charms.test.action.CharmsPermissionTargetActionBeanTest" />
+      <class name="net.wohlfart.charms.test.action.CharmsRoleActionBeanTest" />
+      <class name="net.wohlfart.charms.test.action.CharmsUserActionBeanTest" />
+      <class name="net.wohlfart.charms.test.action.CharmsUserPropertiesActionBeanTest" />
+      <class name="net.wohlfart.charms.test.action.CodeActionBeanTest" />
+      <class name="net.wohlfart.charms.test.action.ProductActionBeanTest" />
+      <class name="net.wohlfart.charms.test.action.UnitActionBeanTest" />
+      <class name="net.wohlfart.charms.test.action.ProductReferenceActionBeanTest" />
+    </classes>
+  </test>
+
+  <test name="Component Tests" enabled="true">
+    <classes>
+      <class name="net.wohlfart.charms.test.components.IdentityManagerTest" />
+      <class name="net.wohlfart.charms.test.components.PermissionStoreTest" />
+      <class name="net.wohlfart.charms.test.components.PasswordEncryptionTest" />
+      <class name="net.wohlfart.charms.test.components.TransitionDetailsTest" /> 
+      <class name="net.wohlfart.charms.test.components.IdentityPermissionManagerTest" /> 
+    </classes>
+  </test>
+
+  <test name="Simple Workflow Tests" enabled="true">
+    <classes>
+      <class name="net.wohlfart.charms.test.changerequest.WorkflowCreateTest" />
+      <class name="net.wohlfart.charms.test.changerequest.WorkflowSimpleTest" />
+    </classes>
+  </test>
+
+  <test name="jBPM4 Workflow Tests" enabled="true" >
+    <classes>  <!--     -->
+      <class name="net.wohlfart.charms.test.jbpm4.StandardSwimlaneTest" />
+      <class name="net.wohlfart.charms.test.jbpm4.CustomTasksTest" />   
+      <class name="net.wohlfart.charms.test.jbpm4.CustomTasksSpawn1Test" />  
+      <class name="net.wohlfart.charms.test.jbpm4.CustomTasksSpawn2Test" /> 
+      <class name="net.wohlfart.charms.test.jbpm4.CustomTasksSpawn3Test" /> 
+      <class name="net.wohlfart.charms.test.jbpm4.CustomTasksScriptTest" />    
+      <class name="net.wohlfart.charms.test.jbpm4.CustomTasksScopeTest" /> 
+      <class name="net.wohlfart.charms.test.jbpm4.CustomTasksVariableTest" />       
+      <class name="net.wohlfart.charms.test.jbpm4.CustomExceptionHandlerTest" /> 
+      <class name="net.wohlfart.charms.test.jbpm4.CustomTasksTransitionTest" /> 
+      <class name="net.wohlfart.charms.test.jbpm4.CustomTaskParticipationTest" />
+    </classes>
+  </test>
+  
+  <test name="jBPM4 Backend Tests" enabled="true">
+    <classes>
+      <class name="net.wohlfart.charms.test.jbpm4.RepositoryServiceTest" />
+    </classes>
+  </test>
+  
+  <test name="Permission Tests" enabled="true">
+    <classes>
+      <class name="net.wohlfart.charms.test.permission.PermissionQueryTest" />
+    </classes>
+  </test>
+    
+  <test name="Invariants" enabled="true">
+    <classes>
+      <class name="net.wohlfart.charms.test.Invariants" />
+    </classes>
+  </test>
+  
+</suite>
+

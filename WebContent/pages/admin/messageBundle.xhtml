@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.admin.messageBundle.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.admin.messageBundle.title']}" />
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">message bundles</f:facet>
+
+        <div class="results">
+
+            <h:outputText value="No message bundles"
+                       rendered="#{empty messageBundleList.resultList}"/>
+
+            <h:dataTable id="messageBundleList"
+                        var="messageBundle"
+                      value="#{messageBundleList.resultList}"
+                   rendered="#{not empty messageBundleList.resultList}"
+                 styleClass="security"
+                cellspacing="1"
+                headerClass="header"
+                 rowClasses="odd,even"
+              columnClasses=",,enabled,action">
+
+          <h:column width="auto">
+            <f:facet name="header">
+              Name
+            </f:facet>
+            #{messageBundle.name}
+          </h:column>
+
+
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <s:link value="Update"
+                            action="update">
+                        <f:param name="charmsUserId"
+                                value="#{messageBundle.id}"/>
+                    </s:link>
+                    <s:link value="Delete"
+                            action="delete">
+                        <f:param name="charmsUserId"
+                                value="#{messageBundle.id}"/>
+                    </s:link>
+                </h:column>
+
+        </h:dataTable>
+
+        </div>
+
+    </rich:panel>
+
+
+
+    <div class="actionButtons">
+        <s:button styleClass="button"
+                  id="create"
+                  value="Create"
+                  action="create"/>
+    </div>
+
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.jbpm.processDefinitions.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.jbpm.processDefinitions.title']}" />
+
+<ui:define name="body">
+
+
+
+      <h:form>
+
+        <s:decorate id="nameProperty"
+                    template="/layout/fragments/editproperty.xhtml">
+          <ui:define name="label"><h:outputText value="name" /></ui:define>
+          <h:inputText required="true"
+                       value="#{jbpmProcessDefinitionAction.name}"
+                       styleClass="inputtext" >
+            <a4j:support event="onblur"
+                         ajaxSingle="true"
+                         reRender="nameProperty" />
+          </h:inputText>
+        </s:decorate>
+
+        <br />
+
+        <s:decorate id="idProperty"
+                    template="/layout/fragments/showproperty.xhtml">
+          <ui:define name="label"><h:outputText value="pdId" /></ui:define>
+          <h:outputText value="#{jbpmProcessDefinitionAction.pdId}" />
+        </s:decorate>
+
+        <s:decorate id="keyProperty"
+                    template="/layout/fragments/showproperty.xhtml">
+          <ui:define name="label"><h:outputText value="pdKey" /></ui:define>
+          <h:outputText value="#{jbpmProcessDefinitionAction.pdKey}" />
+        </s:decorate>
+
+        <s:decorate id="versionProperty"
+                    template="/layout/fragments/showproperty.xhtml">
+          <ui:define name="label"><h:outputText value="pdVersion" /></ui:define>
+          <h:outputText value="#{jbpmProcessDefinitionAction.pdVersion}" />
+        </s:decorate>
+
+        <s:decorate id="langProperty"
+                    template="/layout/fragments/showproperty.xhtml">
+          <ui:define name="label"><h:outputText value="languageId" /></ui:define>
+          <h:outputText value="#{jbpmProcessDefinitionAction.languageId}" />
+        </s:decorate>
+
+        <br />
+        <br />
+        <br />
+
+        <h:outputText value="#{messages['form.mandatory']}"
+                      escape="false" />
+
+
+        <div class="actionButtons">
+
+            <h:commandButton styleClass="button"
+                             id="update"
+                             value="#{messages['action.update']}"
+                             action="#{jbpmProcessDefinitionAction.updateProperties()}">
+              <f:param name="jbpmProcessDefinitionId" />
+            </h:commandButton>
+
+            <h:commandButton styleClass="button"
+                             id="remove"
+                             value="#{messages['action.remove']}"
+                             onclick="if (!confirm('Sind Sie sicher, dies löscht die Workflowdefinition?')) { return false; } else { jQuery.blockUI(); return true; }"
+                             action="#{jbpmProcessDefinitionAction.remove()}"
+                             immediate="true">
+              <f:param name="jbpmProcessDefinitionId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <h:commandButton styleClass="button"
+                             id="removeAll"
+                             value="#{messages['action.removeAll']}"
+                             onclick="if (!confirm('Sind Sie sicher, dies löscht die Workflowdefinition und alle Workflowinstanzen?')) { return false; } else { jQuery.blockUI(); return true; }"
+                             action="#{jbpmProcessDefinitionAction.removeAll()}"
+                             immediate="true">
+              <f:param name="jbpmProcessDefinitionId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="back"
+                             value="#{messages['action.back']}"
+                             action="back"
+                             immediate="true">
+              <f:param name="processDefinitionId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+        </div>
+
+  </h:form>
+
+<br/>
+<br/>
+</ui:define>
+</ui:composition>

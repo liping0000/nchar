@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.user.preferences.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.user.preferences.title']}" />
+
+<ui:define name="body">
+
+
+<a4j:form id="frm">
+
+  <s:decorate id="emailProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label">#{messages['charmsuser.email']}</ui:define>
+     <h:inputText required="false"
+                  value="#{userPropertiesActionBean.email}"
+                  styleClass="inputtext" >
+     </h:inputText>
+  </s:decorate>
+
+  <!--
+
+     the password section
+
+   -->
+  <h2>#{messages['page.user.properties.passwdview']}</h2>
+
+  <s:decorate id="oldPasswdProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label">#{messages['page.user.properties.oldPasswd']}</ui:define>
+     <h:inputSecret required="false"
+                    value="#{userPropertiesActionBean.oldPasswd}"
+                    styleClass="inputtext">
+     </h:inputSecret>
+  </s:decorate>
+
+  <s:decorate id="passwdProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label">#{messages['page.user.properties.passwd']}</ui:define>
+     <h:inputSecret required="false"
+                    value="#{userPropertiesActionBean.passwd}"
+                    styleClass="inputtext">
+     </h:inputSecret>
+  </s:decorate>
+
+  <s:decorate id="passwdValidateProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label">#{messages['page.user.properties.passwdValidate']}</ui:define>
+     <h:inputSecret required="false"
+                    value="#{userPropertiesActionBean.passwdConfirm}"
+                    styleClass="inputtext">
+     </h:inputSecret>
+  </s:decorate>
+
+  <!--
+
+     second section the users view settings
+
+   -->
+  <h2>#{messages['page.user.properties.view']}</h2>
+
+  <s:decorate id="localeProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label">#{messages['charmsuser.localeId']}</ui:define>
+     <h:selectOneMenu value="#{userPropertiesActionBean.localeId}" >
+        <f:selectItem itemLabel="#{messages['locale.noSelection']}"/>
+        <f:selectItems value="#{localeSelector.supportedLocales}" />
+     </h:selectOneMenu>
+  </s:decorate>
+
+  <s:decorate id="timezoneProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label">#{messages['charmsuser.timezoneId']}</ui:define>
+     <h:selectOneMenu value="#{userPropertiesActionBean.timezoneId}" >
+        <f:selectItem itemLabel="#{messages['timezone.noSelection']}"/>
+        <f:selectItems value="#{timeZoneSelector.supportedTimezones}" />
+     </h:selectOneMenu>
+  </s:decorate>
+
+  <s:decorate id="themeProperty"
+              template="/layout/fragments/editproperty.xhtml">
+     <ui:define name="label">#{messages['charmsuser.themeId']}</ui:define>
+     <h:selectOneMenu value="#{userPropertiesActionBean.themeId}" >
+        <f:selectItem itemLabel="#{messages['org.jboss.seam.theme.noSelection']}"/>
+        <f:selectItems value="#{themeSelector.themes}" />
+     </h:selectOneMenu>
+  </s:decorate>
+
+
+
+  <br />
+
+  <div class="actionButtons">
+    <h:commandButton id="saves"
+              styleClass="button"
+              value="#{messages['action.save']}"
+              action="#{userPropertiesActionBean.save()}" />
+    <h:commandButton id="cancel"
+              styleClass="button"
+              value="#{messages['action.cancel']}"
+              action="home"
+              immediate="true"
+              propagation="none" />
+  </div>
+
+</a4j:form>
+
+</ui:define>
+
+</ui:composition>

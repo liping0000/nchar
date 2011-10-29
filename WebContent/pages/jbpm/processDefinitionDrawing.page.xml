@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+
+      login-required="true">
+
+  <description>implement a workflow editor with draw2d</description>
+        
+  <description>page for editing the process definition graph</description>
+  
+  
+  <action execute="#{jbpmProcessDefinitionAction.setProcessDefinitionId(param.processDefinitionId)}" 
+          on-postback="false"/>
+
+  <navigation from-action="#{jbpmProcessDefinitionAction.setProcessDefinitionId(param.processDefinitionId)}" >
+    <rule if-outcome="invalid">
+      <redirect view-id="/pages/jbpm/deploymentList.xhtml" />
+    </rule>
+    <rule if-outcome="valid">
+      <render view-id="/pages/jbpm/processDefinitionDrawing.xhtml" />
+    </rule>
+  </navigation>
+   <navigation>
+  
+  <rule if-outcome="back">
+     <!--  keep the conversation alive and let the next page deal with it: <end-conversation /> -->
+     <redirect view-id="/pages/jbpm/deploymentList.xhtml"/>
+  </rule>
+   
+  <!-- setup the activityAction and redirect to the next page, this is triggered by a simple link...
+       activityName=#{activity.name}&amp;actionOutcome=activity&amp;cid=#{conversation.id}
+   -->
+  <rule if-outcome="activity" if="#{jbpmActivitAction.setActivityIds(param.activityName, jbpmProcessDefinitionAction.processDefinitionId)}">
+     <redirect view-id="/pages/jbpm/activity.xhtml" />
+  </rule>
+ 
+  <rule if-outcome="updated">
+     <redirect view-id="/pages/jbpm/deploymentList.xhtml"/>
+  </rule>
+ 
+  <rule if-outcome="invalid">
+     <!-- stay on page, contine conversation -->
+     <redirect view-id="/pages/jbpm/processDefinitionDrawing.xhtml"/>
+  </rule>
+  
+  </navigation>
+ 
+          
+
+</page>

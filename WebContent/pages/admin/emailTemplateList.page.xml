@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+  
+  <begin-conversation join="true" flush-mode="manual" />
+
+  <description>list of sent email templates</description>
+      
+  <!-- load the list  from the database -->    
+  <action execute="#{charmsEmailTemplateTable.refresh()}"
+          on-postback="false" />
+  
+  
+  <navigation>
+ 
+    <rule if-outcome="update">
+      <redirect view-id="/pages/admin/emailTemplate.xhtml">     
+        <param name="emailTemplateId" value="#{param.emailTemplateId}" />
+      </redirect>
+    </rule>
+ <!--  
+    <rule if-outcome="timer">
+      <redirect view-id="/pages/jbpm/createTimerAction.xhtml">     
+        <param name="createTimerActionId" value="#{param.createTimerActionId}" />
+      </redirect>
+    </rule>
+  -->
+  
+      <!-- create button clicked on the page -->
+    <rule if-outcome="create">
+      <redirect view-id="/pages/admin/emailTemplate.xhtml" />
+    </rule>
+  
+  
+    <rule if-outcome="#{charmsEmailTemplateTable.setFragment('')}">
+      <redirect view-id="/pages/admin/emailTemplateList.xhtml" /> 
+    </rule>
+  
+  </navigation>
+
+</page>

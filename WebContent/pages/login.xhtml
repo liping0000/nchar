@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.login.title']}" />
+
+<ui:define name="body">
+
+  <div style="padding-left: 200px; padding-top: 100px; padding-bottom: 150px;">
+
+    <h:panelGrid rendered="#{identity.loggedIn}"
+                 columns="1" >
+      <rich:panel>
+        <f:facet name="header"><h:outputText value="#{messages['page.login.title']}" /></f:facet>
+        <h:panelGrid  styleClass="rsPanel" columns="1">
+          <h:outputText value="#{messages['page.login.alreadyLoggedIn']}" />
+        </h:panelGrid>
+      </rich:panel>
+    </h:panelGrid>
+
+    <h:form id="f">
+      <h:panelGrid rendered="#{not identity.loggedIn}"
+                   columns="1" >
+        <rich:panel>
+
+          <f:facet name="header"><h:outputText value="#{messages['page.login.title']}" /></f:facet>
+
+          <h:panelGrid columns="2" styleClass="formlayout">
+
+            <h:outputLabel for="username" value="#{messages['charmsuser.name']}:" />
+            <h:inputText id="username"
+                         styleClass="inputtext"
+                         style="width: 150px;"
+                         value="#{credentials.username}"
+                         required="true"
+                         requiredMessage="#{messages['page.login.usernameRequired']}" />
+            <h:outputLabel for="password" value="#{messages['charmsuser.passwd']}:" />
+            <h:inputSecret id="password"
+                           styleClass="inputtext"
+                           style="width: 150px;"
+                           value="#{credentials.password}"
+                           required="true"
+                           requiredMessage="#{messages['page.login.passwordRequired']}" />
+            <f:facet name="footer">
+              <h:panelGroup style="display:block; text-align:center">
+                <h:commandButton id="login"
+                                 styleClass="button"
+                                 value="#{messages['action.login']}"
+                                 action="#{identity.login}" />
+              </h:panelGroup>
+            </f:facet>
+
+          </h:panelGrid>
+
+        </rich:panel>
+      </h:panelGrid>
+    </h:form>
+
+
+  </div>
+
+
+    <!-- focus the first input field (username) -->
+    <script type="text/javascript">
+    <h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+       jQuery(document).ready(function() {
+         jQuery('#f\\:username').focus();
+       });
+    <h:outputText value="/* ]]> */" escape="false"/>
+    </script>
+
+
+</ui:define>
+</ui:composition>

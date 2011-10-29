@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich">
+
+  <!-- this decorates the tab panel around a component -->
+
+    <rich:tabPanel switchType="client" >
+
+
+        <rich:tab id="dataTab" label="#{messages['tab.data']}">
+               <ui:insert />
+               <h:outputText value="#{messages['form.mandatory']}"
+                             escape="false" />
+        </rich:tab>
+
+
+        <rich:tab id="attachmentTab">
+            <f:facet name="label">
+              <h:outputText id="attl"
+                            value="#{messages['tab.attachments']} (#{changeRequestFolder.fileCount})" />
+            </f:facet>
+            <ui:include src="attachments.xhtml" />
+        </rich:tab>
+
+        
+        <rich:tab id="messageTab"
+                  label="#{messages['tab.messages']}"
+                  rendered="#{not empty changeRequestMessageTree.children}">
+          <c:if test="#{not empty changeRequestMessageTree.children}">
+            <c:forEach var="child" items="#{changeRequestMessageTree.children}">
+              <s:div>
+                <ui:include src="messageTree.xhtml" >
+                  <ui:param name="messageEntry" value="#{child}" />
+                </ui:include>
+              </s:div>
+            </c:forEach>
+          </c:if>
+        </rich:tab>
+
+
+        <rich:tab id="taskTab"
+                  rendered="#{not empty processTaskTable.totalCount}" >
+            <f:facet name="label">
+              <h:outputText value="#{messages['tab.tasks']} (#{processTaskTable.openCount}/#{processTaskTable.totalCount})" />
+            </f:facet>
+            <ui:include src="processTaskList.xhtml">
+               <!-- this enables the edit task link in the tasklist -->
+               <ui:param name="readonly" value="false" />
+            </ui:include>
+        </rich:tab>
+
+
+        <rich:tab id="costTab"
+                  label="#{messages['tab.costs']}"
+                  rendered="#{(showCostsheet==false)?'false':'true'}">
+            <ui:include src="costSheet.xhtml" />
+        </rich:tab>
+
+<!--
+        <rich:tab id="impactTab"
+                  label="Impact" >
+            <ui:include src="impactSheet.xhtml" />
+        </rich:tab>
+-->
+
+    </rich:tabPanel>
+
+
+</ui:composition>

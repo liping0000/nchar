@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+
+  <!-- conversation for the form bean   -->
+  <begin-conversation join="true" />
+
+
+  <description>search page</description>
+
+	<navigation>
+
+        <rule if-outcome="viewProcess">
+            <redirect view-id="#{jbpmDispatcher.viewProcess(param.procDbid)}" 
+                      include-page-params="true" >
+                <param name="procDbid" value="#{param.procDbid}" />      
+            </redirect>   
+        </rule>
+
+        <!-- stay on the same page -->
+        <rule if-outcome="searched" >
+            <redirect />
+        </rule>
+        
+        <rule if-outcome="cleared" >
+            <redirect />
+        </rule>
+         
+        <rule if-outcome="invalid" >
+            <redirect />
+        </rule>
+     
+	</navigation>
+
+</page>

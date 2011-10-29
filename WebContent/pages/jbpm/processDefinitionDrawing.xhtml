@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/#{theme['template']}">
+
+<ui:param name="pageTitle" value="#{messages['page.devel.draw.title']}" />
+<ui:param name="pageHeadline" value="#{messages['page.devel.draw.title']}" />
+
+<ui:define name="body">
+
+
+<!-- the paint area -->
+<div id="log">logtext</div>
+<div id="canvas" style="background-color: #fff; width: 700px; height: 700px; border: 0; padding: 0; marginf:0" />
+
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+
+    var canvas = Raphael("canvas", 700,700);
+    // push the code from the textarea into the jbpm api
+    var workflow = canvas.jbpm.workflow(jQuery("#frm\\:code").val(), jQuery("#canvas"));
+
+    // var result = workflow.code();
+    // alert("result: " + result);
+
+    // hook into the submit action
+    jQuery("#frm").submit(function(){
+        // get the edited code back from the jbpm API into the textarea
+        jQuery("#frm\\:code").val(workflow.code());
+        //alert("field: " + jQuery("#frm\\:code").val());
+        return true;
+    });
+    
+    
+    // call code:
+    // activityName=#{activity.name}&amp;actionOutcome=activity&amp;cid=#{conversation.id}
+});
+</script>
+
+   <h:form id="frm">
+       <!-- hidden process definition, note that the text is escaped in order to
+            avoid having another xml definition on the same page, the text must be unescaped
+            before using it... style="display: none;"
+
+
+         <h:outputText value=
+            -->
+       <h:inputTextarea id="code"
+                        value="#{jbpmProcessDefinitionAction.code}"
+                        style="display: none;" />
+
+
+        <div class="actionButtons">
+
+            <h:commandButton styleClass="button"
+                             id="update"
+                             onclick="if (!confirm('Sind Sie sicher? (Das manuelle Ändern einer Prozessdefinition is sehr riskant)')) { return false; } else { jQuery.blockUI(); return true; }"
+                             value="#{messages['action.update']}"
+                             action="#{jbpmProcessDefinitionAction.updateCode()}">
+            </h:commandButton>
+
+            <!-- back to the list -->
+            <h:commandButton styleClass="button"
+                             id="back"
+                             value="#{messages['action.back']}"
+                             action="back"
+                             immediate="true">
+              <f:param name="processDefinitionId" /> <!-- suppress propagation of the permission id -->
+            </h:commandButton>
+
+        </div>
+
+   </h:form>
+
+</ui:define>
+</ui:composition>

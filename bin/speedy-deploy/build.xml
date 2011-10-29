@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Charms"
+         default="speedy-deploy"
+         basedir="../../">
+
+  <!--
+
+    ant resources: http://ant.apache.org/external.html
+    xmltask: http://www.oopsconsultancy.com/software/xmltask/#download
+  -->
+
+  <description>
+        simple build file,
+        this executes in the eclipse workspace
+        inside the charms project subdirectory
+  </description>
+
+
+  <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"/>
+
+
+  <!-- java source files -->
+  <property name="src" location="src"/>
+
+  <!-- compiled class files -->
+  <property name="build" location="build"/>
+
+  <!-- working subdir -->
+  <property name="dist" location="dist"/>
+  <!-- this is where we prepare the deployment files for the war creation -->
+  <property name="prepare" location="dist/prepare"/>
+
+  <!-- this is where the xhtml stuff is -->
+  <property name="content" location="WebContent"/>
+
+  <!-- report subdir -->
+  <property name="report" location="report"/>
+
+  <tstamp>
+    <format property="tstamp" pattern="yyyyMMdd" locale="en"/>
+  </tstamp>
+
+
+  <!-- the classpath -->
+  <path id="classpath">
+    <fileset dir="WebContent/WEB-INF/lib">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="/opt/tomcat/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+
+
+
+
+  <!-- Delete the ${build} and ${dist} directory trees,
+       ${build} is recreated by eclipse on project build
+       ${dist} is recreated by the setup task               -->
+  <target name="clean"
+          description="clean up" >
+    <delete dir="${build}/**"/>
+    <delete dir="${dist}"/>
+  </target>
+
+
+
+  <!-- create the ${build} and ${dist} directory    -->
+  <target name="setup"
+          description="setup empty build dir" >
+    <mkdir dir="${build}"/>
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${report}"/>
+    <!-- this directory is used by eclipse -->
+    <mkdir dir="${build}/classes"/>
+  </target>
+
+
+
+  <!-- compile the classfiles into the build directory -->
+  <target name="build" depends="clean, setup">
+    <javac srcdir="${src}"
+           destdir="${build}/classes"
+           debug="on"
+           source="1.6"
+           failonerror="true" >
+      <classpath><path refid="classpath"/></classpath>
+    </javac>
+  </target>
+
+  <!-- copy the properties into the build directory -->
+  <target name="properties" depends="clean">
+    <copy todir="${build}/classes">
+       <fileset dir="${src}/jbpm4">
+          <include name="**/*.xml" />
+       </fileset>
+       <fileset dir="${src}/main">
+          <include name="**/*.mime" />
+          <include name="**/*.xml" />
+          <include name="**/*.html" />
+          <include name="**/*.properties" />
+          <include name="META-INF/**" />
+       </fileset>
+       <fileset dir="${src}/rich">
+          <include name="**/*.properties" />
+          <include name="**/*.xcss" />
+       </fileset>
+    </copy>
+  </target>
+
+
+  <!-- copy the build directory into the webapp
+
+       after this target we have a full working web application in the prepare directory
+       all we need to do now is to set up the application for the target environment
+
+  -->
+  <target name="prepare" depends="build, properties">
+    <copy todir="${prepare}" >
+      <fileset dir="${content}" />
+    </copy>
+    <copy todir="${prepare}/WEB-INF" >
+      <fileset dir="${build}" />
+    </copy>
+  </target>
+
+
+
+
+  <!-- ##############################################
+
+    this customizes the web.xml file
+  -->
+  <target name="customizeWebXml" depends="prepare" >
+    <!-- http://today.java.net/pub/a/today/2006/11/01/xml-manipulation-using-xmltask.html -->
+    <!-- http://www.enlosdetalles.net/2009/09/modificando-ficheros-de-configuracion.html -->
+
+    <!-- remove all comments -->
+    <xmltask source="${prepare}/WEB-INF/web.xml"
+             dest="${prepare}/WEB-INF/web.xml"
+             failWithoutMatch="true">
+      <remove path="/:web-app/comment()" />
+      <remove path="//comment()" />
+    </xmltask>
+
+    <!-- set development to false -->
+    <xmltask source="${prepare}/WEB-INF/web.xml"
+             dest="${prepare}/WEB-INF/web.xml"
+             failWithoutMatch="true">
+      <replace path="/:web-app/:context-param[:param-name/text()='charms.baseUrl']/:param-value/text()"
+               withText="http://speedy.persman.de" />
+      <replace path="/:web-app/:context-param[:param-name/text()='facelets.REFRESH_PERIOD']/:param-value/text()"
+               withText="-1" />
+      <replace path="/:web-app/:context-param[:param-name/text()='facelets.DEVELOPMENT']/:param-value/text()"
+               withText="false" />
+      <replace path="/:web-app/:context-param[:param-name/text()='com.sun.faces.developmentMode']/:param-value/text()"
+               withText="false" />
+    </xmltask>
+  </target>
+
+
+  <!-- ##############################################
+
+    this customizes the persistence.xml file
+  -->
+  <target name="customizePersistenceXml" depends="prepare" >
+    <!-- remove hdm2dll just to be sure we don't harm any database on startup -->
+    <xmltask source="${prepare}/WEB-INF/classes/META-INF/persistence.xml"
+             dest="${prepare}/WEB-INF/classes/META-INF/persistence.xml"
+             failWithoutMatch="false">
+      <!-- property name="hibernate.hbm2ddl.auto" value="validate" -->
+      <remove path="/:persistence/:persistence-unit/:properties/:property[@name='hibernate.hbm2ddl.auto']" />
+      <insert path="/:persistence/:persistence-unit/:properties" >
+        <![CDATA[
+          <!-- automatic insert from the build script -->
+          <property name="hibernate.hbm2ddl.auto" value="create-drop" xmlns="http://java.sun.com/xml/ns/persistence" />
+        ]]>
+      </insert>
+    </xmltask>
+  </target>
+
+
+
+  <!-- ##############################################
+
+    this customizes the components.xml file
+  -->
+  <target name="customizeComponentsXml" depends="prepare" >
+
+    <xmltask source="${prepare}/WEB-INF/classes/META-INF/components.xml"
+             dest="${prepare}/WEB-INF/classes/META-INF/components.xml"
+             failWithoutMatch="true">
+
+      <remove path="//comment()" />
+
+      <replace path="/:components/core:init/@debug"
+               withText="false" />
+
+      <remove path="/:components/theme:theme-selector/theme:available-themes" />
+      <insert path="/:components/theme:theme-selector" >
+        <![CDATA[
+          <theme:available-themes xmlns:theme="http://jboss.com/products/seam/theme">
+            <value xmlns="http://jboss.com/products/seam/components">sfc</value>
+            <value xmlns="http://jboss.com/products/seam/components">persman</value>
+            <value xmlns="http://jboss.com/products/seam/components">rich</value>
+          </theme:available-themes>
+        ]]>
+      </insert>
+
+    </xmltask>
+
+  </target>
+
+
+  <target name="customizeSpringBeanXml" depends="prepare" >
+
+    <xmltask source="${prepare}/WEB-INF/config/spring-beans.xml"
+             dest="${prepare}/WEB-INF/config/spring-beans.xml"
+             failWithoutMatch="true">
+
+      <remove path="//comment()" />
+
+      <!-- remove any c3p0DataSource -->
+      <remove path="//:bean[@id='c3p0DataSource']" />
+
+      <insert path="/:beans" >
+         <![CDATA[
+          <bean id="c3p0DataSource"
+                class="com.mchange.v2.c3p0.ComboPooledDataSource"
+                destroy-method="close"
+                xmlns="http://www.springframework.org/schema/beans" >
+            <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+            <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/charms"/>
+            <property name="user" value="charms"/>
+            <property name="password" value="xxxxxx"/>
+            <property name="initialPoolSize" value="5"/>
+            <property name="maxPoolSize" value="20"/>
+            <property name="minPoolSize" value="5"/>
+            <property name="acquireIncrement" value="3"/>
+            <property name="acquireRetryAttempts" value="2"/>
+            <property name="acquireRetryDelay" value="500" />
+            <property name="breakAfterAcquireFailure" value="false" />
+          </bean>
+        ]]>
+      </insert>
+
+
+    </xmltask>
+  </target>
+
+
+  <!-- create the war file from the prepare directory,
+       this target should be invoked after the customization is  done
+   -->
+  <target name="war" depends="prepare, customizeWebXml, customizePersistenceXml, customizeSpringBeanXml, customizeComponentsXml">
+      <war destfile="${dist}/charms-${tstamp}.war"
+           basedir="${prepare}"
+           level="9" />
+  </target>
+
+
+
+  <target name="speedy-stop">
+    <sshexec host="speedy.persman.de"
+             username="root"
+             password="xxxxxx"
+             command="/opt/shutdownTomcat.bash"/>
+  </target>
+
+  <target name="speedy-start">
+    <sshexec host="speedy.persman.de"
+             username="root"
+             password="xxxxxx"
+             command="/opt/startupTomcat.bash"/>
+  </target>
+
+  <target name="speedy-install" depends="war, speedy-stop">
+    <!-- sshexec depends on com/jcraft/jsch/UserInfo from jsch-0.1.8.jar
+         the jar file can be placed into /home/michael/.ant/lib -->
+
+    <!-- remove any preexisting files with the same version -->
+    <sshexec host="speedy.persman.de"
+                 username="root"
+                 password="xxxxxx"
+                 command="rm -f /root/charms-${tstamp}.war" />
+
+    <!-- remove the webapps subdirectory -->
+    <sshexec host="speedy.persman.de"
+                 username="root"
+                 password="xxxxxx"
+                 command="rm -rf /opt/tomcat/webapps/charms; mkdir /opt/tomcat/webapps/charms" />
+
+    <!-- remove all logfiles -->
+    <sshexec host="speedy.persman.de"
+                 username="root"
+                 password="xxxxxx"
+                 command="rm -rf /opt/tomcat/logs/*" />
+
+    <!-- remove all tempfiles -->
+    <sshexec host="speedy.persman.de"
+                 username="root"
+                 password="xxxxxx"
+                 command="rm -rf /opt/tomcat/temp/*" />
+
+    <!-- clean workfiles -->
+    <sshexec host="speedy.persman.de"
+                 username="root"
+                 password="xxxxxx"
+                 command="rm -rf /opt/tomcat/work/Catalina/localhost/*" />
+
+    <!-- copy over the new version into the root directory -->
+    <scp file="${dist}/charms-${tstamp}.war"
+         todir="root:Her111sn00pydrk@speedy.persman.de:/root"/>
+
+    <!-- move the new version into the webapps subdirectory -->
+    <sshexec host="speedy.persman.de"
+             username="root"
+             password="xxxxxx"
+             command="mv /root/charms-${tstamp}.war /opt/tomcat/webapps/charms" />
+
+    <!-- extract the new version -->
+    <sshexec host="speedy.persman.de"
+             username="root"
+             password="xxxxxx"
+             command="cd /opt/tomcat/webapps/charms; unzip charms-${tstamp}.war; rm charms-${tstamp}.war" />
+  </target>
+
+
+
+  <target name="speedy-deploy" depends="speedy-install, speedy-start">
+
+  </target>
+
+</project>

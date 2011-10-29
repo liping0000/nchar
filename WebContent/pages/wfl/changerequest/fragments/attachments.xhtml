@@ -1,0 +1,137 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.prime.com.tr/ui"><!--
+
+
+   view to upload files into the repository
+
+   immediateUpload="true" : uploads files right after select
+   maxFilesQuantity="10" : max number of files to select, no effectsince we upload imediatly
+
+    -->
+
+
+
+    <s:div id="fldp" style="width: 100%;">
+
+    <h:outputText value="#{messages['changeRequestFolder.noDocumentsFound']}"
+                  rendered="#{empty changeRequestFolder.documents}" />
+
+    <rich:dataTable id="folderTable"
+                    var="doc"
+                    value="#{changeRequestFolder.documents}"
+                    rendered="#{not empty changeRequestFolder.documents}"
+                    rowKeyVar="rowKey"
+                    width="100%"
+                    columnsWidth="5%,30%,65%">
+
+      <rich:column>
+         <s:download src="/pages/user/documentResource.xhtml">
+            <f:param name="rowKey" value="#{rowKey}"/>
+            <f:param name="name" value="#{doc.name}"/>
+            <s:conversationId/>
+            <h:graphicImage value="/#{theme['iconset']}/mimetypes/#{doc.iconName}" />
+         </s:download>
+      </rich:column>
+
+
+      <rich:column>
+        <h:panelGroup>
+         <h:outputText value="&#160;" escape="false" />
+         <!-- filename with link for download -->
+         <s:download src="/pages/user/documentResource.xhtml">
+            <f:param name="rowKey" value="#{rowKey}"/>
+            <f:param name="name" value="#{doc.name}"/>  <!-- not really needed yet -->
+            <s:conversationId/>
+            <h:outputText value="#{doc.name}" />
+         </s:download>
+         <br />
+
+         <!-- size -->
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{messages['changeRequestFolder.size']}: #{doc.sizeString}" />
+         <br />
+
+         <!-- last modified date -->
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{messages['changeRequestFolder.lastModified']}: " />
+         <h:outputText value="#{doc.lastModified}" >
+              <s:convertDateTime type="both" dateStyle="short" />
+         </h:outputText>
+         <br />
+
+         <!-- author -->
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="#{messages['changeRequestFolder.editor']}: #{doc.editor.fullname}" />
+         <br />
+
+<!--
+         <a4j:commandLink value="delete"
+                          action="#{changeRequestFolderAction.delete(doc.id)}"
+                          reRender="u, fldp, attl, msgs" />
+-->
+
+<!--
+
+     we need an ajax link here to trigger a method in
+
+     #{changeRequestFolder.delete(doc.id)}
+
+         <h:outputText value="&#160;" escape="false" />
+         <h:outputText value="mimetype:" />
+         <h:outputText value="#{attachment.mimeType}" escape="true" />
+         <br />
+ -->
+        </h:panelGroup>
+      </rich:column>
+
+
+      <rich:column>
+         <!-- see: http://wiki.apache.org/myfaces/How_The_Immediate_Attribute_Works -->
+         <h:inputTextarea id="i"
+                          rows="3"
+                          styleClass="attachmentComment"
+                          value="#{doc.comment}" />
+                          <!--
+                          immediate="true"
+                          valueChangeListener="#{doc.setComment}"
+                          -->
+      </rich:column>
+
+    </rich:dataTable>
+
+
+    </s:div>
+
+
+  <rich:fileUpload id="u"
+                   limitToList="true"
+                   allowFlash="false"
+                   listHeight="55px"
+                   listWidth="250px"
+                   ajaxSingle="true"
+                   immediate="true"
+                   immediateUpload="true"
+                   addControlLabel="#{messages['changeRequestFolder.add']}"
+                   fileUploadListener="#{changeRequestFolderAction.uploadListener}"
+                   onerror="jQuery.unblockUI();"
+                   onsizerejected="jQuery.unblockUI();">
+
+    <a4j:support event="onuploadcomplete"
+                 oncomplete="jQuery.unblockUI();"
+                 limitToList="true"
+                 bypassUpdates="true"
+                 action="#{changeRequestFolderAction.uploadComplete()}"
+                 reRender="u, fldp, attl, msgs" /> <!-- uploader, filelist panel, attachment tab label, messages -->
+                 
+  </rich:fileUpload>
+
+
+
+</ui:composition>

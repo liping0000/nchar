@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Charms"
+         default="all"
+         basedir="../../">
+
+  <!-- <property file="${os.name}.properties"/> -->
+  <property file="bin/hudson/default.properties"/>
+
+  <!-- needed for the findbugs task -->
+  <property name="findbugs.home" value="/opt/findbugs" />
+
+
+  <!--
+    extra tasks
+  -->
+  <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"/>
+  <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask"/>
+  <taskdef name="report" classname="org.jboss.tattletale.ant.ReportTask" />
+  <taskdef resource="testngtasks" classpath="${content}/WEB-INF/lib/testng-5.14.1.jar"/>
+  <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask"/>
+
+
+  <description>
+        simple build file,
+        this is used for hudson builds
+  </description>
+
+
+  <tstamp>
+    <format property="tstamp" pattern="yyyyMMdd" locale="en"/>
+  </tstamp>
+
+
+
+  <!-- the main classpath -->
+  <path id="classpath">
+    <fileset dir="${content}/WEB-INF/lib">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${tomcat}/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+
+
+
+
+  <!-- Delete the ${build} and ${dist} directory trees,
+       ${build} is recreated by eclipse on project build
+       ${dist} is recreated by the setup task               -->
+  <target name="clean"
+          description="clean up" >
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+    <delete dir="${tattletaleReport}"/>
+    <delete dir="${testngReport}"/>
+    <delete dir="${findbugsReport}"/>
+  </target>
+
+
+
+  <!-- create the ${build} and ${dist} directory    -->
+  <target name="setup"
+          description="setup empty build dir" >
+    <mkdir dir="${build}"/>
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${tattletaleReport}"/>
+    <mkdir dir="${testngReport}"/>
+  	<mkdir dir="${findbugsReport}"/>
+    <!-- this directory is used by eclipse -->
+    <mkdir dir="${build}/classes"/>
+  </target>
+
+
+
+  <!-- compile the classfiles into the build directory  source="1.6" -->
+  <target name="build" depends="clean, setup">
+    <javac srcdir="${src}"
+           destdir="${build}/classes"
+           debug="on"
+    	   verbose="true"
+    	   source="1.6"
+    	   includejavaruntime="true"
+           failonerror="true"
+           includeAntRuntime="false" >
+      <classpath><path refid="classpath"/></classpath>
+    </javac>
+  </target>
+
+
+
+  <!-- copy the properties into the build directory -->
+  <target name="properties" depends="clean">
+    <copy todir="${build}/classes">
+       <fileset dir="${src}/jbpm4">
+          <include name="**/*.xml" />
+       </fileset>
+       <fileset dir="${src}/main">
+          <include name="**/*.mime" />
+          <include name="**/*.xml" />
+          <include name="**/*.html" />
+          <include name="**/*.properties" />
+          <include name="META-INF/**" />
+          <exclude name="**/*_offline" />
+       </fileset>
+       <fileset dir="${src}/rich">
+          <include name="**/*.properties" />
+          <include name="**/*.xcss" />
+       </fileset>
+        <fileset dir="${src}/test">
+           <include name="**/*.xml" />
+        </fileset>
+    </copy>
+  </target>
+
+
+  <!-- copy the build directory into the webapp
+
+       after this target we have a full working web application in the prepare directory
+       all we need to do now is to set up the application for the target environment   -->
+  <target name="prepare" depends="build, properties">
+    <copy todir="${prepare}" >
+      <fileset dir="${content}" excludes="**/*_offline" />
+    </copy>
+    <copy todir="${prepare}/WEB-INF">
+      <fileset dir="${build}" excludes="**/*_offline" />
+    </copy>
+  </target>
+
+
+
+    <!-- ##############################################
+
+      this customizes the web.xml file      -->
+    <target name="customizeWebXml" depends="prepare" >
+      <!-- http://today.java.net/pub/a/today/2006/11/01/xml-manipulation-using-xmltask.html -->
+      <!-- http://www.enlosdetalles.net/2009/09/modificando-ficheros-de-configuracion.html -->
+
+      <xmltask source="${prepare}/WEB-INF/web.xml"
+                     dest="${prepare}/WEB-INF/web.xml"
+                     failWithoutMatch="false" >
+           <remove path="//comment()" />
+      </xmltask>
+
+      <!-- remove all descriptions -->
+      <xmltask source="${prepare}/WEB-INF/web.xml"
+               dest="${prepare}/WEB-INF/web.xml"
+               failWithoutMatch="false">
+        <remove path="//:description" />
+      </xmltask>
+
+      <!-- set baseurl, deployment, refresh for production -->
+      <xmltask source="${prepare}/WEB-INF/web.xml"
+               dest="${prepare}/WEB-INF/web.xml"
+               failWithoutMatch="true">
+        <replace path="/:web-app/:context-param[:param-name/text()='charms.baseUrl']/:param-value/text()"
+                 withText="http://localhost:8181" />
+        <replace path="/:web-app/:context-param[:param-name/text()='facelets.REFRESH_PERIOD']/:param-value/text()"
+                 withText="-1" />
+        <replace path="/:web-app/:context-param[:param-name/text()='facelets.DEVELOPMENT']/:param-value/text()"
+                 withText="false" />
+        <replace path="/:web-app/:context-param[:param-name/text()='com.sun.faces.developmentMode']/:param-value/text()"
+                 withText="false" />
+      </xmltask>
+
+      <!-- try to remove the standalone attribute in the header -->
+      <replaceregexp file="${prepare}/WEB-INF/web.xml"
+                   match=" standalone=&quot;no&quot;"
+                   replace=""/>
+
+    </target>
+
+
+
+    <!-- ##############################################
+
+      this customizes the components.xml file               -->
+    <target name="customizeComponentsXml" depends="prepare" >
+
+      <xmltask source="${prepare}/WEB-INF/classes/META-INF/components.xml"
+               dest="${prepare}/WEB-INF/classes/META-INF/components.xml"
+               failWithoutMatch="true">
+
+        <remove path="//comment()" />
+
+        <replace path="/:components/core:init/@debug"
+                 withText="false" />
+
+        <remove path="/:components/theme:theme-selector" />
+        <insert path="/:components" >
+          <![CDATA[
+          <theme:theme-selector cookie-enabled="true" theme="rich" xmlns:theme="http://jboss.com/products/seam/theme">
+            <theme:available-themes xmlns:theme="http://jboss.com/products/seam/theme">
+              <value xmlns="http://jboss.com/products/seam/components">charms</value>
+              <value xmlns="http://jboss.com/products/seam/components">persman</value>
+              <value xmlns="http://jboss.com/products/seam/components">rich</value>
+            </theme:available-themes>
+          </theme:theme-selector>
+          ]]>
+        </insert>
+
+      </xmltask>
+
+    </target>
+
+
+    <!-- ##############################################
+
+      this customizes the hibernate3.cfg.xml file so we
+      don't recreate                                      -->
+    <target name="customizeHibernateXml" depends="prepare" >
+
+      <xmltask source="${prepare}/WEB-INF/classes/hibernate3.cfg.xml"
+               dest="${prepare}/WEB-INF/classes/hibernate3.cfg.xml"
+               failWithoutMatch="true"
+               public="//Hibernate/Hibernate Configuration DTD//EN"
+               system="http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"
+      	>
+
+        <remove path="//comment()" />
+
+        <!-- this file hase no namespaces -->
+        <replace path="/hibernate-configuration/session-factory/property[@name='hibernate.hbm2ddl.auto']/text()"
+                 withText="create-drop" />
+
+      </xmltask>
+
+    </target>
+
+
+
+    <!-- ##############################################
+
+      this customizes the spring-beans.xml file
+    -->
+    <target name="customizeSpringBeanXml" depends="prepare" >
+
+      <xmltask source="${prepare}/WEB-INF/config/spring-beans.xml"
+               dest="${prepare}/WEB-INF/config/spring-beans.xml"
+               failWithoutMatch="false">
+
+        <remove path="//comment()" />
+
+        <!-- replace any c3p0DataSource -->
+        <remove path="//:bean[@id='c3p0DataSource']" />
+        <insert path="/:beans" >
+           <![CDATA[
+            <bean id="c3p0DataSource"
+                  class="com.mchange.v2.c3p0.ComboPooledDataSource"
+                  destroy-method="close"
+                  xmlns="http://www.springframework.org/schema/beans" >
+               <property name="driverClass" value="org.h2.Driver"/>
+               <property name="jdbcUrl" value="jdbc:h2:mem;MVCC=TRUE" />
+               <property name="user" value="SA"/>
+               <property name="password" value="SA"/>
+
+          <property name="initialPoolSize" value="7"/>
+          <property name="maxPoolSize" value="100"/>
+          <property name="minPoolSize" value="7"/>
+          <property name="acquireIncrement" value="5"/>
+          <property name="acquireRetryAttempts" value="3"/>
+          <property name="acquireRetryDelay" value="5000" />
+          <property name="breakAfterAcquireFailure" value="true" />
+          <property name="testConnectionOnCheckin" value="true" />
+          <property name="testConnectionOnCheckout" value="true" />
+          <property name="idleConnectionTestPeriod" value="10" />
+          <property name="connectionTesterClassName" value="net.wohlfart.tools.ConnectionTester" />
+          <property name="automaticTestTable" value="CONN_TEST" />
+          <property name="checkoutTimeout" value="600" />
+          <property name="autoCommitOnClose" value="false" />
+          <property name="numHelperThreads" value="3" />
+
+            </bean>
+          ]]>
+        </insert>
+
+            <!-- replace any springMailSender
+                 for the unit tests we can depend on
+                 depends-on="dumbster"
+            -->
+            <remove path="//:bean[@id='springMailSender']" />
+            <insert path="/:beans" >
+               <![CDATA[
+          <bean id="springMailSender"
+                name="springMailSender"
+                class="org.springframework.mail.javamail.JavaMailSenderImpl"
+                scope="seam.APPLICATION"
+                xmlns="http://www.springframework.org/schema/beans">
+            <property name="host" value="127.0.0.1"/>
+            <property name="protocol" value="smtp" />
+            <property name="javaMailProperties">
+                <props>
+                   <prop key="mail.smtp.auth">false</prop>
+                   <prop key="mail.smtp.port">6789</prop>
+                   <prop key="mail.smtp.connectiontimeout">20000</prop>
+                   <prop key="mail.smtp.timeout">20000</prop>
+                   <prop key="mail.smtp.quitwait">true</prop>
+                </props>
+             </property>
+          </bean>
+            ]]>
+          </insert>
+
+
+            <!-- remove any dumbster config since testng boots its own dumbster -->
+              <remove path="//:bean[@id='dumbster']" />
+
+      </xmltask>
+    </target>
+
+  <target name="cusomizeLog4j">
+    <delete file="${prepare}/WEB-INF/classes/log4j.properties" />
+
+    <propertyfile
+        file="${prepare}/WEB-INF/classes/log4j.properties"
+        comment="charms properties">
+      <entry  key="log4j.rootLogger" value="WARN, ConsoleAppender"/>
+      <entry  key="log4j.appender.ConsoleAppender" value="org.apache.log4j.ConsoleAppender"/>
+          <entry  key="log4j.appender.ConsoleAppender.layout" value="org.apache.log4j.PatternLayout"/>
+          <entry  key="log4j.appender.ConsoleAppender.layout.ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %X{loghost} [%t] %X{loguser} %-5p %c %x - %m%n"/>
+          <entry  key="log4j.appender.ConsoleAppender.Threshold" value="WARN"/>
+
+    </propertyfile>
+
+  </target>
+
+
+  <!-- create the war file from the prepare directory,
+       this target should be invoked after the customization is  done  -->
+  <target name="war" depends="prepare, customizeWebXml, customizeComponentsXml, customizeSpringBeanXml, cusomizeLog4j, customizeHibernateXml">
+      <war destfile="${dist}/charms-${tstamp}.war"
+           basedir="${prepare}"
+           level="9" />
+  </target>
+
+
+
+    <!-- cleanup the jetty webapps directory               -->
+    <target name="clean-jetty"
+            description="clean up jetty appdir" >
+      <delete dir="${jetty}/webapps/**/*.war"/>
+    </target>
+
+    <target name="copy-war"
+            depends="clean-jetty"
+            description="copy charms warfile" >
+       <copy tofile="${jetty}/webapps/charms.war">
+          <fileset file="${dist}/charms-${tstamp}.war" />
+       </copy>
+    </target>
+
+
+    <!-- create the jetty zipfile  -->
+    <target name="zip" depends="war, clean-jetty, copy-war">
+        <zip destfile="${dist}/charms-jetty-${tstamp}.zip"
+             basedir="${jetty}"
+             level="9" />
+    </target>
+
+    <!-- copy the dist template into the dist directory -->
+    <target name="copyTemplate">
+        <copy tofile="${dist}/charms.zip">
+          <fileset file="${distTemplate}" />
+        </copy>
+    </target>
+
+    <!-- create the dist zipfile  -->
+    <target name="dist" depends="war, copyTemplate">
+       <zip destfile="${dist}/charms.zip"
+           update="true">
+         <zipfileset dir="${dist}"
+                   includes="charms-${tstamp}.war"
+                   fullpath="/charms/jetty/webapps/charms.war"/>
+       </zip>
+    </target>
+
+    <!-- copy all jars into the dist directory -->
+     <target name="roundup" depends="build">
+       <copy overwrite="true" todir="${dist}/jars">
+         <fileset dir="${tomcat}/lib" includes="**/*.jar" />
+         <fileset dir="${content}/WEB-INF/lib" includes="**/*.jar" />
+       </copy>
+       <jar destfile="${dist}/jars/charms-${tstamp}.jar" basedir="${build}/classes" />
+     </target>
+
+
+   <!-- the sourec attribite needs the basedir -->
+    <target name="tattletale-report" depends="build, roundup"
+            description="create tattletale report" >
+      <report source="${basedir}/${dist}/jars"
+              destination="${basedir}/${tattletaleReport}"
+              profiles="java6, seam22, spring30"/>
+
+    </target>
+
+
+    <target name="testng-report" depends="roundup, prepare"
+            description="create testng report" >
+
+      <testng workingDir="${prepare}"
+              outputDir="${testngReport}">
+        <classpath>
+          <!-- this is hack, we need all jars for the test -->
+            <fileset dir="${dist}/jars" />  <!--
+              <include name="*.jar" />
+            </fileset>  -->
+          <!-- plus the webapps home for the spring context lookup stuff to work -->
+          <pathelement location="${dist}/prepare"/>
+        </classpath>
+        <xmlfileset dir="${prepare}" includes="WEB-INF/classes/testng.xml"/>
+        </testng>
+
+    </target>
+
+
+	 <!-- findbugs is spawned off and needs terrible lots of memory it seems... -->
+	 <target name="findbugs-report" depends="build, roundup">
+	    <findbugs home="${findbugs.home}"
+	              output="xml"
+	              outputFile="${findbugsReport}/index.xml"
+	    	      jvmargs="-XX:MaxPermSize=256m -Xms512M -Xmx512M "
+	    	      excludeFilter="bin/hudson/findbugs-filter.xml" >
+	      <sourcePath path="${src}" />
+	      <class location="${dist}/jars/charms-${tstamp}.jar" />
+	    </findbugs>
+	  </target>
+
+    <!-- removed testng-report,  for now
+         since we get /var/lib/hudson/jobs/charms/workspace/bin/hudson/build.xml:400: Process fork failed.
+         which seems to be caused by too many jars in the fileset
+    -->
+    <target name="all" depends="war, zip, dist, testng-report, tattletale-report, findbugs-report" />
+
+</project>

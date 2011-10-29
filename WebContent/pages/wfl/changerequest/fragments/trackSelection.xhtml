@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:a4j="http://richfaces.org/a4j">
+
+<tr>
+  <td>
+    <s:decorate id="fastTrackCheckbox"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="Fast Track" /></ui:define>
+      <h:selectBooleanCheckbox value="#{changeRequestData.fastTrack}"
+                               readonly="#{readonly?'true':'false'}"
+                               disabled="#{readonly?'true':'false'}"
+                               styleClass="checkbox#{readonly?' readonly':''}"
+                               onclick="fastTrackClick(); return true" >
+      </h:selectBooleanCheckbox>
+  </s:decorate>
+  </td>
+  <td>
+ <script type="text/javascript">
+<h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+
+  function fastTrackClick() {
+    var val = jQuery('#changeRequest\\:fastTrackCheckbox').find('input').attr('checked');
+    jQuery('#changeRequest\\:regularTrackCheckbox').find('input').attr('checked', !val);
+  }
+
+<h:outputText value="/* ]]> */" escape="false"/>
+</script>
+  </td>
+</tr>
+
+<tr>
+  <td>
+    <s:decorate id="regularTrackCheckbox"
+                template="/layout/fragments/editproperty.xhtml">
+      <ui:define name="label"><h:outputText value="Regular Track" /></ui:define>
+      <h:selectBooleanCheckbox value="#{changeRequestData.regularTrack}"
+                               readonly="#{readonly?'true':'false'}"
+                               disabled="#{readonly?'true':'false'}"
+                               styleClass="checkbox#{readonly?' readonly':''}"
+                               onclick="regularTrackClick(); return true" >
+      </h:selectBooleanCheckbox>
+  </s:decorate>
+  </td>
+  <td>
+ <script type="text/javascript">
+<h:outputText value="/* &lt;![CDATA[ */" escape="false"/>
+
+  function regularTrackClick() {
+    var val = jQuery('#changeRequest\\:regularTrackCheckbox').find('input').attr('checked');
+    jQuery('#changeRequest\\:fastTrackCheckbox').find('input').attr('checked', !val);
+  }
+
+<h:outputText value="/* ]]> */" escape="false"/>
+</script>
+  </td>
+</tr>
+
+</ui:composition>

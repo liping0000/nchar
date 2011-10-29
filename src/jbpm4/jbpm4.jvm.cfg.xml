@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- 
+
+this jbpm4 setup is for testing only
+
+ -->
+
+<jbpm-configuration>
+
+  <process-engine-context>
+  
+    <task-service />
+    <repository-service />
+    <command-service />
+
+    <command-service name="txRequiredCommandService">
+      <skip-interceptor />
+      <retry-interceptor />
+      <environment-interceptor />
+      <standard-transaction-interceptor />
+    </command-service>
+
+    <command-service name="newTxRequiredCommandService">
+      <retry-interceptor />
+      <environment-interceptor policy="requiresNew" />
+      <standard-transaction-interceptor />
+    </command-service>
+
+    <hibernate-configuration annotations="enabled">
+      <properties resource="jbpm4.jvm.hibernate.properties" />
+      <cfg resource="hibernate3.cfg.xml" />     
+    </hibernate-configuration>
+
+    <hibernate-session-factory />
+    
+  </process-engine-context>
+
+  <transaction-context>
+    <repository-session />
+    <transaction />
+    <hibernate-session />
+    <db-session />
+  </transaction-context>
+
+</jbpm-configuration>

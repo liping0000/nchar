@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+ 
+      login-required="true">
+  
+  <description>a single activity</description>
+  
+  <begin-conversation join="true" flush-mode="manual" />
+      
+  <action execute="#{jbpmActivitAction.refresh()}"
+          on-postback="false" />
+        
+  <navigation>
+     
+    <rule if-outcome="editEmail">
+      <begin-conversation nested="true" />
+      <redirect view-id="/pages/admin/emailTemplate.xhtml">     
+        <param name="emailTemplateId" value="#{param.emailTemplateId}" />
+      </redirect>
+    </rule>
+
+    <rule if-outcome="addEmail">
+      <begin-conversation nested="true" />
+      <redirect view-id="/pages/admin/emailTemplate.xhtml">
+        <param name="predefinedName" value="#{param.predefinedName}" />
+      </redirect>
+    </rule>
+    
+    <rule if-outcome="editPermission">
+      <begin-conversation nested="true" />
+      <redirect view-id="/pages/admin/permission.xhtml">     
+        <param name="charmsPermissionId" value="#{param.charmsPermissionId}" />
+      </redirect>
+    </rule>
+     
+    <rule if-outcome="addPermission">
+      <begin-conversation nested="true" />
+      <redirect view-id="/pages/admin/permission.xhtml">     
+        <param name="predefinedTarget" value="#{param.predefinedTarget}" />
+        <param name="predefinedAction" value="#{param.predefinedAction}" />
+      </redirect>
+    </rule>
+     
+    <rule if-outcome="back">
+       <redirect view-id="/pages/jbpm/processDefinitionGraph.xhtml">
+         <!-- deployment png need the id in the page action -->
+         <param name="processDefinitionId" value="#{jbpmActivitAction.processDefinitionId}" />
+       </redirect>
+    </rule>
+      
+  </navigation>
+          
+ 
+</page>

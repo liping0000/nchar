@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+  <!--
+
+   the initial database layout installing the structure from an empty database   -->
+
+
+  <include file="20101030-2200-tables.xml" relativeToChangelogFile="true" />
+  <include file="20101030-2200-constraints.xml" relativeToChangelogFile="true" />
+
+
+</databaseChangeLog>
